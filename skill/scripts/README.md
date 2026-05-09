@@ -31,6 +31,35 @@
 
 ---
 
+## 统一分析脚本 (推荐)
+
+### analyze.py — 三合一分析 (新增)
+
+整合了 `chapter_info.py` + `style_check.py` + `hook_report.py` 的功能,支持三种模式:
+
+```bash
+# 单章分析 (代替 chapter_info.py)
+python scripts/analyze.py novels/volume-01/chapters/ch01.md --mode single --json
+
+# 风格检测 (代替 style_check.py)
+python scripts/analyze.py novels/volume-01/chapters/ch01.md --mode style --json
+
+# 批量分析 (代替 hook_report.py + 卷级统计)
+python scripts/analyze.py novels/volume-01/chapters/ --mode batch --recent 5 --json
+```
+
+**输出模式**:
+- `--json`: 纯JSON格式(供AI读取)
+- `--format table`: 表格格式(供人类阅读)
+- `--format text`: 简洁文本(供AI快速解析)
+
+**批量模式增强功能**:
+- 钩子类型分布 + 连续相同钩子警告
+- 节奏S1-S5分布 + 连续高潮/平淡警告
+- 总字数/均章字数统计
+
+---
+
 ## 写作流程脚本
 
 ### check_wordcount.py — 字数检查

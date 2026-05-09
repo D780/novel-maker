@@ -1,19 +1,8 @@
-***
-
-name: novel-weaver
-description: 全能网文写作辅助技能
-license: MIT
-metadata:
-version: "1.5.0"
-author: NovelWeaver Contributors
-tags: \[writing, novel, webnovel, creative, chinese]
-----------------------------------------------------
-
 # NovelWeaver - 全能网文写作助手
 
 ## 一句话介绍
 
-整合业界优秀网文写作工具理念，通过简洁指令+自然语言，帮你从零创作高质量长篇小说。
+整合业界优秀网文写作工具理念,通过简洁指令+自然语言,帮你从零创作高质量长篇小说。
 
 ***
 
@@ -32,45 +21,40 @@ tags: \[writing, novel, webnovel, creative, chinese]
 
 ### 2. 文风系统
 
-| 能力       | 说明                 |
-| -------- | ------------------ |
-| 22位作者文风库 | 覆盖搞笑、热血、文青、严谨等7大流派 |
-| 智能推荐     | 根据题材自动推荐合适文风       |
-| 场景切换     | 不同场景使用不同文风         |
-| 自定义文风    | 支持学习用户个人写作风格       |
+- **22位作者文风库**: 覆盖搞笑、热血、文青、严谨等7大流派
+- **智能推荐**: 根据题材自动推荐合适文风
+- **场景切换**: 不同场景使用不同文风
+- **自定义文风**: 支持学习用户个人写作风格
 
 > 文风库详见 [styles/author-styles.md](styles/author-styles.md)
 
-### 3. 节奏控制（S1-S5 + 情绪曲线双轨）
+### 3. 节奏与情绪控制
 
-| 能力   | 说明                     |
-| ---- | ---------------------- |
-| 情绪标签驱动 | 6大标签对应不同的节奏模板       |
-| 情绪单元 | 每3章"压-小扬-压-爆"循环        |
-| 章节节奏 | S1-S5五级节奏评级 + 情绪标签对应模板 |
-| 卷级节奏 | 整卷节奏曲线分析               |
-| 五章报告 | 每5章生成节奏报告 + 评论区争论点预测   |
+- **情绪标签驱动**: 6大标签对应不同的节奏模板
+- **情绪单元**: 每3章"压-小扬-压-爆"循环
+- **双轨评级**: S1-S5五级节奏评级 + 情绪曲线
+- **卷级节奏**: 整卷节奏曲线分析
+- **五章报告**: 每5章生成节奏报告 + 评论区争论点预测
 
-> 节奏分析见 [pacing-analysis.md](references/pacing-analysis.md)，情绪曲线见 [emotion-curve.md](references/emotion-curve.md)
+> 详见 [rhythm-system.md](references/rhythm-system.md)
 
 ### 4. 质量保障
 
-| 能力     | 说明                 |
-| ------ | ------------------ |
-| 33维度审计 | 角色、世界观、情节、叙事、文字全覆盖 |
-| AI味检测  | 识别套话、情感空洞、描写模式化    |
-| 一致性检查  | 角色OOC、设定冲突、时间线验证   |
-| 追读力分析  | Hook质量、爽点、弃读风险评估   |
+- **15核心维度**: 角色、世界观、情节、叙事、文字全覆盖
+- **33完整维度**: 深度审查时使用(每5章/卷末)
+- **AI味检测**: 识别套话、情感空洞、描写模式化
+- **一致性检查**: 角色OOC、设定冲突、时间线验证
+- **追读力分析**: Hook质量、爽点、弃读风险评估
+
+> 详见 [audit-core.md](references/audit-core.md)
 
 ### 5. 记忆与实体（RAG 检索增强）
 
-| 能力   | 说明                  |
-| ---- | ------------------- |
-| 三重记忆 | 真相文件 + 长程上下文 + 实体关系 |
-| 智能检索 | 写作前自动检索相关设定、前文、角色档案 |
-| 实体管理 | 角色/物品/地点/势力的自动提取与管理 |
-| 伏笔追踪 | 自动记录埋设/回收状态         |
-| 状态同步 | 每章后自动更新世界状态         |
+- **三重记忆**: 真相文件 + 长程上下文 + 实体关系
+- **智能检索**: 写作前自动检索相关设定、前文、角色档案
+- **实体管理**: 角色/物品/地点/势力的自动提取与管理
+- **伏笔追踪**: 自动记录埋设/回收状态
+- **状态同步**: 每章后自动更新世界状态
 
 #### 检索规则（AI 自动执行，用户无感知）
 
@@ -85,12 +69,10 @@ tags: \[writing, novel, webnovel, creative, chinese]
 
 ### 6. 创意约束
 
-| 能力     | 说明                 |
-| ------ | ------------------ |
-| 三轴混搭   | 风格轴+冲突轴+节奏轴组合防重复   |
-| 反套路触发器 | 检测常见套路并自动改写        |
-| 镜像对抗   | 确保冲突双方有对等合理性       |
-| 约束继承   | 新章节继承前文约束，禁止随意发明设定 |
+- **三轴混搭**: 风格轴+冲突轴+节奏轴组合防重复
+- **反套路触发器**: 检测常见套路并自动改写
+- **镜像对抗**: 确保冲突双方有对等合理性
+- **约束继承**: 新章节继承前文约束，禁止随意发明设定
 
 ### 7. 总结与回顾
 
@@ -135,12 +117,7 @@ AI会引导你完成以下配置：
 /nw plan 帮我生成总大纲
 ```
 
-AI会根据你的设定生成：
-
-- 完整故事大纲（三幕结构）
-- 角色详细设定
-- 世界观框架
-- 分卷大纲
+AI会根据你的设定生成完整故事大纲（三幕结构）、角色设定、世界观框架、分卷大纲。
 
 ### 第三步：开始写作
 
@@ -148,7 +125,7 @@ AI会根据你的设定生成：
 /nw write 写第一章
 ```
 
-AI会自动完成：
+AI自动完成：
 - **黄金开篇**（仅第一章时）：生成3版开篇50字，用户选择最佳版本
 - 读取创作宪法和大纲，应用目标文风，生成章节内容
 - **自动审查质量**（AI味检测、一致性检查、追读力分析）
@@ -180,18 +157,29 @@ AI会自动完成：
 
 ```
 /nw write 继续写，主角发现了敌人
-    ↓ 先运行 python scripts/chapter_info.py 前章文件 --json 获取结构化上下文
-    ↓ AI自动完成：写作 → 审查 → 字数检查 → 更新大纲 → 更新记忆 → 摘要 → 进度提示
+    ↓ AI自动：构建上下文 → 写作 → 审查 → 字数检查 → 更新大纲/记忆 → 摘要 → 进度提示
 [看结果] → 满意 → /nw write 继续
             → 字数不达标 → /nw expand 扩充本章
             → 不满意 → /nw review fix 帮我改一下
 当期幕章节写完（或中途想调整）→ /nw act 下一幕怎么走
-    ↓ 先运行 python scripts/volume_batch.py 卷目录 --recent 5 --json 获取批量上下文
     ↓ AI展示：现状 + 6条分支走向 + 推荐 + 幕大纲 → 用户选择+调整章节数
     ↓ 偏离检查：若影响整体大纲则提醒 → 同步更新大纲/卷计划/记忆 → 继续写作
 ```
 
+#### 写作前自动构建上下文 (用户无感知)
+
+AI在写作时自动检索并构建以下上下文，无需用户手动指定：
+
+```markdown
+【写作上下文】
+## 角色状态 → 来自 truth-files/characters.md + current-state.md
+## 世界设定 → 来自 truth-files/world-setting.md + power-system.md  
+## 前情摘要 → 来自 .novel-weaver/summaries/ + 前2章摘要
+## 本章目标 → 来自 outline.md / volume-XX/plan.md
+```
+
 > 详细工作流程请查阅 [references/usage-guide.md](references/usage-guide.md)
+> 快速参考请查阅 [QUICK-REF.md](QUICK-REF.md)
 
 ***
 
@@ -266,9 +254,11 @@ AI会自动完成：
 ```
 .
 ├── SKILL.md                    # 主技能文件
-├── references/                 # 参考文档（17个）
-│   ├── genre-rules.md          # 37种题材写作规则
-│   ├── audit-dimensions.md     # 33维度审计系统
+├── QUICK-REF.md                # 快速参考卡（新增）
+├── references/                 # 参考文档（优化后15个）
+│   ├── rhythm-system.md        # 节奏与情绪控制系统（合并）
+│   ├── audit-core.md           # 15维度核心审计（精简）
+│   ├── audit-dimensions.md     # 33维度完整审计（保留）
 │   ├── anti-ai-patterns.md     # 反AI味指南
 │   ├── style-imitation.md      # 文风模仿指南
 │   ├── memory-system.md        # 记忆系统说明
@@ -277,8 +267,6 @@ AI会自动完成：
 │   ├── creative-constraints.md # 创意约束系统
 │   ├── consistency-checker.md  # 一致性检查器
 │   ├── data-agent.md           # 实体管理代理
-│   ├── pacing-analysis.md      # 节奏分析系统
-│   ├── emotion-curve.md        # 情绪曲线系统
 │   ├── golden-opening.md       # 黄金开篇锻造术
 │   ├── content-expansion.md    # 内容扩充技巧
 │   ├── dialogue-writing.md     # 对话写作规范
@@ -294,20 +282,20 @@ AI会自动完成：
 │   ├── act-plan.md             # 幕计划模板
 │   ├── volume-plan.md          # 卷计划模板
 │   └── ...
-└── scripts/                    # 脚本工具（13个文件，公共模块+12个脚本）
+└── scripts/                    # 脚本工具（13个文件）
     ├── README.md               # 使用说明
-    ├── nw_utils.py             # 公共工具模块（Markdown清理/字数/角色/地点/钩子/章节排序/摘要/结构/节奏/大纲/真相）
+    ├── nw_utils.py             # 公共工具模块
     ├── check_wordcount.py      # 字数检查脚本
-    ├── chapter_info.py          # 单章结构化提取（角色/钩子/结构比）
-    ├── volume_batch.py          # 卷级批量汇总（字符矩阵/伏笔追踪）
-    ├── hook_report.py           # 钩子密度报告（类型分布/连续警告）
-    ├── consistency_scan.py      # 一致性扫描（vs 真相文件，等级冲突检测）
-    ├── style_check.py           # AI味检测（高频词/句式/对话比例）
-    ├── stats_report.py          # 项目统计报告（卷/章节/字数/角色/节奏分布）
-    ├── pacing_report.py         # 卷级节奏报告（S1-S5分布/问题区域/追读力趋势）
-    ├── summary_generator.py     # 阶段总结辅助（剧情时间线提取）
-    ├── outline_extractor.py     # 大纲快速提取（Markdown标题树解析）
-    └── truth_manager.py         # 真相文件管理器（角色/伏笔/世界观查看）
+    ├── chapter_info.py         # 单章结构化提取
+    ├── volume_batch.py         # 卷级批量汇总
+    ├── hook_report.py          # 钩子密度报告
+    ├── consistency_scan.py     # 一致性扫描
+    ├── style_check.py          # AI味检测
+    ├── stats_report.py         # 项目统计报告
+    ├── pacing_report.py        # 卷级节奏报告
+    ├── summary_generator.py    # 阶段总结辅助
+    ├── outline_extractor.py    # 大纲快速提取
+    └── truth_manager.py        # 真相文件管理器
 ```
 
 ### 项目运行时数据（用户项目生成）
@@ -339,8 +327,10 @@ novels/                     # 小说正文（用户直接编辑）
 
 | 文档                                                            | 说明        |
 | ------------------------------------------------------------- | --------- |
+| [rhythm-system.md](references/rhythm-system.md)                   | 节奏与情绪控制系统（合并新增） |
+| [audit-core.md](references/audit-core.md)                         | 15维度核心审计（精简新增） |
 | [genre-rules.md](references/genre-rules.md)                   | 37种题材写作规则 |
-| [audit-dimensions.md](references/audit-dimensions.md)         | 33维度审计系统  |
+| [audit-dimensions.md](references/audit-dimensions.md)         | 33维度完整审计  |
 | [anti-ai-patterns.md](references/anti-ai-patterns.md)         | 反AI味指南    |
 | [style-imitation.md](references/style-imitation.md)           | 文风模仿指南    |
 | [memory-system.md](references/memory-system.md)               | 记忆系统      |
@@ -349,8 +339,6 @@ novels/                     # 小说正文（用户直接编辑）
 | [creative-constraints.md](references/creative-constraints.md) | 创意约束系统    |
 | [consistency-checker.md](references/consistency-checker.md)   | 一致性检查器    |
 | [data-agent.md](references/data-agent.md)                     | 实体管理代理    |
-| [pacing-analysis.md](references/pacing-analysis.md)           | 节奏分析系统    |
-| [emotion-curve.md](references/emotion-curve.md)               | 情绪曲线系统    |
 | [golden-opening.md](references/golden-opening.md)             | 黄金开篇锻造术   |
 | [content-expansion.md](references/content-expansion.md)       | 内容扩充技巧    |
 | [dialogue-writing.md](references/dialogue-writing.md)         | 对话写作规范    |
@@ -407,7 +395,8 @@ novels/                     # 小说正文（用户直接编辑）
 | 1.3.0 | 2026-05 | 结构优化 - 消除SKILL.md重复内容、文风库按流派分类、精简至350行                               |
 | 1.4.0 | 2026-05 | 实战增强 - 情绪标签系统、黄金开篇锻造术、情绪曲线"压-小扬-压-爆"、内容扩充/对话写作/情节结构参考文档、Python字数检查脚本 |
 | 1.5.0 | 2026-05 | 幕系统 + 脚本 - 引入"幕"概念（卷内剧情弧），`/nw act`展示现状+6条剧情走向；Python预处理脚本12个+公共模块1个，节省约90% token消耗 |
+| 1.6.0 | 2026-05 | 文档优化 - 新增QUICK-REF快速参考卡、合并节奏与情绪文档、精简审计为15核心维度、SKILL.md去重 |
 
 ***
 
-*NovelWeaver v1.5.0 - 指令* *`/nw`* *+ 语义，用说话的方式写小说*
+*NovelWeaver v1.6.0 - 指令* *`/nw`* *+ 语义，用说话的方式写小说*
