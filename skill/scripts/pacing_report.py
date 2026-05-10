@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 卷级节奏报告
 分析卷内所有章节的节奏分布、问题区域、追读力趋势。
-供 `/nw review pacing volume` 使用。
+供 `/novel-weaver review pacing volume` 使用。
 """
 
 import os

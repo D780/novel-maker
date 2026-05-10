@@ -1,4 +1,4 @@
-# Data Agent 实体自动提取
+﻿# Data Agent 实体自动提取
 
 ## 系统原理
 
@@ -139,13 +139,13 @@ Data Agent 在写作过程中自动提取故事中的实体（角色、物品、
 ### 手动管理
 
 ```
-/nw entity list 列出所有实体
-/nw entity type 列出指定类型实体
-/nw entity show [ID] 显示实体详情
-/nw entity add 手动添加实体
-/nw entity update 更新实体
-/nw entity delete 删除实体
-/nw entity merge 合并重复实体
+/novel-weaver entity list 列出所有实体
+/novel-weaver entity type 列出指定类型实体
+/novel-weaver entity show [ID] 显示实体详情
+/novel-weaver entity add 手动添加实体
+/novel-weaver entity update 更新实体
+/novel-weaver entity delete 删除实体
+/novel-weaver entity merge 合并重复实体
 ```
 
 ---
@@ -258,8 +258,8 @@ F001（青云宗）
 ### 写作前
 
 ```
-/nw entity list 角色  → 查看有哪些角色
-/nw entity show C001 → 查看主角详细信息
+/novel-weaver entity list 角色  → 查看有哪些角色
+/novel-weaver entity show C001 → 查看主角详细信息
 ```
 
 ### 写作中
@@ -272,15 +272,15 @@ AI 自动提取新实体 → 提示作者确认
 ### 写作后
 
 ```
-/nw entity list 未使用 → 查看未使用的实体
-/nw entity merge → 合并重复实体
-/nw entity report → 生成实体报告
+/novel-weaver entity list 未使用 → 查看未使用的实体
+/novel-weaver entity merge → 合并重复实体
+/novel-weaver entity report → 生成实体报告
 ```
 
 ### 查找问题
 
 ```
-/nw entity orphan → 查找孤立实体（无关联）
-/nw entity conflict → 查找实体冲突
-/nw entity timeline → 查看实体时间线
+/novel-weaver entity orphan → 查找孤立实体（无关联）
+/novel-weaver entity conflict → 查找实体冲突
+/novel-weaver entity timeline → 查看实体时间线
 ```

@@ -1,11 +1,11 @@
-# NovelWeaver 使用指南
+﻿# NovelWeaver 使用指南
 
 ## 快速开始
 
 ### 1. 初始化项目
 
 ```
-/nw init 开始写一本玄幻修仙小说
+/novel-weaver init 开始写一本玄幻修仙小说
 ```
 
 AI 会引导你完成：
@@ -18,19 +18,19 @@ AI 会引导你完成：
 ### 2. 生成大纲
 
 ```
-/nw plan 帮我生成总大纲
+/novel-weaver plan 帮我生成总大纲
 ```
 
 ### 3. 开始写作（每次写后自动审查+字数检查+更新）
 
 ```
-/nw write 写第一章，主角在精神病院醒来
+/novel-weaver write 写第一章，主角在精神病院醒来
 ```
 
 ### 4. 审查质量
 
 ```
-/nw review 帮我看看这一章
+/novel-weaver review 帮我看看这一章
 ```
 
 ## 进阶用法
@@ -38,30 +38,30 @@ AI 会引导你完成：
 ### 灵感助手
 
 ```
-/nw inspire                   # 获取灵感建议
-/nw inspire 冲突设计          # 定向获取灵感
+/novel-weaver inspire                   # 获取灵感建议
+/novel-weaver inspire 冲突设计          # 定向获取灵感
 ```
 
 ### 幕（Act）工作流
 
-幕是卷内的剧情弧，有独立起承转合。当前幕章节写完后，使用 `/nw act`。
+幕是卷内的剧情弧，有独立起承转合。当前幕章节写完后，使用 `/novel-weaver act`。
 
 ```
-/nw act 下一幕怎么走
+/novel-weaver act 下一幕怎么走
     ↓ 阶段一：AI展示创作全景（卷进度/角色/伏笔/情绪/字数）
     ↓ 阶段二：6条差异化分支 + AI推荐度 + 默认章节数
     ↓ 阶段三：用户选择 + 设定章节数（如"选B，写6章"）
         → AI分析偏离影响（🟢🟡🟠🔴）→ 提醒用户
         → 同步更新：大纲 + 卷计划 + 记忆 + 伏笔
         → 生成幕大纲（章节细纲）
-    ↓ /nw write 进入写作循环
+    ↓ /novel-weaver write 进入写作循环
         每次写后：字数检查 + 更新大纲 + 更新记忆
 ```
 
 **示例略览：**
 
 ```
-用户：/nw act
+用户：/novel-weaver act
 
 AI：
 ## 📍 第一卷「青云宗的试炼」— 当前创作全景
@@ -85,7 +85,7 @@ F. [颠覆转向] 发现惊人真相，剧情方向大反转 (+4章)
 AI：
 ## ⚠ 偏离分析：🟢 无偏离（本幕在总大纲计划内）
 ## ✅ 同步完成：幕计划+大纲+伏笔+记忆已更新
-/nw write 写第9章
+/novel-weaver write 写第9章
 ```
 
 > 完整幕引导系统见 `references/act-guidance.md`
@@ -124,17 +124,17 @@ AI：
 ```
 
 ```
-/nw review constraint           # 查看三轴混搭组合
-/nw review constraint           # 检查是否使用常见套路
+/novel-weaver review constraint           # 查看三轴混搭组合
+/novel-weaver review constraint           # 检查是否使用常见套路
 ```
 
 ### 节奏与实体
 
 ```
-/nw review pacing               # 分析本章节奏
-/nw review pacing volume        # 查看整卷节奏曲线
-/nw memory entity 角色           # 列出所有角色
-/nw memory entity C001          # 查看指定实体
+/novel-weaver review pacing               # 分析本章节奏
+/novel-weaver review pacing volume        # 查看整卷节奏曲线
+/novel-weaver memory entity 角色           # 列出所有角色
+/novel-weaver memory entity C001          # 查看指定实体
 ```
 
 ## 最佳实践
@@ -165,9 +165,9 @@ AI：
 | 问题 | 尝试 |
 |------|------|
 | 内容不符合预期 | 检查创作宪法、大纲是否完善；提供更具体的写作指引 |
-| 前后矛盾 | `/nw review consistency`；检查真相文件是否更新 |
-| 有AI味 | `/nw review AI味重不重`；参考 `references/anti-ai-patterns.md` |
-| 节奏问题 | `/nw review pacing`；调整章节节奏评级 |
+| 前后矛盾 | `/novel-weaver review consistency`；检查真相文件是否更新 |
+| 有AI味 | `/novel-weaver review AI味重不重`；参考 `references/anti-ai-patterns.md` |
+| 节奏问题 | `/novel-weaver review pacing`；调整章节节奏评级 |
 
 ---
 

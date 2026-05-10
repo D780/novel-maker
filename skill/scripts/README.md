@@ -1,4 +1,4 @@
-# 辅助脚本
+﻿# 辅助脚本
 
 预处理章节数据和项目文件，将全文（~4000 token）压缩为结构化 JSON（~200 token），**节省约 90% token 消耗**。
 
@@ -175,31 +175,31 @@ python scripts/truth_manager.py .novel-weaver/truth-files/ --entity characters -
 ## 在 NovelWeaver 工作流中的位置
 
 ```
-/nw write 继续
+/novel-weaver write 继续
     ↓ ① python scripts/chapter_info.py 前章.md --json  → AI 读 ~200 token 代替 ~4000 token
     ↓ ② AI 写作 → 审查 → 更新大纲/记忆
     ↓ ③ python scripts/check_wordcount.py 本章.md      → 验证字数达标
 
-/nw review
+/novel-weaver review
     ↓ ① python scripts/consistency_scan.py 章节/ 真相/ --json  → 一致性扫描
     ↓ ② python scripts/style_check.py 章节/ --json     → AI味检测
     ↓ ③ python scripts/hook_report.py 章节/ --json     → 钩子密度
     ↓ ④ python scripts/pacing_report.py 章节/ --json   → 节奏报告
 
-/nw act 下一幕怎么走
+/novel-weaver act 下一幕怎么走
     ↓ ① python scripts/volume_batch.py chapters/ --recent 5 --json  → 批量上下文
     ↓ ② python scripts/hook_report.py chapters/ --recent 5 --json   → 钩子趋势
     ↓ ③ AI 展示现状 + 6条分支 → 用户选择 → 偏离检查 → 同步更新
 
-/nw stats
+/novel-weaver stats
     ↓ python scripts/stats_report.py novels/ --json    → 项目统计
 
-/nw summary
+/novel-weaver summary
     ↓ python scripts/summary_generator.py chapters/ --last 10 --json  → 阶段总结辅助
 
-/nw memory outline
+/novel-weaver memory outline
     ↓ python scripts/outline_extractor.py novels/ --json → 大纲树
 
-/nw memory entity
+/novel-weaver memory entity
     ↓ python scripts/truth_manager.py truth-files/ --json → 真相文件管理
 ```

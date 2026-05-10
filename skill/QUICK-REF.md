@@ -1,30 +1,30 @@
-# NovelWeaver 快速参考卡
+﻿# NovelWeaver 快速参考卡
 
 ## 核心指令 (7个)
 
 | 指令 | 用途 | 示例 |
 |------|------|------|
-| `/nw init` | 初始化项目 | `/nw init 开始写修仙小说` |
-| `/nw write` | 写/续写章节 | `/nw write 写第一章` |
-| `/nw review` | 审查质量 | `/nw review` |
-| `/nw memory` | 查看设定 | `/nw memory 主角等级` |
-| `/nw plan` | 生成大纲 | `/nw plan 生成总大纲` |
-| `/nw act` | 幕规划 | `/nw act 下一幕怎么走` |
-| `/nw help` | 帮助 | `/nw help` |
+| `/novel-weaver init` | 初始化项目 | `/novel-weaver init 开始写修仙小说` |
+| `/novel-weaver write` | 写/续写章节 | `/novel-weaver write 写第一章` |
+| `/novel-weaver review` | 审查质量 | `/novel-weaver review` |
+| `/novel-weaver memory` | 查看设定 | `/novel-weaver memory 主角等级` |
+| `/novel-weaver plan` | 生成大纲 | `/novel-weaver plan 生成总大纲` |
+| `/novel-weaver act` | 幕规划 | `/novel-weaver act 下一幕怎么走` |
+| `/novel-weaver help` | 帮助 | `/novel-weaver help` |
 
 ## 扩展指令 (5个)
 
-`/nw style` 文风 | `/nw expand` 扩写 | `/nw inspire` 灵感 | `/nw stats` 统计 | `/nw summary` 总结
+`/novel-weaver style` 文风 | `/novel-weaver expand` 扩写 | `/novel-weaver inspire` 灵感 | `/novel-weaver stats` 统计 | `/novel-weaver summary` 总结
 
 ## 日常写作循环
 
 ```
-/nw write 继续写
+/novel-weaver write 继续写
   ↓ AI自动: 写作 → 审查 → 字数检查 → 更新大纲/记忆 → 进度提示
-满意 → /nw write 继续
-不满意 → /nw review fix 帮我改一下
-字数不足 → /nw expand 扩充本章
-写完当前幕 → /nw act 下一幕怎么走
+满意 → /novel-weaver write 继续
+不满意 → /novel-weaver review fix 帮我改一下
+字数不足 → /novel-weaver expand 扩充本章
+写完当前幕 → /novel-weaver act 下一幕怎么走
 ```
 
 ## 脚本速查

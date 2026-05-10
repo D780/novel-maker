@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 项目统计报告
 快速扫描 novels/ 和 .novel-weaver/ 目录，输出完整的写作进度统计。
-供 `/nw stats` 指令使用。
+供 `/novel-weaver stats` 指令使用。
 """
 
 import os

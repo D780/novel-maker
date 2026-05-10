@@ -4,6 +4,37 @@
 
 整合业界优秀网文写作工具理念,通过简洁指令+自然语言,帮你从零创作高质量长篇小说。
 
+## 触发方式
+
+本技能支持两种触发方式（等价）：
+
+### 方式一：自然语言触发
+
+直接描述你的意图，AI 会自动识别并执行：
+
+| 自然语言示例 | 触发功能 |
+|------------|---------|
+| "开始写小说" / "我想写一本修仙小说" | 项目初始化 |
+| "帮我写第一章" / "继续写，主角遇到了敌人" | 章节写作 |
+| "帮我看看这一章" / "检查有没有矛盾" | 质量审查 |
+| "主角什么等级" / "列出所有角色" | 查看设定 |
+| "帮我生成总大纲" / "规划第一卷" | 生成大纲 |
+| "下一幕怎么走" / "给我剧情建议" | 幕规划 |
+| "换个文风" / "统计字数" / "给我灵感" | 扩展功能 |
+
+### 方式二：指令快捷触发
+
+使用 `/novel-weaver` 指令前缀（支持缩写）：
+
+```
+/novel-weaver init 开始写一本修仙小说
+/novel-weaver write 写第一章
+/novel-weaver review
+/novel-weaver memory 主角什么等级
+/novel-weaver plan 帮我生成总大纲
+/novel-weaver act 下一幕怎么走
+```
+
 ***
 
 ## 核心能力
@@ -12,12 +43,12 @@
 
 | 能力    | 说明                                   | 指令                  |
 | ----- | ------------------------------------ | ------------------- |
-| 项目初始化 | 6问引导：情绪标签→题材→一句话简介→主角姓名+反差点→核心冲突→章节数 | `/nw init`          |
-| 大纲生成  | 基于设定生成含节奏蓝图、幕规划的结构大纲                 | `/nw plan`          |
-| 卷计划   | 分卷规划章节安排                             | `/nw plan 规划第一卷`    |
-| 幕规划   | 卷内剧情弧规划，展示现状+6条分支走向+推荐+幕大纲，支持分段处理偏离提醒 | `/nw act`           |
-| 黄金开篇  | 写第一章时自动生成3版开篇50字+避雷针检查               | `/nw write` 第一章自动触发 |
-| 章节写作  | 自动读取上下文，应用文风写作                       | `/nw write`         |
+| 项目初始化 | 6问引导：情绪标签→题材→一句话简介→主角姓名+反差点→核心冲突→章节数 | `/novel-weaver init`          |
+| 大纲生成  | 基于设定生成含节奏蓝图、幕规划的结构大纲                 | `/novel-weaver plan`          |
+| 卷计划   | 分卷规划章节安排                             | `/novel-weaver plan 规划第一卷`    |
+| 幕规划   | 卷内剧情弧规划，展示现状+6条分支走向+推荐+幕大纲，支持分段处理偏离提醒 | `/novel-weaver act`           |
+| 黄金开篇  | 写第一章时自动生成3版开篇50字+避雷针检查               | `/novel-weaver write` 第一章自动触发 |
+| 章节写作  | 自动读取上下文，应用文风写作                       | `/novel-weaver write`         |
 
 ### 2. 文风系统
 
@@ -60,12 +91,12 @@
 
 | 用户指令         | AI 自动检索范围                                     | 检索目标                       |
 | ------------ | --------------------------------------------- | -------------------------- |
-| `/nw write`  | truth-files/、novels/、.novel-weaver/summaries/ | 角色设定、世界观、力量体系、前文相关章节、大纲    |
-| `/nw memory` | truth-files/ | 角色档案、世界状态、伏笔表 |
-| `/nw review` | 被审查章节、truth-files/、前3章                        | 角色设定、前文情节、审查规则、一致性验证所需全部设定 |
-| `/nw plan`   | outline.md、truth-files/、已写卷                   | 总大纲、当前设定、已有内容              |
-| `/nw act`    | outline.md、truth-files/、pending-hooks.md、前3章摘要 | 大纲、角色状态、伏笔表、情绪曲线位置 |
-| `/nw stats`  | novels/volume-XX/chapters/                    | 章节文件统计字数                   |
+| `/novel-weaver write`  | truth-files/、novels/、.novel-weaver/summaries/ | 角色设定、世界观、力量体系、前文相关章节、大纲    |
+| `/novel-weaver memory` | truth-files/ | 角色档案、世界状态、伏笔表 |
+| `/novel-weaver review` | 被审查章节、truth-files/、前3章                        | 角色设定、前文情节、审查规则、一致性验证所需全部设定 |
+| `/novel-weaver plan`   | outline.md、truth-files/、已写卷                   | 总大纲、当前设定、已有内容              |
+| `/novel-weaver act`    | outline.md、truth-files/、pending-hooks.md、前3章摘要 | 大纲、角色状态、伏笔表、情绪曲线位置 |
+| `/novel-weaver stats`  | novels/volume-XX/chapters/                    | 章节文件统计字数                   |
 
 ### 6. 创意约束
 
@@ -100,7 +131,7 @@
 ### 第一步：初始化项目
 
 ```
-/nw init 开始写小说
+/novel-weaver init 开始写小说
 ```
 
 AI会引导你完成以下配置：
@@ -114,7 +145,7 @@ AI会引导你完成以下配置：
 ### 第二步：生成大纲
 
 ```
-/nw plan 帮我生成总大纲
+/novel-weaver plan 帮我生成总大纲
 ```
 
 AI会根据你的设定生成完整故事大纲（三幕结构）、角色设定、世界观框架、分卷大纲。
@@ -122,7 +153,7 @@ AI会根据你的设定生成完整故事大纲（三幕结构）、角色设定
 ### 第三步：开始写作
 
 ```
-/nw write 写第一章
+/novel-weaver write 写第一章
 ```
 
 AI自动完成：
@@ -131,7 +162,7 @@ AI自动完成：
 - **自动审查质量**（AI味检测、一致性检查、追读力分析）
 - **更新大纲**（标记章节完成状态、更新进度看板）
 - **更新记忆文件**（世界状态、角色状态、伏笔追踪）
-- **字数检查**（必须符合设定区间，不达标自动提醒 `/nw expand`）
+- **字数检查**（必须符合设定区间，不达标自动提醒 `/novel-weaver expand`）
 - **输出本章摘要**和**幕内进度提示**（当前幕第X/Y章）
 
 ***
@@ -141,27 +172,27 @@ AI自动完成：
 ### 从零到一（新书启动）
 
 ```
-/nw init 开始写一本修仙小说
+/novel-weaver init 开始写一本修仙小说
     ↓ AI引导6问：情绪标签→题材→简介→主角+反差点→冲突→章节数
-/nw plan 帮我生成总大纲
+/novel-weaver plan 帮我生成总大纲
     ↓ AI生成：三幕结构大纲 + 角色设定 + 世界观 + 幕规划表
-/nw write 写第一章
+/novel-weaver write 写第一章
     ↓ 自动触发黄金开篇 → 写作 → 检查字数 → 更新大纲 → 更新记忆 → 进度提示
-/nw write 继续
+/novel-weaver write 继续
     ↓ 运行 chapter_info.py → 获取前章结构 → 日常循环...
-/nw act 下一幕怎么走
-    ↓ 运行 volume_batch.py --recent 5 → 现状上下文 + 6条分支 → 用户选择 → 偏离检查 → 同步 → /nw write
+/novel-weaver act 下一幕怎么走
+    ↓ 运行 volume_batch.py --recent 5 → 现状上下文 + 6条分支 → 用户选择 → 偏离检查 → 同步 → /novel-weaver write
 ```
 
 ### 日常写作循环（核心）
 
 ```
-/nw write 继续写，主角发现了敌人
+/novel-weaver write 继续写，主角发现了敌人
     ↓ AI自动：构建上下文 → 写作 → 审查 → 字数检查 → 更新大纲/记忆 → 摘要 → 进度提示
-[看结果] → 满意 → /nw write 继续
-            → 字数不达标 → /nw expand 扩充本章
-            → 不满意 → /nw review fix 帮我改一下
-当期幕章节写完（或中途想调整）→ /nw act 下一幕怎么走
+[看结果] → 满意 → /novel-weaver write 继续
+            → 字数不达标 → /novel-weaver expand 扩充本章
+            → 不满意 → /novel-weaver review fix 帮我改一下
+当期幕章节写完（或中途想调整）→ /novel-weaver act 下一幕怎么走
     ↓ AI展示：现状 + 6条分支走向 + 推荐 + 幕大纲 → 用户选择+调整章节数
     ↓ 偏离检查：若影响整体大纲则提醒 → 同步更新大纲/卷计划/记忆 → 继续写作
 ```
@@ -191,35 +222,35 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 
 | 指令 | 说明 | 示例 |
 | ---- | ---- | ---- |
-| `/nw init` | **开始写小说** | `/nw init 开始写一本修仙小说` |
-| `/nw write` | **写/续写章节** | `/nw write 写第一章` |
-| `/nw review` | **审查质量** | `/nw review` |
-| `/nw memory` | **查看/管理设定** | `/nw memory 主角什么等级` |
-| `/nw plan` | **生成大纲/卷计划** | `/nw plan 帮我生成总大纲` |
-| `/nw act` | **下一幕剧情规划** | `/nw act 下一幕怎么走` |
-| `/nw help` | **帮助信息** | `/nw help` |
+| `/novel-weaver init` | **开始写小说** | `/novel-weaver init 开始写一本修仙小说` |
+| `/novel-weaver write` | **写/续写章节** | `/novel-weaver write 写第一章` |
+| `/novel-weaver review` | **审查质量** | `/novel-weaver review` |
+| `/novel-weaver memory` | **查看/管理设定** | `/novel-weaver memory 主角什么等级` |
+| `/novel-weaver plan` | **生成大纲/卷计划** | `/novel-weaver plan 帮我生成总大纲` |
+| `/novel-weaver act` | **下一幕剧情规划** | `/novel-weaver act 下一幕怎么走` |
+| `/novel-weaver help` | **帮助信息** | `/novel-weaver help` |
 
 ### 二级：扩展指令（经常用，5个）
 
 | 指令            | 一句话说明            | 使用示例                               |
 | ------------- | ---------------- | ---------------------------------- |
-| `/nw style`   | 切换/推荐文风          | `/nw style 换辰东风格`                  |
-| `/nw expand`  | 扩写章节             | `/nw expand` 或 `/nw expand 增加500字` |
-| `/nw inspire` | 灵感建议             | `/nw inspire`                      |
-| `/nw stats`   | 字数统计             | `/nw stats` 或 `/nw stats volume`   |
-| `/nw summary` | 阶段总结             | `/nw summary`                      |
+| `/novel-weaver style`   | 切换/推荐文风          | `/novel-weaver style 换辰东风格`                  |
+| `/novel-weaver expand`  | 扩写章节             | `/novel-weaver expand` 或 `/novel-weaver expand 增加500字` |
+| `/novel-weaver inspire` | 灵感建议             | `/novel-weaver inspire`                      |
+| `/novel-weaver stats`   | 字数统计             | `/novel-weaver stats` 或 `/novel-weaver stats volume`   |
+| `/novel-weaver summary` | 阶段总结             | `/novel-weaver summary`                      |
 
 ### 三级：高级指令（极少用，作为子指令存在）
 
 | 子指令                      | 归属           | 说明      | 等效说法                 |
 | ------------------------ | ------------ | ------- | -------------------- |
-| `/nw review consistency` | `/nw review` | 一致性检查   | `/nw review 有没有矛盾`   |
-| `/nw review pacing`      | `/nw review` | 节奏分析    | `/nw review 节奏怎么样`   |
-| `/nw review constraint`  | `/nw review` | 约束检查    | `/nw review 有没有套路重复` |
-| `/nw review fix`         | `/nw review` | AI 自动修复 | `/nw review 帮我改一下`   |
-| `/nw memory entity`      | `/nw memory` | 实体管理    | `/nw memory 列出所有角色`  |
-| `/nw memory outline`     | `/nw memory` | 查看大纲    | `/nw memory 大纲是什么`   |
-| `/nw analyze`            | `/nw review` | 追读力分析   | `/nw review 这章好看吗`   |
+| `/novel-weaver review consistency` | `/novel-weaver review` | 一致性检查   | `/novel-weaver review 有没有矛盾`   |
+| `/novel-weaver review pacing`      | `/novel-weaver review` | 节奏分析    | `/novel-weaver review 节奏怎么样`   |
+| `/novel-weaver review constraint`  | `/novel-weaver review` | 约束检查    | `/novel-weaver review 有没有套路重复` |
+| `/novel-weaver review fix`         | `/novel-weaver review` | AI 自动修复 | `/novel-weaver review 帮我改一下`   |
+| `/novel-weaver memory entity`      | `/novel-weaver memory` | 实体管理    | `/novel-weaver memory 列出所有角色`  |
+| `/novel-weaver memory outline`     | `/novel-weaver memory` | 查看大纲    | `/novel-weaver memory 大纲是什么`   |
+| `/novel-weaver analyze`            | `/novel-weaver review` | 追读力分析   | `/novel-weaver review 这章好看吗`   |
 
 ***
 
@@ -351,15 +382,15 @@ novels/                     # 小说正文（用户直接编辑）
 |------|------|
 | [check_wordcount.py](scripts/check_wordcount.py) | 字数检查 |
 | [chapter_info.py](scripts/chapter_info.py)   | 单章结构化提取，AI可代替读全文 |
-| [volume_batch.py](scripts/volume_batch.py)   | 卷级批量汇总，供 `/nw act` 使用 |
-| [hook_report.py](scripts/hook_report.py)     | 钩子密度报告，供 `/nw review pacing` 使用 |
-| [consistency_scan.py](scripts/consistency_scan.py) | 一致性扫描，供 `/nw review consistency` 使用 |
-| [style_check.py](scripts/style_check.py)     | AI味检测，供 `/nw review ai味` 使用 |
-| [stats_report.py](scripts/stats_report.py)   | 项目统计，供 `/nw stats` 使用 |
-| [pacing_report.py](scripts/pacing_report.py) | 节奏报告，供 `/nw review pacing volume` 使用 |
-| [summary_generator.py](scripts/summary_generator.py) | 阶段总结辅助，供 `/nw summary` 使用 |
-| [outline_extractor.py](scripts/outline_extractor.py) | 大纲提取，供 `/nw memory outline` 使用 |
-| [truth_manager.py](scripts/truth_manager.py) | 真相文件管理，供 `/nw memory entity` 使用 |
+| [volume_batch.py](scripts/volume_batch.py)   | 卷级批量汇总，供 `/novel-weaver act` 使用 |
+| [hook_report.py](scripts/hook_report.py)     | 钩子密度报告，供 `/novel-weaver review pacing` 使用 |
+| [consistency_scan.py](scripts/consistency_scan.py) | 一致性扫描，供 `/novel-weaver review consistency` 使用 |
+| [style_check.py](scripts/style_check.py)     | AI味检测，供 `/novel-weaver review ai味` 使用 |
+| [stats_report.py](scripts/stats_report.py)   | 项目统计，供 `/novel-weaver stats` 使用 |
+| [pacing_report.py](scripts/pacing_report.py) | 节奏报告，供 `/novel-weaver review pacing volume` 使用 |
+| [summary_generator.py](scripts/summary_generator.py) | 阶段总结辅助，供 `/novel-weaver summary` 使用 |
+| [outline_extractor.py](scripts/outline_extractor.py) | 大纲提取，供 `/novel-weaver memory outline` 使用 |
+| [truth_manager.py](scripts/truth_manager.py) | 真相文件管理，供 `/novel-weaver memory entity` 使用 |
 | [nw_utils.py](scripts/nw_utils.py)           | 公共模块：所有脚本共用的工具函数 |
 
 > 使用脚本预处理可节省约 **90% token 消耗**。详见 [scripts/README.md](scripts/README.md)
@@ -391,10 +422,10 @@ novels/                     # 小说正文（用户直接编辑）
 | ----- | ------- | -------------------------------------------------------------------- |
 | 1.0.0 | 2026-04 | 初始版本 - 完整创作流程、文风系统、质量保障、阶段总结、灵感助手                                    |
 | 1.1.0 | 2026-04 | RAG 检索增强 - AI 自动检索规则、指令驱动检索矩阵、语义检索指引                                 |
-| 1.2.0 | 2026-04 | 指令精简 - 三级指令体系（5核心+6扩展+7子指令）、合并审查/节奏/约束/一致性到 /nw review               |
+| 1.2.0 | 2026-04 | 指令精简 - 三级指令体系（5核心+6扩展+7子指令）、合并审查/节奏/约束/一致性到 /novel-weaver review               |
 | 1.3.0 | 2026-05 | 结构优化 - 消除SKILL.md重复内容、文风库按流派分类、精简至350行                               |
 | 1.4.0 | 2026-05 | 实战增强 - 情绪标签系统、黄金开篇锻造术、情绪曲线"压-小扬-压-爆"、内容扩充/对话写作/情节结构参考文档、Python字数检查脚本 |
-| 1.5.0 | 2026-05 | 幕系统 + 脚本 - 引入"幕"概念（卷内剧情弧），`/nw act`展示现状+6条剧情走向；Python预处理脚本12个+公共模块1个，节省约90% token消耗 |
+| 1.5.0 | 2026-05 | 幕系统 + 脚本 - 引入"幕"概念（卷内剧情弧），`/novel-weaver act`展示现状+6条剧情走向；Python预处理脚本12个+公共模块1个，节省约90% token消耗 |
 | 1.6.0 | 2026-05 | 文档优化 - 新增QUICK-REF快速参考卡、合并节奏与情绪文档、精简审计为15核心维度、SKILL.md去重 |
 
 ***

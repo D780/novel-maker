@@ -1,4 +1,4 @@
-# 创意约束系统
+﻿# 创意约束系统
 
 ## 系统原理
 
@@ -52,7 +52,7 @@
 
 写作时，AI会：
 1. 根据章节目标自动选择三轴组合
-2. 或根据 `/nw write` 的自然语言描述推导
+2. 或根据 `/novel-weaver write` 的自然语言描述推导
 3. 确保本章不单调重复
 
 ### 防重复检查
@@ -190,11 +190,11 @@
 
 ## 使用指令
 
-创意约束已整合到 `/nw review` 指令中：
+创意约束已整合到 `/novel-weaver review` 指令中：
 
 ```
-/nw review constraint 查看当前约束
-/nw review constraint 检查本章是否违反约束
-/nw memory 更新创作宪法添加新约束
-/nw review constraint 查看当前三轴混搭组合
+/novel-weaver review constraint 查看当前约束
+/novel-weaver review constraint 检查本章是否违反约束
+/novel-weaver memory 更新创作宪法添加新约束
+/novel-weaver review constraint 查看当前三轴混搭组合
 ```

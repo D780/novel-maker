@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 阶段总结辅助脚本
 从各章结构化数据中提取摘要，拼接剧情时间线。
-供 `/nw summary` 指令使用，AI 读取此输出代替读全文。
+供 `/novel-weaver summary` 指令使用，AI 读取此输出代替读全文。
 """
 
 import os

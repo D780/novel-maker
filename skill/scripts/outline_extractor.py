@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 大纲快速提取
 解析 outline.md 和 vol*/plan.md 的标题层级，输出结构化大纲树。
-供 `/nw memory outline` 指令使用。
+供 `/novel-weaver memory outline` 指令使用。
 """
 
 import os
