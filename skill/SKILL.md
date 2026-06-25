@@ -1,8 +1,17 @@
+---
+name: novel-weaver
+version: 2.0.0
+description: 全能网文写作助手 - 6角色协作架构，支持多AI IDE
+tags: [writing, novel, chinese, web-novel, ai-assistant]
+---
+
 # NovelWeaver - 全能网文写作助手
+
+> **v2.0.0** - 6角色协作架构，融合业界最佳实践
 
 ## 一句话介绍
 
-整合业界优秀网文写作工具理念,通过简洁指令+自然语言,帮你从零创作高质量长篇小说。
+整合业界优秀网文写作工具理念，通过6角色协作架构+自然语言，帮你从零创作高质量长篇小说。
 
 ## 触发方式
 
@@ -123,6 +132,21 @@
 | 爽点建议  | 设计多样化爽点（打脸、逆袭、突破等） |
 | 评论区诱导 | 在关键节点设计留白，引导读者互动讨论 |
 | 角色建议  | 新角色出场建议和角色关系设计     |
+
+### 9. 6角色协作架构
+
+NovelWeaver v2.0 采用 6角色协作架构，每个角色专注特定职责：
+
+| 角色 | 职责 | 触发时机 |
+|------|------|---------|
+| **协调者** | 解析用户意图，调度角色，管理流程状态 | 所有用户输入 |
+| **规划师** | 大纲生成、幕规划、剧情走向推荐、灵感建议 | `/novel-weaver plan` `/novel-weaver act` `/novel-weaver inspire` |
+| **写手** | 章节正文生成、文风应用、角色模拟写作 | `/novel-weaver write` |
+| **审计师** | 33维度审计、编辑视角审查、爽点密度追踪 | `/novel-weaver review` 每章自动 |
+| **修订师** | 根据审计报告修复P0/P1问题 | `/novel-weaver review fix` 审计后自动 |
+| **复盘师** | 更新真相文件、生成总结、模拟读者评论、生成创作指导 | 章节定稿后自动 |
+
+> 角色定义详见 [agents/](agents/) 目录
 
 ***
 
@@ -302,12 +326,21 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 ```
 .
 ├── SKILL.md                    # 主技能文件
-├── QUICK-REF.md                # 快速参考卡（新增）
-├── references/                 # 参考文档（优化后15个）
-│   ├── rhythm-system.md        # 节奏与情绪控制系统（合并）
-│   ├── audit-core.md           # 15维度核心审计（精简）
-│   ├── audit-dimensions.md     # 33维度完整审计（保留）
+├── QUICK-REF.md                # 快速参考卡
+├── agents/                     # 角色定义（6个）
+│   ├── coordinator.md          # 协调者
+│   ├── planner.md              # 规划师
+│   ├── writer.md               # 写手
+│   ├── auditor.md              # 审计师
+│   ├── reviser.md              # 修订师
+│   └── reviewer.md             # 复盘师
+├── references/                 # 参考文档
+│   ├── rhythm-system.md        # 节奏与情绪控制系统
+│   ├── audit-core.md           # 15维度核心审计
+│   ├── audit-dimensions.md     # 33维度完整审计
 │   ├── anti-ai-patterns.md     # 反AI味指南
+│   ├── anti-ai-techniques.md   # 去AI味技巧详解
+│   ├── platform-rules.md       # 平台适配规则
 │   ├── style-imitation.md      # 文风模仿指南
 │   ├── memory-system.md        # 记忆系统说明
 │   ├── writing-methods.md      # 写作方法
@@ -323,14 +356,20 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 ├── styles/                     # 文风库
 │   ├── author-styles.md        # 文风汇总
 │   └── authors/                # 22位作者文风（按流派分类）
-├── templates/                  # 模板文件（14个）
+├── templates/                  # 模板文件
 │   ├── chapter.md              # 章节模板
 │   ├── constitution.md         # 创作宪法
 │   ├── outline.md              # 大纲模板（含幕层级）
 │   ├── act-plan.md             # 幕计划模板
 │   ├── volume-plan.md          # 卷计划模板
+│   ├── plot-card.md            # 剧情卡片模板
+│   ├── character-voice.md      # 角色语音卡模板
+│   ├── scene-plan.md           # 场景规划卡模板
+│   ├── emotional-arcs.md       # 情感弧线追踪模板
+│   ├── subplot-board.md        # 支线看板模板
+│   ├── timeline.md             # 时间线追踪模板
 │   └── ...
-└── scripts/                    # 脚本工具（13个文件）
+└── scripts/                    # 脚本工具
     ├── README.md               # 使用说明
     ├── nw_utils.py             # 公共工具模块
     ├── check_wordcount.py      # 字数检查脚本
@@ -353,14 +392,18 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 ├── memory/
 │   ├── constitution.md     # 创作宪法
 │   └── personal-voice.md   # 个人语料
-├── truth-files/            # 真相文件
+├── truth-files/            # 真相文件（8个）
 │   ├── current-state.md    # 世界状态
 │   ├── characters.md       # 角色档案
 │   ├── world-setting.md    # 世界观
 │   ├── pending-hooks.md    # 伏笔表
-│   └── power-system.md     # 力量体系
+│   ├── power-system.md     # 力量体系
+│   ├── emotional-arcs.md   # 情感弧线追踪
+│   ├── subplot-board.md    # 支线看板
+│   └── timeline.md         # 时间线追踪
 ├── reviews/                # 审查报告
-└── summaries/              # 阶段总结（10章/50章/卷）
+├── summaries/              # 阶段总结（10章/50章/卷）
+└── temp/                   # 角色间数据传递缓存
 
 novels/                     # 小说正文（用户直接编辑）
 ├── outline.md              # 总大纲
@@ -375,11 +418,13 @@ novels/                     # 小说正文（用户直接编辑）
 
 | 文档                                                            | 说明        |
 | ------------------------------------------------------------- | --------- |
-| [rhythm-system.md](references/rhythm-system.md)                   | 节奏与情绪控制系统（合并新增） |
-| [audit-core.md](references/audit-core.md)                         | 15维度核心审计（精简新增） |
+| [rhythm-system.md](references/rhythm-system.md)                   | 节奏与情绪控制系统 |
+| [audit-core.md](references/audit-core.md)                         | 15维度核心审计 |
 | [genre-rules.md](references/genre-rules.md)                   | 37种题材写作规则 |
 | [audit-dimensions.md](references/audit-dimensions.md)         | 33维度完整审计  |
 | [anti-ai-patterns.md](references/anti-ai-patterns.md)         | 反AI味指南    |
+| [anti-ai-techniques.md](references/anti-ai-techniques.md)     | 去AI味技巧详解 |
+| [platform-rules.md](references/platform-rules.md)             | 平台适配规则（番茄/起点/晋江） |
 | [style-imitation.md](references/style-imitation.md)           | 文风模仿指南    |
 | [memory-system.md](references/memory-system.md)               | 记忆系统      |
 | [writing-methods.md](references/writing-methods.md)           | 写作方法      |
@@ -392,6 +437,9 @@ novels/                     # 小说正文（用户直接编辑）
 | [dialogue-writing.md](references/dialogue-writing.md)         | 对话写作规范    |
 | [plot-structures.md](references/plot-structures.md)           | 情节结构模板    |
 | [act-guidance.md](references/act-guidance.md)                 | 幕引导系统     |
+| [editorial-perspective.md](references/editorial-perspective.md) | 编辑视角审查指南（开篇吸引力/节奏曲线/角色商业价值） |
+| [sweet-spot-tracking.md](references/sweet-spot-tracking.md) | 爽点密度追踪系统（10类爽点/S1-S5强度/平台适配） |
+| [character-voice-card.md](references/character-voice-card.md) | 角色语音卡使用指南（口头禅/常用词/语气特点） |
 
 ## 脚本工具
 
@@ -422,6 +470,12 @@ novels/                     # 小说正文（用户直接编辑）
 | `volume-plan.md`        | 卷计划       |
 | `chapter.md`            | 章节模板      |
 | `character-profile.md`  | 角色档案      |
+| `plot-card.md`          | 剧情卡片      |
+| `character-voice.md`    | 角色语音卡     |
+| `scene-plan.md`         | 场景规划卡     |
+| `emotional-arcs.md`     | 情感弧线追踪    |
+| `subplot-board.md`      | 支线看板      |
+| `timeline.md`           | 时间线追踪     |
 | `scene-template.md`     | 场景规划      |
 | `hook-template.md`      | 伏笔管理      |
 | `review-report.md`      | 审查报告      |
@@ -444,7 +498,8 @@ novels/                     # 小说正文（用户直接编辑）
 | 1.4.0 | 2026-05 | 实战增强 - 情绪标签系统、黄金开篇锻造术、情绪曲线"压-小扬-压-爆"、内容扩充/对话写作/情节结构参考文档、Python字数检查脚本 |
 | 1.5.0 | 2026-05 | 幕系统 + 脚本 - 引入"幕"概念（卷内剧情弧），`/novel-weaver act`展示现状+6条剧情走向；Python预处理脚本12个+公共模块1个，节省约90% token消耗 |
 | 1.6.0 | 2026-05 | 文档优化 - 新增QUICK-REF快速参考卡、合并节奏与情绪文档、精简审计为15核心维度、SKILL.md去重 |
+| 2.0.0 | 2026-06 | **架构重构** - 6角色协作架构（协调者/规划师/写手/审计师/修订师/复盘师）、真相文件扩展至8个、新增去AI味技巧/平台适配规则/剧情卡片/角色语音卡/场景规划卡等模板 |
 
 ***
 
-*NovelWeaver v1.6.0 - 指令* *`/novel-weaver`* *+ 语义，用说话的方式写小说*
+*NovelWeaver v2.0.0 - 6角色协作架构，用说话的方式写小说*
