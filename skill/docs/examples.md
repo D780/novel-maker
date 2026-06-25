@@ -1,6 +1,6 @@
 # 示例项目
 
-> 通过完整示例快速了解 NovelWeaver 创作流程
+> 通过完整示例快速了解 NovelMaker 创作流程
 
 ## 示例列表
 
@@ -21,11 +21,11 @@
 
 ```bash
 # 复制示例到你的项目
-cp -r examples/cultivation-novel/.novel-weaver ./
+cp -r examples/cultivation-novel/.novel-maker ./
 cp -r examples/cultivation-novel/novels ./
 
 # 在 IDE 中继续写作
-/novel-weaver write 写第四章
+/novel-maker write 写第四章
 ```
 
 ### 2. 都市搞笑示例
@@ -57,5 +57,5 @@ cp -r examples/cultivation-novel/novels ./
 1. **查看配置**：了解创作宪法和真相文件的结构
 2. **阅读大纲**：理解三幕结构和幕规划
 3. **阅读已写章节**：了解写作风格和质量标准
-4. **继续写作**：使用 `/novel-weaver write` 继续创作
-5. **审查质量**：使用 `/novel-weaver review` 检查质量
+4. **继续写作**：使用 `/novel-maker write` 继续创作
+5. **审查质量**：使用 `/novel-maker review` 检查质量

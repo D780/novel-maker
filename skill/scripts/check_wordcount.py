@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 章节字数检查脚本
@@ -73,7 +73,7 @@ def print_results(results, min_words=2200, max_words=2800):
     print(f'总计: {len(results)} 章 | {passed} 达标 | {short} 不足 | {long} 超标 | 总字数: {total_words:,}')
     print('-' * 60)
     if short > 0:
-        print(f'\n⚠ 有 {short} 章内容不足，可使用 /novel-weaver expand 扩充')
+        print(f'\n⚠ 有 {short} 章内容不足，可使用 /novel-maker expand 扩充')
     if long > 0:
         print(f'\n▲ 有 {long} 章内容超标，建议精简')
 

@@ -5,7 +5,7 @@
 ## 前提条件
 
 - 已安装 AI IDE（Trae / Claude Code / Cursor 等）
-- 已安装 NovelWeaver 技能
+- 已安装 NovelMaker 技能
 
 ## 第一步：初始化项目（2分钟）
 
@@ -14,7 +14,7 @@
 在 AI IDE 聊天框中输入：
 
 ```
-/novel-weaver init 开始写一本修仙小说
+/novel-maker init 开始写一本修仙小说
 ```
 
 > 你可以替换 "修仙小说" 为你想要的任何题材
@@ -38,7 +38,7 @@ AI 会询问你选择启动方式：
 ## 第二步：生成大纲（1分钟）
 
 ```
-/novel-weaver plan 帮我生成总大纲
+/novel-maker plan 帮我生成总大纲
 ```
 
 AI 会生成：
@@ -50,7 +50,7 @@ AI 会生成：
 ## 第三步：写出第一章（2分钟）
 
 ```
-/novel-weaver write 写第一章，主角在宗门被欺负
+/novel-maker write 写第一章，主角在宗门被欺负
 ```
 
 AI 会自动：
@@ -62,18 +62,18 @@ AI 会自动：
 ## 第四步：继续写作
 
 ```
-/novel-weaver write 继续写，主角遇到了敌人
+/novel-maker write 继续写，主角遇到了敌人
 ```
 
 ### 日常写作循环
 
 ```
-/novel-weaver write 继续写
+/novel-maker write 继续写
   ↓ AI自动: 写作 → 审查 → 字数检查 → 更新大纲/记忆
 满意 → 继续
-不满意 → /novel-weaver review fix 帮我改一下
-字数不足 → /novel-weaver expand 扩充本章
-写完当前幕 → /novel-weaver act 下一幕怎么走
+不满意 → /novel-maker review fix 帮我改一下
+字数不足 → /novel-maker expand 扩充本章
+写完当前幕 → /novel-maker act 下一幕怎么走
 ```
 
 ## 下一步

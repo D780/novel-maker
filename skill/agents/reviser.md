@@ -4,7 +4,7 @@
 负责把不好的修好：根据审计报告修复 P0/P1 问题、保持文风一致性、避免引入新问题。
 
 ## 触发条件
-- /novel-weaver review fix
+- /novel-maker review fix
 - 审计师输出后（自动）
 - 协调者调度
 

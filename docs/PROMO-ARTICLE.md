@@ -1,4 +1,4 @@
-﻿# NovelWeaver v1.6.0：我给AI做了个网文写作家教，它现在比我还懂怎么写小说
+# NovelMaker v1.6.0：我给AI做了个网文写作家教，它现在比我还懂怎么写小说
 
 > **TL;DR**: 一个开源的AI网文写作技能，整合22位大神文风库+节奏控制系统+AI味检测+三重记忆，兼容7种AI IDE。不是"AI帮你写小说然后你直接发布"的偷懒工具，而是"AI帮你建立专业写作流程"的辅助系统。
 
@@ -14,7 +14,7 @@
 
 这些问题不解决，写小说就是一场"卡文→硬憋→被吐槽→自我怀疑"的无限循环。
 
-于是我一怒之下，给AI做了个"家教"——**NovelWeaver**，一个全能网文写作助手技能。
+于是我一怒之下，给AI做了个"家教"——**NovelMaker**，一个全能网文写作助手技能。
 
 现在它不仅能帮我写小说，还能帮我审小说，甚至帮我骂我："你这章太水了，赶紧扩写！"
 
@@ -24,7 +24,7 @@
 
 很多人对"AI写作助手"的理解是：写一段很长的Prompt，然后让AI生成内容。
 
-但NovelWeaver不是这样。它是一个**完整的技能系统**，包含：
+但NovelMaker不是这样。它是一个**完整的技能系统**，包含：
 
 ```
 skill/
@@ -67,7 +67,7 @@ skill/
 在AI IDE中输入：
 
 ```
-/novel-weaver init 开始写一本玄幻修仙小说
+/novel-maker init 开始写一本玄幻修仙小说
 ```
 
 AI会引导你完成6个关键配置：
@@ -96,7 +96,7 @@ AI会引导你完成6个关键配置：
 ### Step 2: 生成大纲 —— 三幕结构+节奏蓝图
 
 ```
-/novel-weaver plan 帮我生成总大纲
+/novel-maker plan 帮我生成总大纲
 ```
 
 **[截图占位2: 大纲生成结果]**
@@ -126,7 +126,7 @@ AI根据设定自动生成：
 ### Step 3: 第一章写作 —— 黄金开篇+自动审查
 
 ```
-/novel-weaver write 写第一章，主角在家族测试中觉醒血脉
+/novel-maker write 写第一章，主角在家族测试中觉醒血脉
 ```
 
 **[截图占位3: 写作输出+审查结果]**
@@ -165,7 +165,7 @@ AI自动检索并构建写作上下文（用户无感知）：
 【写作上下文】
 ## 角色状态 → 来自 truth-files/characters.md + current-state.md
 ## 世界设定 → 来自 truth-files/world-setting.md + power-system.md  
-## 前情摘要 → 来自 .novel-weaver/summaries/ + 前2章摘要
+## 前情摘要 → 来自 .novel-maker/summaries/ + 前2章摘要
 ## 本章目标 → 来自 outline.md / volume-01/plan.md
 ```
 
@@ -226,14 +226,14 @@ AI自动检索并构建写作上下文（用户无感知）：
 ### Step 4: 日常写作循环 —— 一句话续写，全流程自动化
 
 ```
-/novel-weaver write 继续写，主角遇到了第一个敌人
+/novel-maker write 继续写，主角遇到了第一个敌人
 ```
 
 AI自动完成：
 1. 读取前章结构化上下文（通过 `chapter_info.py`，约200 token代替4000 token全文）
 2. 应用文风写作
 3. 自动审查（AI味检测+一致性检查+节奏分析）
-4. 字数检查（不达标自动提醒 `/novel-weaver expand`）
+4. 字数检查（不达标自动提醒 `/novel-maker expand`）
 5. 更新大纲和记忆文件
 6. 输出摘要和进度提示
 
@@ -253,12 +253,12 @@ Hook：悬念类型 ✅
 
 不满意？一键修复：
 ```
-/novel-weaver review fix 帮我改一下，战斗场面不够热血
+/novel-maker review fix 帮我改一下，战斗场面不够热血
 ```
 
 字数不达标？自动扩写：
 ```
-/novel-weaver expand 扩充本章，增加500字
+/novel-maker expand 扩充本章，增加500字
 ```
 
 ---
@@ -268,7 +268,7 @@ Hook：悬念类型 ✅
 当前幕章节写完后，AI帮你规划下一幕：
 
 ```
-/novel-weaver act 下一幕怎么走
+/novel-maker act 下一幕怎么走
 ```
 
 **[截图占位6: 幕系统输出]**
@@ -305,7 +305,7 @@ AI分析偏离影响：
 
 继续写作：
 ```
-/novel-weaver write 写第5章，深夜主角遭遇神秘刺客
+/novel-maker write 写第5章，深夜主角遭遇神秘刺客
 ```
 
 **效果**：剧情发展有章可循，避免"写到哪算哪"的失控状态。
@@ -448,7 +448,7 @@ AI读这个JSON代替读全文，**token消耗降低约90%**。
 | 维度 | 使用前 | 使用后 |
 |------|--------|--------|
 | 初始化 | 几小时整理设定 | 10分钟6问引导 |
-| 卡文 | 3小时憋500字 | `/novel-weaver write` 一分钟2500字 |
+| 卡文 | 3小时憋500字 | `/novel-maker write` 一分钟2500字 |
 | 审查 | 凭感觉"应该没问题" | 33维度审计+AI味检测 |
 | 节奏 | "写到哪算哪" | S1-S5评级+情绪曲线 |
 | 记忆 | 写到20章忘了5章设定 | 三重记忆，自动维护 |
@@ -493,14 +493,14 @@ AI读这个JSON代替读全文，**token消耗降低约90%**。
 ### 架构设计
 
 ```
-用户指令 (/novel-weaver xxx)
+用户指令 (/novel-maker xxx)
     ↓
 AI意图识别 + 指令路由
     ↓
 自动检索上下文 (RAG)
     ├── truth-files/ (设定)
     ├── novels/ (前文)
-    └── .novel-weaver/summaries/ (摘要)
+    └── .novel-maker/summaries/ (摘要)
     ↓
 Python预处理 (节省token)
     ├── analyze.py --mode single/batch/style
@@ -538,7 +538,7 @@ AI生成内容
 
 | 项目 | 信息 |
 |------|------|
-| **名称** | NovelWeaver |
+| **名称** | NovelMaker |
 | **版本** | v1.6.0 |
 | **许可证** | MIT |
 | **语言** | Python 3.x + Markdown |
@@ -548,21 +548,21 @@ AI生成内容
 
 ```bash
 # 1. 安装到对应IDE
-cp -r skill/ .trae/skills/novel-weaver/
+cp -r skill/ .trae/skills/novel-maker/
 
 # 2. 在AI IDE中开始创作
-/novel-weaver init 开始写一本修仙小说
-/novel-weaver plan 帮我生成总大纲
-/novel-weaver write 写第一章
+/novel-maker init 开始写一本修仙小说
+/novel-maker plan 帮我生成总大纲
+/novel-maker write 写第一章
 ```
 
 ### 安装路径
 
 | IDE | 安装路径 |
 |-----|----------|
-| Trae | `.trae/skills/novel-weaver/` |
-| Claude Code | `.claude/skills/novel-weaver/` |
-| Cline / Roo Code | `.clinerules/novel-weaver/` |
+| Trae | `.trae/skills/novel-maker/` |
+| Claude Code | `.claude/skills/novel-maker/` |
+| Cline / Roo Code | `.clinerules/novel-maker/` |
 | Cursor | `.cursor/rules/` |
 | GitHub Copilot | `.github/copilot-instructions.md` |
 
@@ -586,7 +586,7 @@ cp -r skill/ .trae/skills/novel-weaver/
 
 最后说句实在话：
 
-**NovelWeaver 不代替你创作，它只是让你从"卡文/忘设定/被吐槽"的痛苦中解脱出来，把精力集中在真正重要的事上——讲好一个故事。**
+**NovelMaker 不代替你创作，它只是让你从"卡文/忘设定/被吐槽"的痛苦中解脱出来，把精力集中在真正重要的事上——讲好一个故事。**
 
 工具再好，故事还得你自己写。
 
@@ -598,4 +598,4 @@ cp -r skill/ .trae/skills/novel-weaver/
 
 *如果你觉得这个项目有帮助，欢迎 Star、Fork、提 Issue 和 PR。*
 
-*NovelWeaver v1.6.0 - 指令 `/novel-weaver` + 语义，用说话的方式写小说*
+*NovelMaker v1.6.0 - 指令 `/novel-maker` + 语义，用说话的方式写小说*

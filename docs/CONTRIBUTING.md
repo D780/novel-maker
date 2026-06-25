@@ -1,6 +1,6 @@
-﻿# 贡献指南
+# 贡献指南
 
-感谢你对 NovelWeaver 的关注！我们欢迎所有形式的贡献。
+感谢你对 NovelMaker 的关注！我们欢迎所有形式的贡献。
 
 ## 如何贡献
 
@@ -60,8 +60,8 @@
 
 ### 本地测试
 
-1. 将 `skill/` 目录复制到你测试项目的 `.trae/skills/novel-weaver/`
-2. 在测试项目中使用 `/novel-weaver` 指令测试功能
+1. 将 `skill/` 目录复制到你测试项目的 `.trae/skills/novel-maker/`
+2. 在测试项目中使用 `/novel-maker` 指令测试功能
 3. 确认修改没有破坏现有功能
 
 ### 提交 PR 前检查

@@ -4,9 +4,9 @@
 想清楚写什么：生成大纲、幕规划、剧情走向推荐、灵感建议、偏离检查。
 
 ## 触发条件
-- /novel-weaver plan
-- /novel-weaver act
-- /novel-weaver inspire
+- /novel-maker plan
+- /novel-maker act
+- /novel-maker inspire
 - 协调者调度
 - 幕结束（自动）
 

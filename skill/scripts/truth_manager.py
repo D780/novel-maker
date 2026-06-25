@@ -1,9 +1,9 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 真相文件管理器
 解析 truth-files 目录，快速查看角色、伏笔、世界观、力量体系等实体信息。
-供 `/novel-weaver memory entity` 指令使用。
+供 `/novel-maker memory entity` 指令使用。
 """
 
 import os
@@ -78,7 +78,7 @@ def main():
     truth_dir = args.truth_dir
     if truth_dir is None:
         # Try common locations
-        for candidate in ['.novel-weaver/truth-files', 'novels/truth-files', 'truth-files']:
+        for candidate in ['.novel-maker/truth-files', 'novels/truth-files', 'truth-files']:
             if os.path.isdir(candidate):
                 truth_dir = candidate
                 break

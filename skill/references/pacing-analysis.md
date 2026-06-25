@@ -1,4 +1,4 @@
-﻿# Pacing Analysis 节奏分析
+# Pacing Analysis 节奏分析
 
 ## 系统原理
 
@@ -173,14 +173,14 @@ S1: ████ (5章) 14%
 
 ## 四、使用指令
 
-节奏分析已整合到 `/novel-weaver review` 指令中：
+节奏分析已整合到 `/novel-maker review` 指令中：
 
 ```
-/novel-weaver review pacing 分析当前章节节奏
-/novel-weaver review pacing volume 分析整卷节奏
-/novel-weaver review pacing compare 对比前后章节节奏
-/novel-weaver review pacing suggest 建议下一章节奏
-/novel-weaver review pacing report 生成完整节奏报告
+/novel-maker review pacing 分析当前章节节奏
+/novel-maker review pacing volume 分析整卷节奏
+/novel-maker review pacing compare 对比前后章节节奏
+/novel-maker review pacing suggest 建议下一章节奏
+/novel-maker review pacing report 生成完整节奏报告
 ```
 
 ---

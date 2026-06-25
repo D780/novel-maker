@@ -1,9 +1,9 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 项目统计报告
-快速扫描 novels/ 和 .novel-weaver/ 目录，输出完整的写作进度统计。
-供 `/novel-weaver stats` 指令使用。
+快速扫描 novels/ 和 .novel-maker/ 目录，输出完整的写作进度统计。
+供 `/novel-maker stats` 指令使用。
 """
 
 import os
@@ -134,7 +134,7 @@ def main():
         return
 
     print(f"\n{'=' * 60}")
-    print(f"📚 NovelWeaver 项目统计")
+    print(f"📚 NovelMaker 项目统计")
     print(f"{'=' * 60}")
     print(f"大纲: {'✅ 已生成' if result['has_outline'] else '❌ 未生成'} ({result['outline_words']}字)")
     print(f"卷数: {result['volumes']}")

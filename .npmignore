@@ -1,0 +1,37 @@
+# 开发文档
+docs/
+examples/
+
+# 测试和配置
+.git/
+.gitignore
+.trae/
+.vscode/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 编辑器
+.idea/
+*.swp
+*.swo
+*~
+
+# 其他
+*.tgz
+.npmignore

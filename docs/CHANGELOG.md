@@ -1,4 +1,4 @@
-# NovelWeaver 变更日志
+# NovelMaker 变更日志
 
 所有重要变更将记录在此文件中。
 
@@ -29,7 +29,7 @@
 - QUICK-REF.md 新增 6 角色协作流程图
 
 ### 设计文档
-- 完整架构设计文档：`docs/superpowers/specs/2026-06-24-novel-weaver-v2-architecture-redesign.md`
+- 完整架构设计文档：`docs/superpowers/specs/2026-06-24-novel-maker-v2-architecture-redesign.md`
 - 8 个关键架构决策：概念角色 / 简短协议 / 修订升级 / 复盘时机 / 用户决策点 / 上下文管理 / 失败恢复 / 协作模式
 
 ---
@@ -48,7 +48,7 @@
 
 ### 修复
 - 字符提取过滤：修复代词+动词模式导致的噪音识别
-- 工作流程整合：脚本在 /novel-weaver write 和 /novel-weaver act 时自动运行
+- 工作流程整合：脚本在 /novel-maker write 和 /novel-maker act 时自动运行
 - SKILL.md 指令层级统一（核心7个，扩展5个）
 - .gitignore 增加各 IDE 规则目录排除
 
@@ -100,33 +100,33 @@
 
 ### 重构
 - 三级指令体系：核心（5个）→ 扩展（6个）→ 高级（7个子指令）
-- 合并 `/novel-weaver check`、`/novel-weaver analyze`、`/novel-weaver pacing`、`/novel-weaver constraint`、`/novel-weaver consistency`、`/novel-weaver fix` 到 `/novel-weaver review`
-- 合并 `/novel-weaver entity`、`/novel-weaver outline` 到 `/novel-weaver memory`
-- `/novel-weaver stats wordcount` → `/novel-weaver stats`
+- 合并 `/novel-maker check`、`/novel-maker analyze`、`/novel-maker pacing`、`/novel-maker constraint`、`/novel-maker consistency`、`/novel-maker fix` 到 `/novel-maker review`
+- 合并 `/novel-maker entity`、`/novel-maker outline` 到 `/novel-maker memory`
+- `/novel-maker stats wordcount` → `/novel-maker stats`
 
 ### 优化
 - 核心指令从 19 个精简到 5 个
-- 用户只需记住 `/novel-weaver init`、`/novel-weaver write`、`/novel-weaver review`、`/novel-weaver memory`、`/novel-weaver help`
+- 用户只需记住 `/novel-maker init`、`/novel-maker write`、`/novel-maker review`、`/novel-maker memory`、`/novel-maker help`
 - 其余功能用自然语言或二级扩展指令调用
 
 ## [1.1.0] - 2026-04
 
 ### 新增
 - RAG 检索增强：AI 自动检索规则、指令驱动检索矩阵、语义检索指引
-- `/novel-weaver consistency` 指令：实时一致性校验
-- `/novel-weaver fix` 指令：AI 自动修复审查发现的问题
+- `/novel-maker consistency` 指令：实时一致性校验
+- `/novel-maker fix` 指令：AI 自动修复审查发现的问题
 
 ### 优化
 - 简化指令系统：合并冗余子命令，用户只需记住核心指令
-- 统一 `/novel-weaver review`、`/novel-weaver check`、`/novel-weaver analyze` 的使用方式
-- 移除 `/novel-weaver check wordcount` 等重叠指令
+- 统一 `/novel-maker review`、`/novel-maker check`、`/novel-maker analyze` 的使用方式
+- 移除 `/novel-maker check wordcount` 等重叠指令
 - 优化指令速查表，减少用户记忆负担
 
 ### 修复
 - 模板计数不一致（SKILL.md 说 10 个，实际 13 个）
 - 脚本计数不一致（SKILL.md 说 4 个，实际 5 个）
 - 描述文案错误（"46 个参考文档"）
-- 指令速查表缺少 `/novel-weaver summary`、`/novel-weaver inspire`、`/novel-weaver consistency`、`/novel-weaver fix`
+- 指令速查表缺少 `/novel-maker summary`、`/novel-maker inspire`、`/novel-maker consistency`、`/novel-maker fix`
 
 ---
 

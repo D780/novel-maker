@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NovelWeaver 安装脚本（Python 版）
+NovelMaker 安装脚本（Python 版）
 
 当 npx 不可用时的备选安装方案。
 
@@ -15,24 +15,24 @@ from pathlib import Path
 
 # 支持的 IDE 列表
 TARGETS = [
-    {"name": "Claude Code",   "dir": ".claude/skills/novel-weaver",  "detect": [".claude"]},
-    {"name": "Cursor",        "dir": ".cursor/rules/novel-weaver",   "detect": [".cursor", ".cursorrules"]},
-    {"name": "Trae",          "dir": ".trae/skills/novel-weaver",    "detect": [".trae"]},
-    {"name": "Windsurf",      "dir": ".windsurf/skills/novel-weaver", "detect": [".windsurf"]},
-    {"name": "Gemini CLI",    "dir": ".gemini/skills/novel-weaver",  "detect": ["GEMINI.md"]},
-    {"name": "Codex CLI",     "dir": ".codex/skills/novel-weaver",   "detect": [".codex"]},
-    {"name": "OpenCode",      "dir": ".opencode/skills/novel-weaver", "detect": [".opencode"]},
-    {"name": "Aider",         "dir": ".aider/skills/novel-weaver",   "detect": [".aider"]},
-    {"name": "Hermes Agent",  "dir": ".hermes/skills/novel-weaver",  "detect": [".hermes", "HERMES.md"]},
-    {"name": "Qwen Code",     "dir": ".qwen/skills/novel-weaver",    "detect": [".qwen"]},
-    {"name": "Claw Code",     "dir": ".claw/skills/novel-weaver",    "detect": [".claw", "CLAW.md"]},
-    {"name": "Qoder",         "dir": ".qoder/skills/novel-weaver",   "detect": [".qoder"]},
-    {"name": "Antigravity",   "dir": ".agents/skills/novel-weaver",  "detect": [".agents"]},
-    {"name": "OpenClaw",      "dir": "skills/novel-weaver",          "detect": [".openclaw"]},
-    {"name": "Kiro",          "dir": ".kiro/steering/novel-weaver",  "detect": [".kiro"]},
-    {"name": "VS Code",       "dir": ".github/superpowers/novel-weaver", "detect": [".github/copilot-instructions.md"]},
-    {"name": "DeerFlow",      "dir": "skills/custom/novel-weaver",   "detect": ["deer_flow"]},
-    {"name": "Copilot CLI",   "dir": ".claude/skills/novel-weaver",  "detect": [".claude"]},
+    {"name": "Claude Code",   "dir": ".claude/skills/novel-maker",  "detect": [".claude"]},
+    {"name": "Cursor",        "dir": ".cursor/rules/novel-maker",   "detect": [".cursor", ".cursorrules"]},
+    {"name": "Trae",          "dir": ".trae/skills/novel-maker",    "detect": [".trae"]},
+    {"name": "Windsurf",      "dir": ".windsurf/skills/novel-maker", "detect": [".windsurf"]},
+    {"name": "Gemini CLI",    "dir": ".gemini/skills/novel-maker",  "detect": ["GEMINI.md"]},
+    {"name": "Codex CLI",     "dir": ".codex/skills/novel-maker",   "detect": [".codex"]},
+    {"name": "OpenCode",      "dir": ".opencode/skills/novel-maker", "detect": [".opencode"]},
+    {"name": "Aider",         "dir": ".aider/skills/novel-maker",   "detect": [".aider"]},
+    {"name": "Hermes Agent",  "dir": ".hermes/skills/novel-maker",  "detect": [".hermes", "HERMES.md"]},
+    {"name": "Qwen Code",     "dir": ".qwen/skills/novel-maker",    "detect": [".qwen"]},
+    {"name": "Claw Code",     "dir": ".claw/skills/novel-maker",    "detect": [".claw", "CLAW.md"]},
+    {"name": "Qoder",         "dir": ".qoder/skills/novel-maker",   "detect": [".qoder"]},
+    {"name": "Antigravity",   "dir": ".agents/skills/novel-maker",  "detect": [".agents"]},
+    {"name": "OpenClaw",      "dir": "skills/novel-maker",          "detect": [".openclaw"]},
+    {"name": "Kiro",          "dir": ".kiro/steering/novel-maker",  "detect": [".kiro"]},
+    {"name": "VS Code",       "dir": ".github/superpowers/novel-maker", "detect": [".github/copilot-instructions.md"]},
+    {"name": "DeerFlow",      "dir": "skills/custom/novel-maker",   "detect": ["deer_flow"]},
+    {"name": "Copilot CLI",   "dir": ".claude/skills/novel-maker",  "detect": [".claude"]},
 ]
 
 # 工具别名
@@ -112,7 +112,7 @@ def uninstall_skill():
     import shutil
     cwd = Path.cwd()
     
-    print("🗑️  卸载 NovelWeaver...\n")
+    print("🗑️  卸载 NovelMaker...\n")
     
     for target in TARGETS:
         dest_dir = cwd / target["dir"]
@@ -124,12 +124,12 @@ def uninstall_skill():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="NovelWeaver 安装脚本")
+    parser = argparse.ArgumentParser(description="NovelMaker 安装脚本")
     parser.add_argument("--ide", help="指定 IDE 的类型")
     parser.add_argument("--uninstall", action="store_true", help="卸载技能")
     args = parser.parse_args()
     
-    print("\n  NovelWeaver v2.0.0 - 全能网文写作助手")
+    print("\n  NovelMaker v2.0.0 - 全能网文写作助手")
     print("  6角色协作架构，用说话的方式写小说\n")
     
     if args.uninstall:
@@ -161,8 +161,8 @@ def main():
     
     print("\n✅ 安装完成！")
     print("\n在 IDE 聊天框输入以下指令开始创作：")
-    print("  /novel-weaver init 开始写小说")
-    print("  /novel-weaver help 查看帮助\n")
+    print("  /novel-maker init 开始写小说")
+    print("  /novel-maker help 查看帮助\n")
 
 
 if __name__ == "__main__":

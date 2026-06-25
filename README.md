@@ -1,4 +1,4 @@
-# NovelWeaver - 全能网文写作助手
+# NovelMaker - 全能网文写作助手
 
 > 整合业界优秀网文写作工具理念，通过简洁指令+自然语言，帮你从零创作高质量长篇小说。
 > **这是一个技能仓库**，兼容多种主流 AI IDE。
@@ -28,7 +28,7 @@
 #### 方式0：一键安装（推荐）
 
 ```bash
-npx novel-weaver
+npx novel-maker
 ```
 
 自动检测 IDE 并安装，支持 18 款主流 AI 编程工具。
@@ -36,19 +36,19 @@ npx novel-weaver
 #### 方式1：Trae
 
 ```bash
-cp -r skill/ .trae/skills/novel-weaver/
+cp -r skill/ .trae/skills/novel-maker/
 ```
 
 #### 方式2：Claude Code
 
 ```bash
-cp -r skill/ .claude/skills/novel-weaver/
+cp -r skill/ .claude/skills/novel-maker/
 ```
 
 #### 方式3：Cline / Roo Code
 
 ```bash
-cp -r skill/ .clinerules/novel-weaver/
+cp -r skill/ .clinerules/novel-maker/
 ```
 
 #### 其他 IDE
@@ -58,7 +58,7 @@ cp -r skill/ .clinerules/novel-weaver/
 | Cursor | `.cursor/rules/`（需转换为 .mdc 格式） |
 | GitHub Copilot | `.github/copilot-instructions.md` |
 | Continue | `.continue/rules/` |
-| OpenCode | `.opencode/skills/novel-weaver/` |
+| OpenCode | `.opencode/skills/novel-maker/` |
 | Windsurf | `.windsurfrules` |
 
 完整安装步骤、验证方法和常见问题见 [INSTALL.md](INSTALL.md)
@@ -68,7 +68,7 @@ cp -r skill/ .clinerules/novel-weaver/
 安装成功后，在 IDE 聊天框输入以下指令开始创作：
 
 ```
-/novel-weaver init 开始写小说
+/novel-maker init 开始写小说
 ```
 
 AI 会引导你完成：
@@ -83,24 +83,24 @@ AI 会引导你完成：
 
 | 指令 | 说明 |
 |------|------|
-| `/novel-weaver init` | 开始写小说（6问引导） |
-| `/novel-weaver write` | 写/续写章节 |
-| `/novel-weaver review` | 审查质量 |
-| `/novel-weaver memory` | 查看/管理设定 |
-| `/novel-weaver plan` | 生成大纲 |
-| `/novel-weaver act` | 下一幕剧情规划（6条分支） |
-| `/novel-weaver style` | 切换文风 |
-| `/novel-weaver help` | 帮助信息 |
-| `/novel-weaver expand` | 扩写章节 |
-| `/novel-weaver stats` | 字数统计 |
-| `/novel-weaver inspire` | 灵感建议 |
-| `/novel-weaver summary` | 阶段总结 |
+| `/novel-maker init` | 开始写小说（6问引导） |
+| `/novel-maker write` | 写/续写章节 |
+| `/novel-maker review` | 审查质量 |
+| `/novel-maker memory` | 查看/管理设定 |
+| `/novel-maker plan` | 生成大纲 |
+| `/novel-maker act` | 下一幕剧情规划（6条分支） |
+| `/novel-maker style` | 切换文风 |
+| `/novel-maker help` | 帮助信息 |
+| `/novel-maker expand` | 扩写章节 |
+| `/novel-maker stats` | 字数统计 |
+| `/novel-maker inspire` | 灵感建议 |
+| `/novel-maker summary` | 阶段总结 |
 
 完整指令体系（三级：7核心+5扩展+7高级子指令）详见 [SKILL.md](skill/SKILL.md)
 
 ## 6角色协作架构
 
-NovelWeaver v2.0 采用 6角色协作架构，每个角色专注特定职责：
+NovelMaker v2.0 采用 6角色协作架构，每个角色专注特定职责：
 
 ```
 用户输入 → [协调者] 意图识别 → [规划师] 大纲/剧情卡片 → [写手] 章节草稿
@@ -110,10 +110,10 @@ NovelWeaver v2.0 采用 6角色协作架构，每个角色专注特定职责：
 | 角色 | 职责 | 触发时机 |
 |------|------|---------|
 | **协调者** | 解析用户意图，调度角色 | 所有用户输入 |
-| **规划师** | 大纲生成、幕规划、剧情推荐 | `/novel-weaver plan` `/novel-weaver act` |
-| **写手** | 章节正文生成、文风应用 | `/novel-weaver write` |
-| **审计师** | 33维度审计、编辑视角审查 | `/novel-weaver review` 每章自动 |
-| **修订师** | 根据审计报告修复P0/P1问题 | `/novel-weaver review fix` |
+| **规划师** | 大纲生成、幕规划、剧情推荐 | `/novel-maker plan` `/novel-maker act` |
+| **写手** | 章节正文生成、文风应用 | `/novel-maker write` |
+| **审计师** | 33维度审计、编辑视角审查 | `/novel-maker review` 每章自动 |
+| **修订师** | 根据审计报告修复P0/P1问题 | `/novel-maker review fix` |
 | **复盘师** | 更新真相文件、生成总结 | 章节定稿后自动 |
 
 > 角色定义详见 [agents/](skill/agents/) 目录

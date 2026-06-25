@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NovelWeaver 交互式引导脚本
+NovelMaker 交互式引导脚本
 
 使用方式：
     python scripts/init_guide.py [--ide trae|claude] [--auto] [--verify]
@@ -102,7 +102,7 @@ def select_preset_template(presets):
             print("❌ 无效选择，请重新输入")
 
 
-def export_configuration(config, filename="novel-weaver-config.json"):
+def export_configuration(config, filename="novel-maker-config.json"):
     """导出配置到JSON文件"""
     export_config = config.copy()
     if isinstance(export_config.get('emotion_label'), dict):
@@ -169,7 +169,7 @@ def custom_configuration():
 def print_banner():
     """打印欢迎横幅"""
     print("\n" + "=" * 60)
-    print("  NovelWeaver v2.0.0 - 全能网文写作助手")
+    print("  NovelMaker v2.0.0 - 全能网文写作助手")
     print("  6角色协作架构，用说话的方式写小说")
     print("=" * 60 + "\n")
 
@@ -183,7 +183,7 @@ def detect_environment():
     skill_dir = cwd / "skill"
     if not skill_dir.exists():
         print("❌ 错误：当前目录下未找到 skill/ 目录")
-        print("   请确保在 NovelWeaver 仓库根目录下运行此脚本")
+        print("   请确保在 NovelMaker 仓库根目录下运行此脚本")
         return False
 
     # 检查 SKILL.md 是否存在
@@ -201,7 +201,7 @@ def detect_environment():
     return True
 
 
-# 支持的 IDE 检测列表（与 install.py / bin/novel-weaver.js 保持一致）
+# 支持的 IDE 检测列表（与 install.py / bin/novel-maker.js 保持一致）
 IDE_DETECT = [
     ("Trae",          "trae",    [".trae"]),
     ("Claude Code",   "claude",  [".claude"]),
@@ -436,16 +436,16 @@ def generate_config_files(config):
     print("\n📁 生成配置文件...\n")
 
     try:
-        # 创建 .novel-weaver 目录
-        novel_weaver_dir = Path(".novel-weaver")
-        novel_weaver_dir.mkdir(exist_ok=True)
+        # 创建 .novel-maker 目录
+        NOVEL_MAKER_dir = Path(".novel-maker")
+        NOVEL_MAKER_dir.mkdir(exist_ok=True)
 
         # 创建 truth-files 目录
-        truth_files_dir = novel_weaver_dir / "truth-files"
+        truth_files_dir = NOVEL_MAKER_dir / "truth-files"
         truth_files_dir.mkdir(exist_ok=True)
 
         # 创建 memory 目录
-        memory_dir = novel_weaver_dir / "memory"
+        memory_dir = NOVEL_MAKER_dir / "memory"
         memory_dir.mkdir(exist_ok=True)
 
         # 创建 novels 目录
@@ -600,12 +600,12 @@ def generate_config_files(config):
         power_system_path.write_text(power_system_content, encoding="utf-8")
 
         print("✅ 配置文件生成完成")
-        print(f"   .novel-weaver/memory/constitution.md")
-        print(f"   .novel-weaver/truth-files/characters.md")
-        print(f"   .novel-weaver/truth-files/current-state.md")
-        print(f"   .novel-weaver/truth-files/world-setting.md")
-        print(f"   .novel-weaver/truth-files/pending-hooks.md")
-        print(f"   .novel-weaver/truth-files/power-system.md")
+        print(f"   .novel-maker/memory/constitution.md")
+        print(f"   .novel-maker/truth-files/characters.md")
+        print(f"   .novel-maker/truth-files/current-state.md")
+        print(f"   .novel-maker/truth-files/world-setting.md")
+        print(f"   .novel-maker/truth-files/pending-hooks.md")
+        print(f"   .novel-maker/truth-files/power-system.md")
 
     except OSError as e:
         print(f"❌ 文件操作失败：{e}")
@@ -621,11 +621,11 @@ def print_next_steps():
 
     print("接下来，你可以：\n")
     print("  1. 生成大纲")
-    print("     /novel-weaver plan 帮我生成总大纲\n")
+    print("     /novel-maker plan 帮我生成总大纲\n")
     print("  2. 开始写作")
-    print("     /novel-weaver write 写第一章\n")
+    print("     /novel-maker write 写第一章\n")
     print("  3. 查看帮助")
-    print("     /novel-weaver help\n")
+    print("     /novel-maker help\n")
     print("  4. 查看快速上手教程")
     print("     参考 skill/docs/quickstart.md\n")
 
@@ -663,7 +663,7 @@ def verify_installation():
 
 def main():
     """主函数"""
-    parser = argparse.ArgumentParser(description="NovelWeaver 交互式引导脚本")
+    parser = argparse.ArgumentParser(description="NovelMaker 交互式引导脚本")
     parser.add_argument("--ide", choices=["trae", "claude"], help="指定IDE类型")
     parser.add_argument("--auto", action="store_true", help="自动模式，使用默认配置")
     parser.add_argument("--verify", action="store_true", help="验证安装是否成功")

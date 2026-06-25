@@ -1,6 +1,6 @@
-# NovelWeaver 角色体系
+# NovelMaker 角色体系
 
-NovelWeaver v2.0 内部采用 6 角色协作架构。用户不直接感知角色，所有交互通过协调者进行。
+NovelMaker v2.0 内部采用 6 角色协作架构。用户不直接感知角色，所有交互通过协调者进行。
 
 ## 6 个角色
 
@@ -56,4 +56,4 @@ NovelWeaver v2.0 内部采用 6 角色协作架构。用户不直接感知角色
 - **失败降级**：每个角色失败都有降级策略，不静默跳过
 - **用户决策点**：仅 2 个固定点（幕规划 + 审计不通过）
 
-详见 [规格文档](../../../../docs/superpowers/specs/2026-06-24-novel-weaver-v2-architecture-redesign.md)
+详见 [规格文档](../../../../docs/superpowers/specs/2026-06-24-novel-maker-v2-architecture-redesign.md)

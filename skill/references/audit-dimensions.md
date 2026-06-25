@@ -199,4 +199,4 @@
 
 ---
 
-*参考文档：NovelWeaver 审计标准 v1.0*
+*参考文档：NovelMaker 审计标准 v1.0*

@@ -7,7 +7,7 @@
 所有用户输入的第一站。
 
 ## 输入
-- 用户自然语言或 /novel-weaver 指令
+- 用户自然语言或 /novel-maker 指令
 - 当前状态（state.json）
 
 ## 输出
@@ -17,7 +17,7 @@
 
 ## 工作流
 
-1. 解析用户输入（自然语言或 /novel-weaver 指令）
+1. 解析用户输入（自然语言或 /novel-maker 指令）
 2. 识别意图（参见意图映射表）
 3. 调度对应角色（写状态到 state.json）
 4. 等待结果（读 temp/ 对应文件）
@@ -30,18 +30,18 @@
 
 | 用户输入 | 调度角色 | 备注 |
 |---------|---------|------|
-| /novel-weaver init | 协调者自己 | 6问引导 |
-| /novel-weaver write | 写手→审计师→修订师→复盘师 | 完整流程 |
-| /novel-weaver review | 审计师→修订师 | 仅审查修订 |
-| /novel-weaver plan | 规划师 | 大纲规划 |
-| /novel-weaver act | 规划师（幕模式） | 幕规划 |
-| /novel-weaver memory | 复盘师 | 查询真相文件 |
-| /novel-weaver stats | 协调者调用脚本 | 统计 |
-| /novel-weaver help | 协调者 | 帮助 |
-| /novel-weaver expand | 写手 | 扩写 |
-| /novel-weaver style | 协调者 | 文风设置 |
-| /novel-weaver inspire | 规划师 | 灵感 |
-| /novel-weaver summary | 复盘师 | 总结 |
+| /novel-maker init | 协调者自己 | 6问引导 |
+| /novel-maker write | 写手→审计师→修订师→复盘师 | 完整流程 |
+| /novel-maker review | 审计师→修订师 | 仅审查修订 |
+| /novel-maker plan | 规划师 | 大纲规划 |
+| /novel-maker act | 规划师（幕模式） | 幕规划 |
+| /novel-maker memory | 复盘师 | 查询真相文件 |
+| /novel-maker stats | 协调者调用脚本 | 统计 |
+| /novel-maker help | 协调者 | 帮助 |
+| /novel-maker expand | 写手 | 扩写 |
+| /novel-maker style | 协调者 | 文风设置 |
+| /novel-maker inspire | 规划师 | 灵感 |
+| /novel-maker summary | 复盘师 | 总结 |
 
 ### 自然语言
 

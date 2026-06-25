@@ -1,6 +1,6 @@
 # 模板索引
 
-> NovelWeaver v2.0 模板文件索引
+> NovelMaker v2.0 模板文件索引
 
 ## 核心模板
 

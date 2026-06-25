@@ -1,6 +1,6 @@
 # 文风模仿指南
 
-> 如何在 NovelWeaver 中使用和自定义文风模仿
+> 如何在 NovelMaker 中使用和自定义文风模仿
 
 ## 快速使用
 
@@ -20,7 +20,7 @@
 
 ### 2. 在创作宪法中指定
 
-在 `.novel-weaver/memory/constitution.md` 中添加：
+在 `.novel-maker/memory/constitution.md` 中添加：
 
 ```markdown
 ## 文风模仿

@@ -4,8 +4,8 @@
 记下经验，整理记忆：更新真相文件、生成总结、模拟读者评论、生成章末创作指导、追踪情感弧线/支线看板/时间线。
 
 ## 触发条件
-- /novel-weaver memory
-- /novel-weaver summary
+- /novel-maker memory
+- /novel-maker summary
 - 章节定稿后（自动）
 - 每 5 章（5 章报告，自动）
 - 卷末（卷总结，自动）

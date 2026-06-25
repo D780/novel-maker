@@ -39,24 +39,24 @@ const PROJECT_DIR = process.cwd();
 
 // 支持的 IDE 列表
 const TARGETS = [
-  { name: 'Claude Code',   dir: '.claude/skills/novel-weaver',  detect: '.claude' },
-  { name: 'Cursor',        dir: '.cursor/rules/novel-weaver',   detect: ['.cursor', '.cursorrules'] },
-  { name: 'Codex CLI',     dir: '.codex/skills/novel-weaver',   detect: '.codex' },
-  { name: 'Kiro',          dir: '.kiro/steering/novel-weaver',  detect: '.kiro' },
-  { name: 'DeerFlow',      dir: 'skills/custom/novel-weaver',   detect: 'deer_flow' },
-  { name: 'Trae',          dir: '.trae/skills/novel-weaver',    detect: '.trae' },
-  { name: 'Antigravity',   dir: '.agents/skills/novel-weaver',  detect: '.agents' },
-  { name: 'VS Code',       dir: '.github/superpowers/novel-weaver', detect: '.github/copilot-instructions.md' },
-  { name: 'OpenClaw',      dir: 'skills/novel-weaver',          detect: '.openclaw' },
-  { name: 'Windsurf',      dir: '.windsurf/skills/novel-weaver', detect: '.windsurf' },
-  { name: 'Gemini CLI',    dir: '.gemini/skills/novel-weaver',  detect: 'GEMINI.md' },
-  { name: 'Aider',         dir: '.aider/skills/novel-weaver',   detect: '.aider' },
-  { name: 'OpenCode',      dir: '.opencode/skills/novel-weaver', detect: '.opencode' },
-  { name: 'Qwen Code',     dir: '.qwen/skills/novel-weaver',    detect: '.qwen' },
-  { name: 'Hermes Agent',  dir: '.hermes/skills/novel-weaver',  detect: ['.hermes', 'HERMES.md', '.hermes.md'] },
-  { name: 'Claw Code',     dir: '.claw/skills/novel-weaver',    detect: ['.claw', 'CLAW.md'] },
-  { name: 'Qoder',         dir: '.qoder/skills/novel-weaver',   detect: '.qoder' },
-  { name: 'Copilot CLI',   dir: '.claude/skills/novel-weaver',  detect: '.claude' },
+  { name: 'Claude Code',   dir: '.claude/skills/novel-maker',  detect: '.claude' },
+  { name: 'Cursor',        dir: '.cursor/rules/novel-maker',   detect: ['.cursor', '.cursorrules'] },
+  { name: 'Codex CLI',     dir: '.codex/skills/novel-maker',   detect: '.codex' },
+  { name: 'Kiro',          dir: '.kiro/steering/novel-maker',  detect: '.kiro' },
+  { name: 'DeerFlow',      dir: 'skills/custom/novel-maker',   detect: 'deer_flow' },
+  { name: 'Trae',          dir: '.trae/skills/novel-maker',    detect: '.trae' },
+  { name: 'Antigravity',   dir: '.agents/skills/novel-maker',  detect: '.agents' },
+  { name: 'VS Code',       dir: '.github/superpowers/novel-maker', detect: '.github/copilot-instructions.md' },
+  { name: 'OpenClaw',      dir: 'skills/novel-maker',          detect: '.openclaw' },
+  { name: 'Windsurf',      dir: '.windsurf/skills/novel-maker', detect: '.windsurf' },
+  { name: 'Gemini CLI',    dir: '.gemini/skills/novel-maker',  detect: 'GEMINI.md' },
+  { name: 'Aider',         dir: '.aider/skills/novel-maker',   detect: '.aider' },
+  { name: 'OpenCode',      dir: '.opencode/skills/novel-maker', detect: '.opencode' },
+  { name: 'Qwen Code',     dir: '.qwen/skills/novel-maker',    detect: '.qwen' },
+  { name: 'Hermes Agent',  dir: '.hermes/skills/novel-maker',  detect: ['.hermes', 'HERMES.md', '.hermes.md'] },
+  { name: 'Claw Code',     dir: '.claw/skills/novel-maker',    detect: ['.claw', 'CLAW.md'] },
+  { name: 'Qoder',         dir: '.qoder/skills/novel-maker',   detect: '.qoder' },
+  { name: 'Copilot CLI',   dir: '.claude/skills/novel-maker',  detect: '.claude' },
 ];
 
 // 工具名称别名映射
@@ -110,7 +110,7 @@ function installSkill(target) {
 }
 
 function uninstallSkill() {
-  console.log('🗑️  卸载 NovelWeaver...\n');
+  console.log('🗑️  卸载 NovelMaker...\n');
   console.log('⚠️  警告：此操作将删除以下目录及其所有内容：\n');
   for (const target of TARGETS) {
     const destDir = resolve(PROJECT_DIR, target.dir);
@@ -139,13 +139,13 @@ function uninstallSkill() {
 
 function showHelp() {
   console.log(`
-novel-weaver v${PKG.version} - 全能网文写作助手
+novel-maker v${PKG.version} - 全能网文写作助手
 
 用法：
-  npx novel-weaver                   自动检测 IDE 并安装
-  npx novel-weaver --tool trae       指定 IDE 安装
-  npx novel-weaver --uninstall       卸载
-  npx novel-weaver --help            显示帮助
+  npx novel-maker                   自动检测 IDE 并安装
+  npx novel-maker --tool trae       指定 IDE 安装
+  npx novel-maker --uninstall       卸载
+  npx novel-maker --help            显示帮助
 
 支持的 IDE：
   ${[...new Set(Object.values(TOOL_ALIASES))].join(', ')}
@@ -173,7 +173,7 @@ function main() {
   }
   
   console.log(`
-  NovelWeaver v${PKG.version} - 全能网文写作助手
+  NovelMaker v${PKG.version} - 全能网文写作助手
   6角色协作架构，用说话的方式写小说
   `);
   
@@ -221,8 +221,8 @@ function main() {
 ✅ 安装完成！
 
 在 IDE 聊天框输入以下指令开始创作：
-  /novel-weaver init 开始写小说
-  /novel-weaver help 查看帮助
+  /novel-maker init 开始写小说
+  /novel-maker help 查看帮助
 `);
 }
 

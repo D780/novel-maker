@@ -4,8 +4,8 @@
 把字打出来：章节正文生成、黄金开篇（第一章）、文风应用、角色模拟写作。
 
 ## 触发条件
-- /novel-weaver write
-- /novel-weaver expand
+- /novel-maker write
+- /novel-maker expand
 - 协调者调度
 - 审计要求重写
 
@@ -176,7 +176,7 @@
 【写作上下文】
 ## 角色状态 → 来自 truth-files/characters.md + current-state.md
 ## 世界设定 → 来自 truth-files/world-setting.md + power-system.md  
-## 前情摘要 → 来自 .novel-weaver/summaries/ + 前 2 章摘要
+## 前情摘要 → 来自 .novel-maker/summaries/ + 前 2 章摘要
 ## 本章目标 → 来自 outline.md / volume-XX/plan.md
 ## 文风 → [已选文风]
 ## 创作宪法 → [宪法要点]

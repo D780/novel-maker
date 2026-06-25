@@ -4,10 +4,10 @@
 看完说哪里不好：33 维度审计、编辑视角审查、爽点密度追踪、问题分级。
 
 ## 触发条件
-- /novel-weaver review
-- /novel-weaver review consistency
-- /novel-weaver review pacing
-- /novel-weaver review ai味
+- /novel-maker review
+- /novel-maker review consistency
+- /novel-maker review pacing
+- /novel-maker review ai味
 - 写手完成一章节后（自动）
 - 每 5 章（深度审查，自动）
 - 卷末（深度审查，自动）

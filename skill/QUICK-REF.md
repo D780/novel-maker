@@ -1,4 +1,4 @@
-# NovelWeaver 快速参考卡
+# NovelMaker 快速参考卡
 
 > **v2.0.0** - 6角色协作架构
 
@@ -6,17 +6,17 @@
 
 | 指令 | 用途 | 示例 |
 |------|------|------|
-| `/novel-weaver init` | 初始化项目 | `/novel-weaver init 开始写修仙小说` |
-| `/novel-weaver write` | 写/续写章节 | `/novel-weaver write 写第一章` |
-| `/novel-weaver review` | 审查质量 | `/novel-weaver review` |
-| `/novel-weaver memory` | 查看设定 | `/novel-weaver memory 主角等级` |
-| `/novel-weaver plan` | 生成大纲 | `/novel-weaver plan 生成总大纲` |
-| `/novel-weaver act` | 幕规划 | `/novel-weaver act 下一幕怎么走` |
-| `/novel-weaver help` | 帮助 | `/novel-weaver help` |
+| `/novel-maker init` | 初始化项目 | `/novel-maker init 开始写修仙小说` |
+| `/novel-maker write` | 写/续写章节 | `/novel-maker write 写第一章` |
+| `/novel-maker review` | 审查质量 | `/novel-maker review` |
+| `/novel-maker memory` | 查看设定 | `/novel-maker memory 主角等级` |
+| `/novel-maker plan` | 生成大纲 | `/novel-maker plan 生成总大纲` |
+| `/novel-maker act` | 幕规划 | `/novel-maker act 下一幕怎么走` |
+| `/novel-maker help` | 帮助 | `/novel-maker help` |
 
 ## 扩展指令 (5个)
 
-`/novel-weaver style` 文风 | `/novel-weaver expand` 扩写 | `/novel-weaver inspire` 灵感 | `/novel-weaver stats` 统计 | `/novel-weaver summary` 总结
+`/novel-maker style` 文风 | `/novel-maker expand` 扩写 | `/novel-maker inspire` 灵感 | `/novel-maker stats` 统计 | `/novel-maker summary` 总结
 
 ## 6角色协作架构
 
@@ -52,12 +52,12 @@
 ## 日常写作循环
 
 ```
-/novel-weaver write 继续写
+/novel-maker write 继续写
   ↓ AI自动: 写作 → 审查 → 字数检查 → 更新大纲/记忆 → 进度提示
-满意 → /novel-weaver write 继续
-不满意 → /novel-weaver review fix 帮我改一下
-字数不足 → /novel-weaver expand 扩充本章
-写完当前幕 → /novel-weaver act 下一幕怎么走
+满意 → /novel-maker write 继续
+不满意 → /novel-maker review fix 帮我改一下
+字数不足 → /novel-maker expand 扩充本章
+写完当前幕 → /novel-maker act 下一幕怎么走
 ```
 
 ## 脚本速查
@@ -105,7 +105,7 @@
 ## 文件位置
 
 ```
-创作元数据: .novel-weaver/ (宪法/真相文件/报告/总结)
+创作元数据: .novel-maker/ (宪法/真相文件/报告/总结)
 小说正文:   novels/ (大纲+分卷章节)
 技能目录:   skill/ (agents/references/templates/styles/scripts)
 ```

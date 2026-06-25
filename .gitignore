@@ -1,5 +1,5 @@
 # 运行时数据（用户项目内容，不提交）
-.novel-weaver/
+.novel-maker/
 novels/
 !examples/*/novels/
 !examples/*/novels/**

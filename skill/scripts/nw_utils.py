@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-NovelWeaver 脚本公共工具模块
+NovelMaker 脚本公共工具模块
 提供所有脚本共用的函数，消除重复代码。
 """
 

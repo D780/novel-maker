@@ -194,42 +194,42 @@ python scripts/outline_extractor.py novels/outline.md --json
 ### truth_manager.py — 真相文件管理器
 
 ```bash
-python scripts/truth_manager.py .novel-weaver/truth-files/ --json
-python scripts/truth_manager.py .novel-weaver/truth-files/ --entity characters --json
+python scripts/truth_manager.py .novel-maker/truth-files/ --json
+python scripts/truth_manager.py .novel-maker/truth-files/ --entity characters --json
 ```
 
 输出：`characters`（角色名提取） / `pending-hooks`（伏笔提取） / `power-system` / `world-setting` / `current-state`
 
 ---
 
-## 在 NovelWeaver 工作流中的位置
+## 在 NovelMaker 工作流中的位置
 
 ```
-/novel-weaver write 继续
+/novel-maker write 继续
     ↓ ① python scripts/chapter_info.py 前章.md --json  → AI 读 ~200 token 代替 ~4000 token
     ↓ ② AI 写作 → 审查 → 更新大纲/记忆
     ↓ ③ python scripts/check_wordcount.py 本章.md      → 验证字数达标
 
-/novel-weaver review
+/novel-maker review
     ↓ ① python scripts/consistency_scan.py 章节/ 真相/ --json  → 一致性扫描
     ↓ ② python scripts/style_check.py 章节/ --json     → AI味检测
     ↓ ③ python scripts/hook_report.py 章节/ --json     → 钩子密度
     ↓ ④ python scripts/pacing_report.py 章节/ --json   → 节奏报告
 
-/novel-weaver act 下一幕怎么走
+/novel-maker act 下一幕怎么走
     ↓ ① python scripts/volume_batch.py chapters/ --recent 5 --json  → 批量上下文
     ↓ ② python scripts/hook_report.py chapters/ --recent 5 --json   → 钩子趋势
     ↓ ③ AI 展示现状 + 6条分支 → 用户选择 → 偏离检查 → 同步更新
 
-/novel-weaver stats
+/novel-maker stats
     ↓ python scripts/stats_report.py novels/ --json    → 项目统计
 
-/novel-weaver summary
+/novel-maker summary
     ↓ python scripts/summary_generator.py chapters/ --last 10 --json  → 阶段总结辅助
 
-/novel-weaver memory outline
+/novel-maker memory outline
     ↓ python scripts/outline_extractor.py novels/ --json → 大纲树
 
-/novel-weaver memory entity
+/novel-maker memory entity
     ↓ python scripts/truth_manager.py truth-files/ --json → 真相文件管理
 ```

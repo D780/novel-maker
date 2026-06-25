@@ -1,4 +1,4 @@
-﻿# Consistency Checker 实时校验
+# Consistency Checker 实时校验
 
 ## 系统原理
 
@@ -174,8 +174,8 @@ Consistency Checker 在写作过程中实时检查内容一致性，而不是写
 ## 五、使用指令
 
 ```
-/novel-weaver review consistency  运行一致性检查
-/novel-weaver review consistency 前后有没有矛盾  自然语言检查
+/novel-maker review consistency  运行一致性检查
+/novel-maker review consistency 前后有没有矛盾  自然语言检查
 ```
 
 ## 六、校验报告格式
