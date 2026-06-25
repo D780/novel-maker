@@ -11,9 +11,7 @@ NovelWeaver 交互式引导脚本
     --verify: 验证安装是否成功
 """
 
-import os
 import sys
-import json
 import argparse
 from pathlib import Path
 
@@ -126,8 +124,19 @@ def input_book_info():
     print("\n📋 第二步：填写书籍信息\n")
 
     book_name = input("书名（如：废材逆天记）: ").strip()
+    while not book_name:
+        print("❌ 书名不能为空")
+        book_name = input("书名（如：废材逆天记）: ").strip()
+
     genre = input("题材（如：玄幻修仙、都市搞笑）: ").strip()
+    while not genre:
+        print("❌ 题材不能为空")
+        genre = input("题材（如：玄幻修仙、都市搞笑）: ").strip()
+
     synopsis = input("一句话简介（如：废材逆袭成仙帝）: ").strip()
+    while not synopsis:
+        print("❌ 简介不能为空")
+        synopsis = input("一句话简介（如：废材逆袭成仙帝）: ").strip()
 
     print(f"\n✅ 书籍信息：")
     print(f"   书名：{book_name}")
@@ -146,8 +155,19 @@ def input_protagonist():
     print("\n📋 第三步：设置主角信息\n")
 
     name = input("主角姓名（如：林轩）: ").strip()
+    while not name:
+        print("❌ 主角姓名不能为空")
+        name = input("主角姓名（如：林轩）: ").strip()
+
     contrast = input("核心反差点（如：表面废物实际天才）: ").strip()
+    while not contrast:
+        print("❌ 核心反差点不能为空")
+        contrast = input("核心反差点（如：表面废物实际天才）: ").strip()
+
     goal = input("核心目标（如：成为仙帝）: ").strip()
+    while not goal:
+        print("❌ 核心目标不能为空")
+        goal = input("核心目标（如：成为仙帝）: ").strip()
 
     print(f"\n✅ 主角信息：")
     print(f"   姓名：{name}")
@@ -166,6 +186,9 @@ def input_conflict():
     print("\n📋 第四步：确定核心冲突\n")
 
     conflict = input("核心冲突（如：与宗门天才的宿命对决）: ").strip()
+    while not conflict:
+        print("❌ 核心冲突不能为空")
+        conflict = input("核心冲突（如：与宗门天才的宿命对决）: ").strip()
 
     print(f"\n✅ 核心冲突：{conflict}")
 
@@ -264,24 +287,25 @@ def generate_config_files(config):
     """生成配置文件"""
     print("\n📁 生成配置文件...\n")
 
-    # 创建 .novel-weaver 目录
-    novel_weaver_dir = Path(".novel-weaver")
-    novel_weaver_dir.mkdir(exist_ok=True)
+    try:
+        # 创建 .novel-weaver 目录
+        novel_weaver_dir = Path(".novel-weaver")
+        novel_weaver_dir.mkdir(exist_ok=True)
 
-    # 创建 truth-files 目录
-    truth_files_dir = novel_weaver_dir / "truth-files"
-    truth_files_dir.mkdir(exist_ok=True)
+        # 创建 truth-files 目录
+        truth_files_dir = novel_weaver_dir / "truth-files"
+        truth_files_dir.mkdir(exist_ok=True)
 
-    # 创建 memory 目录
-    memory_dir = novel_weaver_dir / "memory"
-    memory_dir.mkdir(exist_ok=True)
+        # 创建 memory 目录
+        memory_dir = novel_weaver_dir / "memory"
+        memory_dir.mkdir(exist_ok=True)
 
-    # 创建 novels 目录
-    novels_dir = Path("novels")
-    novels_dir.mkdir(exist_ok=True)
+        # 创建 novels 目录
+        novels_dir = Path("novels")
+        novels_dir.mkdir(exist_ok=True)
 
-    # 生成 constitution.md
-    constitution_content = f"""# 创作宪法
+        # 生成 constitution.md
+        constitution_content = f"""# 创作宪法
 
 ## 基本信息
 
@@ -317,11 +341,11 @@ def generate_config_files(config):
 - **爽点间隔**：{config['emotion_label']['interval']}
 - **节奏要求**：根据情绪标签自动调整
 """
-    constitution_path = memory_dir / "constitution.md"
-    constitution_path.write_text(constitution_content, encoding="utf-8")
+        constitution_path = memory_dir / "constitution.md"
+        constitution_path.write_text(constitution_content, encoding="utf-8")
 
-    # 生成 characters.md
-    characters_content = f"""# 角色档案
+        # 生成 characters.md
+        characters_content = f"""# 角色档案
 
 ## 主角
 
@@ -341,11 +365,11 @@ def generate_config_files(config):
 
 （待添加）
 """
-    characters_path = truth_files_dir / "characters.md"
-    characters_path.write_text(characters_content, encoding="utf-8")
+        characters_path = truth_files_dir / "characters.md"
+        characters_path.write_text(characters_content, encoding="utf-8")
 
-    # 生成 current-state.md
-    current_state_content = f"""# 世界状态
+        # 生成 current-state.md
+        current_state_content = f"""# 世界状态
 
 ## 当前时间
 
@@ -363,11 +387,11 @@ def generate_config_files(config):
 
 （待更新）
 """
-    current_state_path = truth_files_dir / "current-state.md"
-    current_state_path.write_text(current_state_content, encoding="utf-8")
+        current_state_path = truth_files_dir / "current-state.md"
+        current_state_path.write_text(current_state_content, encoding="utf-8")
 
-    # 生成 world-setting.md
-    world_setting_content = f"""# 世界观设定
+        # 生成 world-setting.md
+        world_setting_content = f"""# 世界观设定
 
 ## 世界背景
 
@@ -385,11 +409,11 @@ def generate_config_files(config):
 
 （待设定）
 """
-    world_setting_path = truth_files_dir / "world-setting.md"
-    world_setting_path.write_text(world_setting_content, encoding="utf-8")
+        world_setting_path = truth_files_dir / "world-setting.md"
+        world_setting_path.write_text(world_setting_content, encoding="utf-8")
 
-    # 生成 pending-hooks.md
-    pending_hooks_content = """# 伏笔表
+        # 生成 pending-hooks.md
+        pending_hooks_content = """# 伏笔表
 
 ## 待回收伏笔
 
@@ -402,11 +426,11 @@ def generate_config_files(config):
 | ID | 伏笔内容 | 埋设章节 | 回收章节 | 说明 |
 |----|---------|---------|---------|------|
 """
-    pending_hooks_path = truth_files_dir / "pending-hooks.md"
-    pending_hooks_path.write_text(pending_hooks_content, encoding="utf-8")
+        pending_hooks_path = truth_files_dir / "pending-hooks.md"
+        pending_hooks_path.write_text(pending_hooks_content, encoding="utf-8")
 
-    # 生成 power-system.md
-    power_system_content = """# 力量体系
+        # 生成 power-system.md
+        power_system_content = """# 力量体系
 
 ## 等级划分
 
@@ -424,16 +448,21 @@ def generate_config_files(config):
 
 （待设定）
 """
-    power_system_path = truth_files_dir / "power-system.md"
-    power_system_path.write_text(power_system_content, encoding="utf-8")
+        power_system_path = truth_files_dir / "power-system.md"
+        power_system_path.write_text(power_system_content, encoding="utf-8")
 
-    print("✅ 配置文件生成完成")
-    print(f"   .novel-weaver/memory/constitution.md")
-    print(f"   .novel-weaver/truth-files/characters.md")
-    print(f"   .novel-weaver/truth-files/current-state.md")
-    print(f"   .novel-weaver/truth-files/world-setting.md")
-    print(f"   .novel-weaver/truth-files/pending-hooks.md")
-    print(f"   .novel-weaver/truth-files/power-system.md")
+        print("✅ 配置文件生成完成")
+        print(f"   .novel-weaver/memory/constitution.md")
+        print(f"   .novel-weaver/truth-files/characters.md")
+        print(f"   .novel-weaver/truth-files/current-state.md")
+        print(f"   .novel-weaver/truth-files/world-setting.md")
+        print(f"   .novel-weaver/truth-files/pending-hooks.md")
+        print(f"   .novel-weaver/truth-files/power-system.md")
+
+    except OSError as e:
+        print(f"❌ 文件操作失败：{e}")
+        print("   请检查磁盘空间和文件权限")
+        sys.exit(1)
 
 
 def print_next_steps():
