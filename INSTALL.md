@@ -1,4 +1,4 @@
-﻿# NovelWeaver 安装指南
+﻿﻿﻿﻿﻿﻿# NovelWeaver 安装指南
 
 > 这是一个**技能仓库**，包含完整的网文创作技能定义，支持多种主流 AI IDE。
 
@@ -199,13 +199,18 @@ mklink /D .trae\skills\novel-weaver d:\AITEST\novel-weaver\skill
 
 ## 安装验证
 
-安装完成后，在 IDE 聊天框输入：
+安装完成后，执行以下命令验证：
 
-```
-/novel-weaver help
-```
+### Trae
+输入 `/novel-weaver help`，如果返回帮助信息，说明安装成功。
 
-如果 AI 返回 NovelWeaver 的指令帮助列表，说明安装成功。
+### Claude Code
+说 "帮我写小说"，如果AI询问你要写什么，说明安装成功。
+
+### 自动验证（可选）
+```bash
+python scripts/init_guide.py --verify
+```
 
 ---
 
@@ -215,29 +220,81 @@ mklink /D .trae\skills\novel-weaver d:\AITEST\novel-weaver\skill
 skill/                          # 技能根目录（整个复制到目标路径）
 ├── SKILL.md                    # 主技能文件（YAML frontmatter + Markdown）
 ├── README.md                   # 技能使用说明
-├── references/                 # 参考文档（17个）
-│   ├── genre-rules.md          # 37种题材写作规则
-│   ├── audit-dimensions.md     # 33维度审计系统
+├── agents/                     # 角色定义（6个）
+│   ├── coordinator.md          # 协调者
+│   ├── planner.md              # 规划师
+│   ├── writer.md               # 写手
+│   ├── auditor.md              # 审计师
+│   ├── reviser.md              # 修订师
+│   └── reviewer.md             # 复盘师
+├── references/                 # 参考文档（24个）
+│   ├── rhythm-system.md        # 节奏与情绪控制系统
+│   ├── audit-core.md           # 15维度核心审计
+│   ├── audit-dimensions.md     # 33维度完整审计
 │   ├── anti-ai-patterns.md     # 反AI味指南
-│   ├── pacing-analysis.md      # 节奏分析系统
-│   ├── emotion-curve.md        # 情绪曲线系统
-│   ├── golden-opening.md       # 黄金开篇锻造术
-│   ├── act-guidance.md         # 幕引导系统
-│   └── ...
+│   ├── anti-ai-techniques.md   # 去AI味技巧详解
+│   ├── platform-rules.md       # 平台适配规则
+│   ├── editorial-perspective.md # 编辑视角审查
+│   ├── sweet-spot-tracking.md  # 爽点密度追踪
+│   ├── character-voice-card.md # 角色语音卡指南
+│   ├── style-imitation.md      # 文风模仿指南
+│   ├── memory-system.md        # 记忆系统
+│   ├── writing-methods.md      # 写作方法
+│   ├── usage-guide.md          # 使用指南
+│   ├── creative-constraints.md # 创意约束
+│   ├── consistency-checker.md  # 一致性检查
+│   ├── data-agent.md           # 实体管理
+│   ├── golden-opening.md       # 黄金开篇
+│   ├── content-expansion.md    # 内容扩充
+│   ├── dialogue-writing.md     # 对话写作
+│   ├── plot-structures.md      # 情节结构
+│   ├── act-guidance.md         # 幕引导
+│   ├── genre-rules.md          # 37种题材写作规则
+│   ├── pacing-analysis.md      # 节奏分析
+│   └── emotion-curve.md        # 情绪曲线
 ├── styles/                     # 文风库（22位作者，7大流派）
 │   ├── author-styles.md
 │   └── authors/
-├── templates/                  # 模板文件（14个）
-│   ├── chapter.md
-│   ├── outline.md
-│   ├── act-plan.md
-│   └── ...
-└── scripts/                    # Python 预处理脚本（4个）
-    ├── README.md
+├── templates/                  # 模板文件（21个）
+│   ├── INDEX.md                # 模板索引
+│   ├── constitution.md         # 创作宪法
+│   ├── outline.md              # 大纲（含幕层级）
+│   ├── act-plan.md             # 幕计划
+│   ├── volume-plan.md          # 卷计划
+│   ├── chapter.md              # 章节模板
+│   ├── character-profile.md    # 角色档案
+│   ├── character-voice.md      # 角色语音卡
+│   ├── scene-template.md       # 场景模板
+│   ├── scene-plan.md           # 场景规划卡
+│   ├── hook-template.md        # 伏笔管理
+│   ├── plot-card.md            # 剧情卡片
+│   ├── review-report.md        # 审查报告
+│   ├── world-setting.md        # 世界观
+│   ├── power-system.md         # 力量体系
+│   ├── emotional-arcs.md       # 情感弧线追踪
+│   ├── subplot-board.md        # 支线看板
+│   ├── timeline.md             # 时间线追踪
+│   ├── summary-10chapters.md   # 10章小总结
+│   ├── summary-50chapters.md   # 50章大总结
+│   └── summary-volume.md       # 卷总结
+└── scripts/                    # Python 预处理脚本（14个文件）
+    ├── README.md               # 脚本使用说明
+    ├── nw_utils.py             # 公共工具模块
     ├── check_wordcount.py      # 字数检查
-    ├── chapter_info.py          # 单章结构化提取（节省 ~90% token）
-    └── volume_batch.py          # 卷级批量汇总
+    ├── chapter_info.py         # 单章结构化提取（节省 ~90% token）
+    ├── volume_batch.py         # 卷级批量汇总
+    ├── hook_report.py          # 钩子密度报告
+    ├── consistency_scan.py     # 一致性扫描
+    ├── style_check.py          # AI味检测
+    ├── stats_report.py         # 项目统计
+    ├── pacing_report.py        # 节奏报告
+    ├── summary_generator.py    # 阶段总结辅助
+    ├── outline_extractor.py    # 大纲提取
+    ├── truth_manager.py        # 真相文件管理
+    └── analyze.py              # 综合分析
 ```
+
+> **注意**：仓库中的 `docs/` 目录是开发文档，安装时无需复制。只需复制 `skill/` 目录即可。
 
 ---
 
