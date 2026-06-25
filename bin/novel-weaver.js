@@ -3,6 +3,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync, copyFileSync, lstatSync, realpathSync, rmSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import readline from 'readline';
 
 // 递归复制目录
 function copyDirSync(src, dest) {
@@ -118,7 +119,6 @@ function uninstallSkill() {
     }
   }
   console.log('\n如果目录中包含自定义文件，它们将被永久删除。');
-  const readline = require('readline');
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   rl.question('\n确认卸载？(y/N): ', (answer) => {
     rl.close();
