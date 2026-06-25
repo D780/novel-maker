@@ -145,7 +145,7 @@ AI 会展示：
 ### Q1: 安装后 AI 没识别到技能？
 
 **解决方案：**
-1. 确认路径正确（注意是 `skills/novel-weaver/` 不是直接 `skills/`）
+1. 确认路径正确（注意是 `skill/` 不是直接 `skills/`）
 2. 确认 `SKILL.md` 存在于目录根
 3. 重启 IDE 会话
 4. 输入 `/novel-weaver help` 手动触发
