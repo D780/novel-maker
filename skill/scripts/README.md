@@ -1,4 +1,4 @@
-﻿# 辅助脚本
+# 辅助脚本
 
 预处理章节数据和项目文件，将全文（~4000 token）压缩为结构化 JSON（~200 token），**节省约 90% token 消耗**。
 
@@ -31,9 +31,40 @@
 
 ---
 
+## init_guide.py — 初始化引导脚本
+
+**用途：** 交互式引导脚本，帮助用户完成初始化流程
+
+**使用方式：**
+```bash
+python scripts/init_guide.py [--ide trae|claude] [--auto] [--verify]
+```
+
+**参数说明：**
+- `--ide`: 指定IDE类型（trae 或 claude）
+- `--auto`: 自动模式，使用默认配置
+- `--verify`: 验证安装是否成功
+
+**示例：**
+```bash
+# 交互式引导
+python scripts/init_guide.py
+
+# 指定IDE类型
+python scripts/init_guide.py --ide trae
+
+# 自动模式
+python scripts/init_guide.py --auto
+
+# 验证安装
+python scripts/init_guide.py --verify
+```
+
+---
+
 ## 统一分析脚本 (推荐)
 
-### analyze.py — 三合一分析 (新增)
+### analyze.py — 三合一分析
 
 整合了 `chapter_info.py` + `style_check.py` + `hook_report.py` 的功能,支持三种模式:
 
@@ -50,8 +81,7 @@ python scripts/analyze.py novels/volume-01/chapters/ --mode batch --recent 5 --j
 
 **输出模式**:
 - `--json`: 纯JSON格式(供AI读取)
-- `--format table`: 表格格式(供人类阅读)
-- `--format text`: 简洁文本(供AI快速解析)
+- 默认: 人类可读格式
 
 **批量模式增强功能**:
 - 钩子类型分布 + 连续相同钩子警告
