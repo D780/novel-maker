@@ -13,6 +13,26 @@ tags: [writing, novel, chinese, web-novel, ai-assistant]
 
 整合业界优秀网文写作工具理念，通过6角色协作架构+自然语言，帮你从零创作高质量长篇小说。
 
+## 快速上手
+
+### 新用户推荐流程
+
+1. **安装技能** → 参考 [INSTALL.md](../INSTALL.md)
+2. **快速上手** → 参考 [QUICKSTART.md](QUICKSTART.md)
+3. **完整文档** → 继续阅读本文档
+
+### 5分钟快速体验
+
+```
+/novel-weaver init 开始写一本修仙小说
+/novel-weaver plan 帮我生成总大纲
+/novel-weaver write 写第一章
+```
+
+> 详细步骤请参考 [QUICKSTART.md](QUICKSTART.md)
+
+***
+
 ## 触发方式
 
 本技能支持两种触发方式（等价）：
@@ -249,6 +269,11 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 3. 禁止"全部写完再统一检查"——必须在写作流程中逐章检查
 4. 扩写时仅增加内容，不删改已有正文
 5. 字数标准：遵循创作宪法中设定的范围（默认2000-4000字，理想2500-3500字）
+6. 平台适配字数：
+   - 番茄小说：建议2000-3000字/章
+   - 起点中文网：建议2500-4000字/章
+   - 晋江文学城：建议2000-3500字/章
+   - 未指定平台时，默认使用"默认值"范围
 
 > 详细工作流程请查阅 [references/usage-guide.md](references/usage-guide.md)
 > 快速参考请查阅 [QUICK-REF.md](QUICK-REF.md)
@@ -338,8 +363,7 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 │   ├── rhythm-system.md        # 节奏与情绪控制系统
 │   ├── audit-core.md           # 15维度核心审计
 │   ├── audit-dimensions.md     # 33维度完整审计
-│   ├── anti-ai-patterns.md     # 反AI味指南
-│   ├── anti-ai-techniques.md   # 去AI味技巧详解
+│   ├── anti-ai-techniques.md   # 去AI味技巧指南
 │   ├── platform-rules.md       # 平台适配规则
 │   ├── style-imitation.md      # 文风模仿指南
 │   ├── memory-system.md        # 记忆系统说明
@@ -422,8 +446,7 @@ novels/                     # 小说正文（用户直接编辑）
 | [audit-core.md](references/audit-core.md)                         | 15维度核心审计 |
 | [genre-rules.md](references/genre-rules.md)                   | 37种题材写作规则 |
 | [audit-dimensions.md](references/audit-dimensions.md)         | 33维度完整审计  |
-| [anti-ai-patterns.md](references/anti-ai-patterns.md)         | 反AI味指南    |
-| [anti-ai-techniques.md](references/anti-ai-techniques.md)     | 去AI味技巧详解 |
+| [anti-ai-techniques.md](references/anti-ai-techniques.md)     | 去AI味技巧指南 |
 | [platform-rules.md](references/platform-rules.md)             | 平台适配规则（番茄/起点/晋江） |
 | [style-imitation.md](references/style-imitation.md)           | 文风模仿指南    |
 | [memory-system.md](references/memory-system.md)               | 记忆系统      |
