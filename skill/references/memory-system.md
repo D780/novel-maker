@@ -1,4 +1,4 @@
-﻿# 记忆系统详解
+# 记忆系统详解
 
 ## 三重记忆架构
 
@@ -33,13 +33,16 @@ NovelWeaver 采用三重记忆机制，确保AI在长篇写作中不忘事、不
 
 ### 文件清单
 
-| 文件名 | 内容 | 更新频率 |
-|--------|------|---------|
-| `current-state.md` | 世界当前状态 | 每章后 |
-| `characters.md` | 角色档案 | 角色变化时 |
-| `world-setting.md` | 世界观设定 | 新设定时 |
-| `pending-hooks.md` | 待处理伏笔 | 每章后 |
-| `power-system.md` | 力量体系 | 体系变化时 |
+| 文件名 | 内容 | 更新频率 | 维护者 |
+|--------|------|---------|--------|
+| `current-state.md` | 世界当前状态 | 每章后 | 复盘师 |
+| `characters.md` | 角色档案 | 角色变化时 | 复盘师+规划师 |
+| `world-setting.md` | 世界观设定 | 新设定时 | 协调者+复盘师 |
+| `pending-hooks.md` | 待处理伏笔 | 每章后 | 复盘师 |
+| `power-system.md` | 力量体系 | 体系变化时 | 复盘师 |
+| `emotional-arcs.md` | 情感弧线追踪 | 每章后 | 复盘师 |
+| `subplot-board.md` | 支线看板 | 支线变化时 | 复盘师 |
+| `timeline.md` | 时间线追踪 | 每章后 | 复盘师 |
 
 ### current-state.md 模板
 
