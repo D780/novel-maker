@@ -1,0 +1,30 @@
+{
+  "name": "novel-weaver",
+  "version": "2.0.0",
+  "description": "全能网文写作助手 - 6角色协作架构，支持18款AI编程工具",
+  "type": "module",
+  "bin": {
+    "novel-weaver": "bin/novel-weaver.js"
+  },
+  "files": [
+    "bin/",
+    "skill/"
+  ],
+  "keywords": [
+    "novel-weaver",
+    "writing",
+    "novel",
+    "chinese",
+    "web-novel",
+    "ai-assistant",
+    "claude-code",
+    "cursor",
+    "trae",
+    "skills"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

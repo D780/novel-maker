@@ -29,7 +29,7 @@ def analyze_volume(chapters_dir, recent_n=None):
         return {'error': f'No chapters found in {chapters_dir}'}
 
     results = []
-    for idx, filepath in enumerate(chapters_files):
+    for idx, filepath in enumerate(chapter_files):
         raw, title, clean, wc = read_chapter(filepath)
         ending = extract_last_paragraphs(raw)
         hook_type = detect_hook_type_from_patterns(ending)

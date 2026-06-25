@@ -13,6 +13,7 @@ NovelWeaver 交互式引导脚本
 
 import sys
 import argparse
+import json
 from pathlib import Path
 
 
@@ -42,6 +43,127 @@ STYLE_RECOMMENDATIONS = {
     "多神话热血": ["三九音域"],
     "悬疑推理": ["杀虫队队员"],
 }
+
+
+def load_presets():
+    """加载预设模板"""
+    presets_path = Path(__file__).parent.parent / "templates" / "presets.json"
+    try:
+        with open(presets_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return data.get("presets", {})
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def show_progress(current_step, total_steps, step_name):
+    """显示进度指示器"""
+    progress = current_step / total_steps
+    bar_length = 30
+    filled_length = int(bar_length * progress)
+    bar = '█' * filled_length + '░' * (bar_length - filled_length)
+    print(f"\n进度：[{bar}] {current_step}/{total_steps} - {step_name}")
+
+
+def select_preset_template(presets):
+    """选择预设模板"""
+    print("\n📋 可用预设模板：\n")
+    preset_list = list(presets.items())
+    for i, (key, preset) in enumerate(preset_list, 1):
+        print(f"  {i}. {preset['name']} - {preset['description']}")
+    print()
+
+    while True:
+        choice = input(f"请选择预设模板 (1-{len(preset_list)}): ").strip()
+        try:
+            idx = int(choice) - 1
+            if 0 <= idx < len(preset_list):
+                key, preset = preset_list[idx]
+                print(f"\n✅ 已选择：{preset['name']}")
+                emotion_key = preset.get("emotion_label", "A")
+                emotion_data = EMOTION_LABELS.get(emotion_key, EMOTION_LABELS["A"])
+                protag = preset.get("protagonist_template", {})
+                config = {
+                    "emotion_label": emotion_data,
+                    "book_name": input("书名: ").strip() or preset.get("name", "示例"),
+                    "genre": preset.get("genre", "玄幻修仙"),
+                    "synopsis": input("一句话简介: ").strip() or f"{preset.get('name', '示例')}故事",
+                    "protagonist": {
+                        "name": input("主角姓名: ").strip() or "主角",
+                        "contrast": protag.get("contrast", ""),
+                        "goal": protag.get("goal", ""),
+                    },
+                    "conflict": preset.get("conflict_template", ""),
+                    "chapters": preset.get("chapters", 100),
+                    "style": preset.get("style", "天蚕土豆"),
+                }
+                return config
+        except ValueError:
+            print("❌ 无效选择，请重新输入")
+
+
+def export_configuration(config, filename="novel-weaver-config.json"):
+    """导出配置到JSON文件"""
+    export_config = config.copy()
+    if isinstance(export_config.get('emotion_label'), dict):
+        export_config['emotion_label'] = export_config['emotion_label']['name']
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(export_config, f, ensure_ascii=False, indent=2)
+    print(f"✅ 配置已导出到 {filename}")
+
+
+def import_configuration(filename=None):
+    """从JSON文件导入配置"""
+    if filename is None:
+        filename = input("请输入配置文件路径: ").strip()
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        if isinstance(config.get('emotion_label'), str):
+            matched = False
+            for label in EMOTION_LABELS.values():
+                if label['name'] == config['emotion_label']:
+                    config['emotion_label'] = label
+                    matched = True
+                    break
+            if not matched:
+                print(f"⚠️  未知的 emotion_label: {config['emotion_label']}，使用默认值 A")
+                config['emotion_label'] = EMOTION_LABELS["A"]
+        print(f"✅ 已从 {filename} 导入配置")
+        return config
+    except FileNotFoundError:
+        print(f"❌ 文件 {filename} 不存在")
+        return None
+    except json.JSONDecodeError:
+        print(f"❌ 文件 {filename} 格式错误")
+        return None
+
+
+def custom_configuration():
+    """自定义配置流程（带进度指示器）"""
+    total_steps = 6
+    show_progress(1, total_steps, "选择情绪标签")
+    emotion_label = select_emotion_label()
+    show_progress(2, total_steps, "填写书籍信息")
+    book_info = input_book_info()
+    show_progress(3, total_steps, "设置主角信息")
+    protagonist = input_protagonist()
+    show_progress(4, total_steps, "确定核心冲突")
+    conflict = input_conflict()
+    show_progress(5, total_steps, "设定章节数")
+    chapters = input_chapters()
+    show_progress(6, total_steps, "选择文风")
+    style = select_style(book_info["genre"])
+    return {
+        "emotion_label": emotion_label,
+        "book_name": book_info["book_name"],
+        "genre": book_info["genre"],
+        "synopsis": book_info["synopsis"],
+        "protagonist": protagonist,
+        "conflict": conflict,
+        "chapters": chapters,
+        "style": style,
+    }
 
 
 def print_banner():
@@ -79,19 +201,45 @@ def detect_environment():
     return True
 
 
+# 支持的 IDE 检测列表（与 install.py / bin/novel-weaver.js 保持一致）
+IDE_DETECT = [
+    ("Trae",          "trae",    [".trae"]),
+    ("Claude Code",   "claude",  [".claude"]),
+    ("Cursor",        "cursor",  [".cursor", ".cursorrules"]),
+    ("Windsurf",      "windsurf", [".windsurf"]),
+    ("Gemini CLI",    "gemini",  ["GEMINI.md"]),
+    ("Codex CLI",     "codex",   [".codex"]),
+    ("OpenCode",      "opencode", [".opencode"]),
+    ("Aider",         "aider",   [".aider"]),
+    ("Hermes Agent",  "hermes",  [".hermes", "HERMES.md"]),
+    ("Qwen Code",     "qwen",    [".qwen"]),
+    ("Claw Code",     "claw",    [".claw", "CLAW.md"]),
+    ("Qoder",         "qoder",   [".qoder"]),
+    ("Antigravity",   "antigravity", [".agents"]),
+    ("OpenClaw",      "openclaw", [".openclaw"]),
+    ("Kiro",          "kiro",    [".kiro"]),
+    ("VS Code",       "vscode",  [".github/copilot-instructions.md"]),
+    ("DeerFlow",      "deerflow", ["deer_flow"]),
+    ("Copilot CLI",   "copilot", [".claude"]),
+]
+
+
 def detect_ide():
     """检测IDE类型"""
     print("🔍 检测IDE类型...\n")
 
-    # 检查 .trae 目录
-    if Path(".trae").exists():
-        print("✅ 检测到 Trae IDE")
-        return "trae"
+    cwd = Path.cwd()
+    detected = []
+    for name, key, markers in IDE_DETECT:
+        for marker in markers:
+            if (cwd / marker).exists():
+                detected.append((name, key))
+                break
 
-    # 检查 .claude 目录
-    if Path(".claude").exists():
-        print("✅ 检测到 Claude Code")
-        return "claude"
+    if detected:
+        for name, _ in detected:
+            print(f"✅ 检测到 {name}")
+        return detected[0][1]
 
     print("⚠️  未检测到IDE类型，请手动指定")
     return None
@@ -479,7 +627,7 @@ def print_next_steps():
     print("  3. 查看帮助")
     print("     /novel-weaver help\n")
     print("  4. 查看快速上手教程")
-    print("     参考 skill/QUICKSTART.md\n")
+    print("     参考 skill/docs/quickstart.md\n")
 
 
 def verify_installation():
@@ -519,6 +667,8 @@ def main():
     parser.add_argument("--ide", choices=["trae", "claude"], help="指定IDE类型")
     parser.add_argument("--auto", action="store_true", help="自动模式，使用默认配置")
     parser.add_argument("--verify", action="store_true", help="验证安装是否成功")
+    parser.add_argument("--export", action="store_true", help="导出配置到文件")
+    parser.add_argument("--import", dest="import_file", help="从文件导入配置")
     args = parser.parse_args()
 
     print_banner()
@@ -555,33 +705,45 @@ def main():
             "chapters": 100,
             "style": "天蚕土豆",
         }
+    # 导入配置模式
+    elif args.import_file:
+        config = import_configuration(args.import_file)
+        if not config:
+            sys.exit(1)
     else:
-        # 交互式引导
-        emotion_label = select_emotion_label()
-        book_info = input_book_info()
-        protagonist = input_protagonist()
-        conflict = input_conflict()
-        chapters = input_chapters()
-        style = select_style(book_info["genre"])
+        # 加载预设模板
+        presets = load_presets()
+        
+        # 选择启动方式
+        print("📋 选择启动方式：\n")
+        print("  1. 使用预设模板（推荐新手）")
+        print("  2. 自定义配置（完全控制）")
+        print("  3. 从现有配置导入")
+        print()
+        
+        choice = input("请选择 (1/2/3): ").strip()
+        
+        if choice == "1" and presets:
+            config = select_preset_template(presets)
+        elif choice == "3":
+            config = import_configuration()
+            if not config:
+                print("❌ 导入失败，切换到自定义配置")
+                config = custom_configuration()
+        else:
+            config = custom_configuration()
 
-        config = {
-            "emotion_label": emotion_label,
-            "book_name": book_info["book_name"],
-            "genre": book_info["genre"],
-            "synopsis": book_info["synopsis"],
-            "protagonist": protagonist,
-            "conflict": conflict,
-            "chapters": chapters,
-            "style": style,
-        }
-
-        # 确认配置
-        if not confirm_config(config):
-            print("\n❌ 已取消配置")
-            sys.exit(0)
+    # 确认配置
+    if not confirm_config(config):
+        print("\n❌ 已取消配置")
+        sys.exit(0)
 
     # 生成配置文件
     generate_config_files(config)
+
+    # 导出配置（可选）
+    if args.export:
+        export_configuration(config)
 
     # 打印下一步指引
     print_next_steps()

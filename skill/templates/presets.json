@@ -1,0 +1,69 @@
+{
+  "presets": {
+    "cultivation": {
+      "name": "修仙爽文",
+      "emotion_label": "A",
+      "genre": "玄幻修仙",
+      "style": "天蚕土豆",
+      "chapters": 100,
+      "protagonist_template": {
+        "contrast": "表面废物实际天才",
+        "goal": "成为仙帝"
+      },
+      "conflict_template": "与宗门天才的宿命对决",
+      "description": "扮猪吃虎、逆袭碾压的修仙爽文"
+    },
+    "urban_comedy": {
+      "name": "都市搞笑",
+      "emotion_label": "C",
+      "genre": "都市搞笑",
+      "style": "会说话的肘子",
+      "chapters": 80,
+      "protagonist_template": {
+        "contrast": "表面普通实际隐藏大佬",
+        "goal": "低调生活却总被卷入麻烦"
+      },
+      "conflict_template": "与各路奇葩的日常冲突",
+      "description": "沙雕吐槽、神转折的都市搞笑文"
+    },
+    "mystery": {
+      "name": "悬疑惊悚",
+      "emotion_label": "D",
+      "genre": "悬疑诡秘",
+      "style": "爱潜水的乌贼",
+      "chapters": 60,
+      "protagonist_template": {
+        "contrast": "表面普通人实际拥有特殊能力",
+        "goal": "揭开隐藏的真相"
+      },
+      "conflict_template": "与神秘组织的对抗",
+      "description": "细思极恐、烧脑的悬疑惊悚文"
+    },
+    "sweet_romance": {
+      "name": "治愈甜宠",
+      "emotion_label": "E",
+      "genre": "现代言情",
+      "style": "墨宝非宝",
+      "chapters": 50,
+      "protagonist_template": {
+        "contrast": "表面高冷实际内心柔软",
+        "goal": "找到真爱"
+      },
+      "conflict_template": "与误会和偏见的对抗",
+      "description": "日常温馨、双向奔赴的治愈甜宠文"
+    },
+    "infinite_flow": {
+      "name": "无限流",
+      "emotion_label": "F",
+      "genre": "无限流",
+      "style": "三天两觉",
+      "chapters": 120,
+      "protagonist_template": {
+        "contrast": "表面普通实际拥有特殊天赋",
+        "goal": "通关所有副本"
+      },
+      "conflict_template": "与系统和其他玩家的对抗",
+      "description": "脑洞大开、副本闯关的无限流文"
+    }
+  }
+}

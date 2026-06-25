@@ -1,4 +1,4 @@
-﻿# NovelWeaver 变更日志
+# NovelWeaver 变更日志
 
 所有重要变更将记录在此文件中。
 
@@ -6,24 +6,31 @@
 
 ## [Unreleased]
 
-### 新增
-- 3个新Python脚本：hook_report.py（钩子密度报告）、consistency_scan.py（一致性扫描）、style_check.py（AI味检测）
-- nw_utils.py 公共工具模块，消除脚本间重复代码
-- INSTALL.md 多IDE安装指南（9种AI IDE）
-- 多IDE兼容支持（Trae/Claude/Cursor/Cline/Roo/Copilot/Continue/OpenCode/Windsurf）
+---
 
-### 修复
-- SKILL.md 指令层级统一：核心指令7个（含plan/act），扩展指令5个，消除重复
-- usage-guide.md 分支示例从4条更新为6条（A-F）
-- constitution.md 和 memory-system.md 中 `.trae/` 路径泛化为相对路径
-- .gitignore 增加各IDE规则目录排除
+## [2.0.0] - 2026-06
+
+### 新增（架构重构）
+- **6角色协作架构**：协调者 → 规划师 → 写手 → 审计师 → 修订师 → 复盘师
+- `skill/agents/` 目录：6 个角色定义文件（coordinator/planner/writer/auditor/reviser/reviewer）
+- **3 个新真相文件**（扩展至 8 个）：emotional-arcs.md、subplot-board.md、timeline.md
+- **3 个新模板**：plot-card.md（剧情卡片）、character-voice.md（角色语音卡）、scene-plan.md（场景规划卡）
+- `references/anti-ai-techniques.md`：去AI味技巧详解（表层+深层）
+- `references/platform-rules.md`：平台适配规则（番茄/起点/晋江）
+- `references/editorial-perspective.md`：编辑视角审查指南
+- `references/sweet-spot-tracking.md`：爽点密度追踪系统
+- `references/character-voice-card.md`：角色语音卡使用指南
 
 ### 优化
-- 脚本代码去重：`extract_characters`、`detect_hook`、`chapter_sort_key`、`clean_markdown` 等重复函数统一提取到 nw_utils.py
-- 脚本体积缩减：`chapter_info.py` 从167行→61行，`check_wordcount.py` 从219行→98行
-- skill/README.md 重写为技能级快速参考
-- 根 README.md 全面更新到 v1.5.0
-- scripts/README.md 增加公共模块说明和6个脚本的完整说明
+- 根目录 README.md 全面更新到 v2.0.0（6角色架构 + 新特性）
+- INSTALL.md 目录结构补充至完整（24 references / 21 templates / 14 scripts）
+- SKILL.md 指令体系完整化（7 核心 + 5 扩展 + 7 高级子指令）
+- skill/README.md 重写为 v2.0 快速参考
+- QUICK-REF.md 新增 6 角色协作流程图
+
+### 设计文档
+- 完整架构设计文档：`docs/superpowers/specs/2026-06-24-novel-weaver-v2-architecture-redesign.md`
+- 8 个关键架构决策：概念角色 / 简短协议 / 修订升级 / 复盘时机 / 用户决策点 / 上下文管理 / 失败恢复 / 协作模式
 
 ---
 

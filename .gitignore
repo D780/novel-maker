@@ -1,6 +1,11 @@
 # 运行时数据（用户项目内容，不提交）
 .novel-weaver/
 novels/
+!examples/*/novels/
+!examples/*/novels/**
+
+# 开发文档（设计过程产物，不提交到仓库）
+docs/superpowers/
 
 # OS
 .DS_Store

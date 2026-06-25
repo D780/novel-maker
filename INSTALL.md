@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿# NovelWeaver 安装指南
+# NovelWeaver 安装指南
 
 > 这是一个**技能仓库**，包含完整的网文创作技能定义，支持多种主流 AI IDE。
 
@@ -6,7 +6,26 @@
 
 ## 快速安装
 
-选择你使用的 AI IDE，按对应方式安装。
+### 一键安装（推荐）
+
+```bash
+cd /your/project
+npx novel-weaver
+```
+
+脚本会自动检测你项目中使用的 IDE，将技能安装到正确位置。支持 18 款主流 AI 编程工具。
+
+如果自动检测失败，可以显式指定：
+
+```bash
+npx novel-weaver --tool trae
+```
+
+卸载：
+
+```bash
+npx novel-weaver --uninstall
+```
 
 ### 通用方式：复制安装（适用于所有 IDE）
 
@@ -28,13 +47,22 @@ Copy-Item -Path "skill\*" -Destination "<目标路径>" -Recurse
 |-----|------|----------|
 | **Trae** | 技能 | `.trae/skills/novel-weaver/` |
 | **Claude Code** | 技能 | `.claude/skills/novel-weaver/` |
-| **Cursor** | 规则 | `.cursor/rules/` |
-| **GitHub Copilot (VS Code)** | 自定义指令 | `.github/copilot-instructions.md` |
-| **Cline** | 规则 | `.clinerules/` 或 `.clinerules` 文件 |
-| **Roo Code** | 规则 | `.clinerules` 或 `.clinerules-[mode]` |
-| **Continue** | 规则 | `.continue/rules/` |
-| **OpenCode** | 技能 | `.opencode/skills/novel-weaver/` 或 `.claude/skills/novel-weaver/` |
-| **Windsurf** | 规则 | `.windsurfrules` |
+| **Copilot CLI** | 技能 | `.claude/skills/novel-weaver/` |
+| **Cursor** | 规则 | `.cursor/rules/novel-weaver/` |
+| **Windsurf** | 技能 | `.windsurf/skills/novel-weaver/` |
+| **Kiro** | 技能 | `.kiro/steering/novel-weaver/` |
+| **Gemini CLI** | 技能 | `.gemini/skills/novel-weaver/` |
+| **Codex CLI** | 技能 | `.codex/skills/novel-weaver/` |
+| **Aider** | 技能 | `.aider/skills/novel-weaver/` |
+| **OpenCode** | 技能 | `.opencode/skills/novel-weaver/` |
+| **OpenClaw** | 技能 | `skills/novel-weaver/` |
+| **Qwen Code** | 技能 | `.qwen/skills/novel-weaver/` |
+| **Hermes Agent** | 技能 | `.hermes/skills/novel-weaver/` |
+| **Claw Code** | 技能 | `.claw/skills/novel-weaver/` |
+| **Qoder** | 技能 | `.qoder/skills/novel-weaver/` |
+| **Antigravity** | 技能 | `.agents/skills/novel-weaver/` |
+| **VS Code (Copilot)** | 自定义指令 | `.github/superpowers/novel-weaver/` |
+| **DeerFlow** | 技能 | `skills/custom/novel-weaver/` |
 
 ---
 
@@ -76,7 +104,7 @@ Claude Code 的 Skill 支持**三级渐进加载**：
 Cursor 使用的是 `.mdc`（Markdown with Cursor frontmatter）规则文件，需要将 NovelWeaver 的内容转换为规则格式。
 
 ```bash
-mkdir -p .cursor/rules
+mkdir -p .cursor/rules/novel-weaver
 ```
 
 推荐创建以下文件：
@@ -108,10 +136,10 @@ globs: **/*.md
 ### GitHub Copilot（VS Code）
 
 ```bash
-mkdir -p .github
+mkdir -p .github/superpowers/novel-weaver
 ```
 
-创建 **`.github/copilot-instructions.md`**：
+创建 **`.github/superpowers/novel-weaver/copilot-instructions.md`**：
 
 ```markdown
 # NovelWeaver - 网文写作规则
