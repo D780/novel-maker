@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovelMaker Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- CDN libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>NovelMaker</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active" data-view="overview">项目概览</li>
+                    <li data-view="chapters">章节列表</li>
+                    <li data-view="characters">角色档案</li>
+                    <li data-view="pacing">节奏可视化</li>
+                    <li data-view="editor">编辑器</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="content">
+            <!-- 项目概览 -->
+            <section id="overview" class="view active">
+                <h2>项目概览</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>总章节数</h3>
+                        <p id="total-chapters">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>总字数</h3>
+                        <p id="total-words">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>当前进度</h3>
+                        <p id="progress">0%</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 章节列表 -->
+            <section id="chapters" class="view">
+                <h2>章节列表</h2>
+                <div id="chapter-list"></div>
+            </section>
+
+            <!-- 角色档案 -->
+            <section id="characters" class="view">
+                <h2>角色档案</h2>
+                <div id="character-list"></div>
+            </section>
+
+            <!-- 节奏可视化 -->
+            <section id="pacing" class="view">
+                <h2>节奏可视化</h2>
+                <div id="pacing-chart"></div>
+                <div id="emotion-stats"></div>
+            </section>
+
+            <!-- 编辑器 -->
+            <section id="editor" class="view">
+                <h2>编辑器</h2>
+                <div class="editor-container">
+                    <textarea id="editor-content"></textarea>
+                    <div id="editor-preview"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/reader.js"></script>
+    <script src="js/markdown.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
