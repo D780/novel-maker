@@ -1,6 +1,6 @@
 {
   "name": "novel-maker",
-  "version": "2.2.0",
+  "version": "2.2.2",
   "description": "全能网文写作助手 - 6角色协作架构，支持18款AI编程工具",
   "type": "module",
   "bin": {
