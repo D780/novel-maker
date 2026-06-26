@@ -171,7 +171,7 @@ NovelMaker v2.0 采用 6角色协作架构，每个角色专注特定职责：
 | **写手** | 章节正文生成、文风应用、角色模拟写作 | `/novel-maker write` |
 | **审计师** | 33维度审计、编辑视角审查、爽点密度追踪 | `/novel-maker review` 每章自动 |
 | **修订师** | 根据审计报告修复P0/P1问题 | `/novel-maker review fix` 审计后自动 |
-| **复盘师** | 更新真相文件、生成总结、模拟读者评论、生成创作指导 | 章节定稿后自动 |
+| **复盘师** | 真相文件变更检测(truth_diff.py)、更新真相文件、生成总结、模拟读者评论 | 章节定稿后自动 |
 
 > 角色定义详见 [agents/](agents/) 目录
 
@@ -287,9 +287,9 @@ AI自动完成：
 /novel-maker plan 帮我生成总大纲
     ↓ AI生成：三幕结构大纲 + 角色设定 + 世界观 + 幕规划表
 /novel-maker write 写第一章
-    ↓ 自动触发黄金开篇 → 写作 → 检查字数 → 更新大纲 → 更新记忆 → 进度提示
+    ↓ 自动触发黄金开篇 → 写作 → pre_audit.py → 审查 → 字数检查 → 更新大纲 → 更新记忆 → 进度提示
 /novel-maker write 继续
-    ↓ 运行 chapter_info.py → 获取前章结构 → 日常循环...
+    ↓ build_write_context.py → 获取前章结构 → 日常循环...
 /novel-maker act 下一幕怎么走
     ↓ 运行 volume_batch.py --recent 5 → 现状上下文 + 6条分支 → 用户选择 → 偏离检查 → 同步 → /novel-maker write
 ```
@@ -298,7 +298,7 @@ AI自动完成：
 
 ```
 /novel-maker write 继续写，主角发现了敌人
-    ↓ AI自动：构建上下文 → 写作 → 审查 → 字数检查 → 更新大纲/记忆 → 摘要 → 进度提示
+    ↓ AI自动：build_write_context.py → 写作 → pre_audit.py → 审查 → 字数检查 → 更新大纲/记忆 → 摘要 → 进度提示
 [看结果] → 满意 → /novel-maker write 继续
             → 字数不达标 → /novel-maker expand 扩充本章
             → 不满意 → /novel-maker review fix 帮我改一下
@@ -309,15 +309,33 @@ AI自动完成：
 
 #### 写作前自动构建上下文 (用户无感知)
 
-AI在写作时自动检索并构建以下上下文，无需用户手动指定：
+AI在写作前自动运行 `build_write_context.py` 构建精简上下文（~3000 token），替代手动读取 15+ 个文件（~45,000 token）：
+
+```bash
+python scripts/build_write_context.py novels/volume-01/chapters/ch15.md --json
+```
+
+输出结构化 JSON，包含：
 
 ```markdown
-【写作上下文】
-## 角色状态 → 来自 truth-files/characters.md + current-state.md
-## 世界设定 → 来自 truth-files/world-setting.md + power-system.md  
-## 前情摘要 → 来自 .novel-maker/summaries/ + 前2章摘要
-## 本章目标 → 来自 outline.md / volume-XX/plan.md
+【写作上下文 — 由 build_write_context.py 自动生成】
+## 真相文件摘要 → characters/current-state/world-setting/power-system/pending-hooks/emotional-arcs（精简版）
+## 前2章摘要 → 角色/钩子/结构/字数（由 chapter_info.py 提取）
+## 本章大纲目标 → 从 outline.md 提取当前章节点
+## 创作宪法要点 → 字数要求/文风/禁忌清单（精简版）
 ```
+
+#### 预审计管线 (用户无感知)
+
+每章写完后自动运行 `pre_audit.py`，一键执行所有可自动化的审计维度：
+
+```bash
+python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
+```
+
+输出：字数检查 / 角色提取 / 章末钩子 / 节奏评估 / AI味检测 / 一致性扫描
+
+审计师只需读取预审计结果 + 章节摘要，专注做需要 AI 判断力的维度（角色OOC、情感弧线、追读力、编辑视角），跳过可自动化的维度。
 
 #### 字数强制检查规则（最高优先级）
 
@@ -343,6 +361,20 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 
 > 详细工作流程请查阅 [references/usage-guide.md](references/usage-guide.md)
 > 快速参考请查阅 [QUICK-REF.md](QUICK-REF.md)
+
+### 复盘师工作流（章节定稿后自动）
+
+```
+章节定稿
+    ↓ truth_diff.py --truth-dir .novel-maker/truth-files/ --prev 前章.md 本章.md --json
+    ↓ 输出：新角色/新地点/伏笔关键词/情感变化/延续角色
+    ↓ 复盘师审核 diff → 仅更新有变化的真相文件（非全文重写）
+    ↓ 更新：current-state.md / pending-hooks.md / emotional-arcs.md / timeline.md
+    ↓ 每5章：subplot-board.md
+    ↓ 有新角色/新地点时：characters.md / world-setting.md
+```
+
+**Token 节省**：复盘师从读取 ~43,000 token 降至读取 ~5,000 token（只审 diff）
 
 ***
 

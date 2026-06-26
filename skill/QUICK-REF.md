@@ -65,6 +65,9 @@
 | 场景 | 命令 | 用途 |
 |------|------|------|
 | 写前上下文 | `python scripts/chapter_info.py 前章.md --json` | 获取前章结构(~200 token) |
+| **写手上文** | `python scripts/build_write_context.py ch15.md --json` | **一键构建写作上下文(~3000 token)** |
+| **预审计** | `python scripts/pre_audit.py ch15.md --json` | **一键运行所有自动化审计** |
+| **真相变更** | `python scripts/truth_diff.py ch15.md -t 真相/ --json` | **检测需更新的真相文件** |
 | 幕规划 | `python scripts/volume_batch.py 卷目录 --recent 5 --json` | 获取最近5章汇总 |
 | 字数检查 | `python scripts/check_wordcount.py 本章.md` | 验证字数达标 |
 | 一致性扫描 | `python scripts/consistency_scan.py 章节/ 真相/ --json` | 检测设定冲突 |

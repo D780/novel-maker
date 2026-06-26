@@ -78,11 +78,15 @@
 
 ### 章节复盘流程（每章）
 
-1. 读取定稿章节
-2. 提取新增信息
-3. 更新真相文件
+1. 运行 `truth_diff.py` 检测变更（新角色/新地点/伏笔/情感）
+2. 审查 diff 结果，仅更新有变化的真相文件
+3. 更新真相文件（current-state / pending-hooks / emotional-arcs / timeline）
 4. 生成小总结
 5. 输出章末创作指导
+
+```bash
+python scripts/truth_diff.py ch15.md --truth-dir .novel-maker/truth-files/ --prev ch14.md --json
+```
 
 ### 阶段复盘流程（每 5 章）
 
