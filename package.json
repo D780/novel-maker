@@ -22,8 +22,19 @@
     "trae",
     "skills"
   ],
-  "author": "",
+  "author": "D780",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D780/novel-maker.git"
+  },
+  "homepage": "https://github.com/D780/novel-maker#readme",
+  "bugs": {
+    "url": "https://github.com/D780/novel-maker/issues"
+  },
+  "scripts": {
+    "prepublishOnly": "node -e \"const fs=require('fs'),p=require('path');function r(d){for(const f of fs.readdirSync(d,{withFileTypes:true})){const fp=p.join(d,f.name);if(f.isDirectory()){if(f.name==='__pycache__')fs.rmSync(fp,{recursive:true});else r(fp)}}}r('.')\""
+  },
   "engines": {
     "node": ">=16.0.0"
   }

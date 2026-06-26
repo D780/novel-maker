@@ -3,7 +3,10 @@
 > 整合业界优秀网文写作工具理念，通过简洁指令+自然语言，帮你从零创作高质量长篇小说。
 > **这是一个技能仓库**，兼容多种主流 AI IDE。
 
+[![npm version](https://img.shields.io/npm/v/novel-maker.svg)](https://www.npmjs.com/package/novel-maker)
+[![npm downloads](https://img.shields.io/npm/dm/novel-maker.svg)](https://www.npmjs.com/package/novel-maker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/D780/novel-maker.svg)](https://github.com/D780/novel-maker)
 [![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](skill/SKILL.md)
 
 ## 核心能力
