@@ -18,11 +18,42 @@
             </div>
             <nav>
                 <ul>
-                    <li class="active" data-view="overview">项目概览</li>
-                    <li data-view="chapters">章节列表</li>
-                    <li data-view="characters">角色档案</li>
-                    <li data-view="pacing">节奏可视化</li>
-                    <li data-view="editor">编辑器</li>
+                    <li class="active" data-view="overview">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        项目概览
+                    </li>
+                    <li data-view="chapters">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        章节列表
+                    </li>
+                    <li data-view="characters">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        角色档案
+                    </li>
+                    <li data-view="pacing">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        节奏可视化
+                    </li>
+                    <li data-view="editor">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        编辑器
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -31,7 +62,7 @@
         <main class="content">
             <!-- 项目概览 -->
             <section id="overview" class="view active">
-                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">项目概览</h2>
+                <h2>项目概览</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>总章节数</h3>
@@ -50,19 +81,19 @@
 
             <!-- 章节列表 -->
             <section id="chapters" class="view">
-                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">章节列表</h2>
+                <h2>章节列表</h2>
                 <div id="chapter-list"></div>
             </section>
 
             <!-- 角色档案 -->
             <section id="characters" class="view">
-                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">角色档案</h2>
+                <h2>角色档案</h2>
                 <div id="character-list" class="character-grid"></div>
             </section>
 
             <!-- 节奏可视化 -->
             <section id="pacing" class="view">
-                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">节奏可视化</h2>
+                <h2>节奏可视化</h2>
                 <div class="pacing-chart">
                     <div id="pacing-chart-container" class="chart-container"></div>
                 </div>
@@ -71,7 +102,7 @@
 
             <!-- 编辑器 -->
             <section id="editor" class="view">
-                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">编辑器</h2>
+                <h2>编辑器</h2>
                 <div class="editor-container">
                     <textarea id="editor-content" class="form-control" placeholder="在这里输入 Markdown 内容..."></textarea>
                     <div id="editor-preview"></div>
