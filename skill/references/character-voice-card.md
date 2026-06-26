@@ -1,5 +1,7 @@
 # 角色语音卡指南
 
+> **设计参考文档** — 定义"如何设计语音卡"。检查规则详见 [rules/character-voice.md](../rules/character-voice.md)。
+
 > 为每个角色设计独特的说话方式，确保对话区分度
 
 ## 什么是角色语音卡
@@ -176,7 +178,7 @@ C："从理论上分析，成功率不足三成。"（学者，数据化）
 **A：** 在语音卡中标注"成长前/成长后"的变化，保持核心特征不变。
 
 ### Q3：如何避免角色说话像AI？
-**A：** 参考 [去AI味技巧](anti-ai-techniques.md)，特别是"角色对话区分度"部分。
+**A：** 参考 [反AI表达规则](../rules/anti-ai-expressions.md)，特别是"角色对话区分度"部分。
 
 ## 与其他系统的关系
 
@@ -190,5 +192,5 @@ C："从理论上分析，成功率不足三成。"（学者，数据化）
 
 - [角色语音卡模板](../templates/character-voice.md)
 - [角色档案模板](../templates/character-profile.md)
-- [去AI味技巧](anti-ai-techniques.md)
+- [反AI表达规则](../rules/anti-ai-expressions.md)
 - [文风库](../styles/authors/)

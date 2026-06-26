@@ -1,5 +1,7 @@
 # 5维度一致性检查规则
 
+> **检查规则文档** — 定义"检查什么"和"怎么判断"。执行流程详见 [references/consistency-checker.md](consistency-checker.md)。
+
 ## 核心原则
 
 长篇小说的连贯性是读者信任的基础。任何前后矛盾都会破坏沉浸感。
@@ -227,5 +229,4 @@
 
 - 角色声音检查规则：`skill/rules/character-voice.md`
 - 反AI表达规则：`skill/rules/anti-ai-expressions.md`
-- 剧情完整性检查规则：`skill/rules/story-integrity.md`
-- 写作阶段规则：`skill/stages/*.md`
+- 一致性检查器（执行流程）：`skill/references/consistency-checker.md`

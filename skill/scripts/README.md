@@ -202,6 +202,63 @@ python scripts/truth_manager.py .novel-maker/truth-files/ --entity characters --
 
 ---
 
+## 安装脚本
+
+### install.py — Python 安装脚本
+
+当 `npx novel-maker` 不可用时的备选方案：
+
+```bash
+python scripts/install.py [--tool trae|claude|cursor] [--list]
+```
+
+---
+
+## 智能查询脚本
+
+### query_engine.py — 智能查询引擎
+
+4种查询类型：角色查询、设定查询、剧情查询、伏笔查询。
+
+```bash
+python scripts/query_engine.py '林风是什么等级？'
+python scripts/query_engine.py --type character '林风'
+python scripts/query_engine.py --type foreshadow '魔剑'
+```
+
+---
+
+## 风格分析脚本
+
+### style_anchor.py — 风格锚点提取
+
+从最近5章提取句长分布、对话比例、高频词，输出 style-anchor.json。
+
+```bash
+python scripts/style_anchor.py novels/volume-01/chapters/
+python scripts/style_anchor.py novels/volume-01/chapters/ --recent 10 --json
+```
+
+输出：`avg_sentence_length` / `dialogue_ratio` / `top_words` / `style_signature`
+
+---
+
+## 节奏可视化脚本
+
+### pacing_visualize.py — 节奏可视化
+
+支持单章/卷/全局三种模式，输出 emoji 标记和热力图数据。
+
+```bash
+python scripts/pacing_visualize.py --volume novels/volume-01/
+python scripts/pacing_visualize.py --all novels/
+python scripts/pacing_visualize.py --chapter novels/volume-01/chapters/ch01.md
+```
+
+输出：`pacing_map`（emoji标记） / `heatmap`（热力图数据） / `emotion_stats`（情绪统计）
+
+---
+
 ## 在 NovelMaker 工作流中的位置
 
 ```

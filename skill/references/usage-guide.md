@@ -166,7 +166,7 @@ AI：
 |------|------|
 | 内容不符合预期 | 检查创作宪法、大纲是否完善；提供更具体的写作指引 |
 | 前后矛盾 | `/novel-maker review consistency`；检查真相文件是否更新 |
-| 有AI味 | `/novel-maker review AI味重不重`；参考 `references/anti-ai-patterns.md` |
+| 有AI味 | `/novel-maker review AI味重不重`；参考 `rules/anti-ai-expressions.md` |
 | 节奏问题 | `/novel-maker review pacing`；调整章节节奏评级 |
 
 ---

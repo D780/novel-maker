@@ -18,7 +18,7 @@ tags: [writing, novel, chinese, web-novel, ai-assistant]
 ### 新用户推荐流程
 
 1. **安装技能** → 参考 [INSTALL.md](../INSTALL.md)
-2. **快速上手** → 参考 [QUICKSTART.md](QUICKSTART.md)
+2. **快速上手** → 参考 [quickstart.md](docs/quickstart.md)
 3. **完整文档** → 继续阅读本文档
 
 ### 5分钟快速体验
@@ -29,7 +29,7 @@ tags: [writing, novel, chinese, web-novel, ai-assistant]
 /novel-maker write 写第一章
 ```
 
-> 详细步骤请参考 [QUICKSTART.md](QUICKSTART.md)
+> 详细步骤请参考 [quickstart.md](docs/quickstart.md)
 
 ***
 
@@ -429,7 +429,7 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 │   ├── rhythm-system.md        # 节奏与情绪控制系统
 │   ├── audit-core.md           # 15维度核心审计
 │   ├── audit-dimensions.md     # 33维度完整审计
-│   ├── anti-ai-techniques.md   # 去AI味技巧指南
+│   ├── rules/                    # 规则文件（反AI/角色声音/一致性）
 │   ├── platform-rules.md       # 平台适配规则
 │   ├── style-imitation.md      # 文风模仿指南
 │   ├── memory-system.md        # 记忆系统说明
@@ -516,7 +516,7 @@ novels/                     # 小说正文（用户直接编辑）
 | [audit-core.md](references/audit-core.md)                         | 15维度核心审计 |
 | [genre-rules.md](references/genre-rules.md)                   | 37种题材写作规则 |
 | [audit-dimensions.md](references/audit-dimensions.md)         | 33维度完整审计  |
-| [anti-ai-techniques.md](references/anti-ai-techniques.md)     | 去AI味技巧指南 |
+| [anti-ai-expressions.md](rules/anti-ai-expressions.md) | 反AI表达规则（7层检测+去AI味技巧+自检清单） |
 | [platform-rules.md](references/platform-rules.md)             | 平台适配规则（番茄/起点/晋江） |
 | [style-imitation.md](references/style-imitation.md)           | 文风模仿指南    |
 | [memory-system.md](references/memory-system.md)               | 记忆系统      |

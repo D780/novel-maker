@@ -239,6 +239,6 @@
 ## 参考资源
 
 - [33维度审计](audit-dimensions.md)
-- [去AI味技巧](anti-ai-techniques.md)
+- [反AI表达规则](../rules/anti-ai-expressions.md)
 - [情绪曲线系统](emotion-curve.md)
 - [黄金开篇锻造术](golden-opening.md)

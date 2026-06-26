@@ -1,5 +1,7 @@
 # Consistency Checker 实时校验
 
+> **执行流程文档** — 定义"何时触发检查"和"报告格式"。具体检查维度详见 [rules/consistency-check.md](../rules/consistency-check.md)。
+
 ## 系统原理
 
 Consistency Checker 在写作过程中实时检查内容一致性，而不是写作后才审查。

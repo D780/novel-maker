@@ -1,5 +1,7 @@
 # 角色声音检查规则
 
+> **检查规则文档** — 定义"检查什么"和"怎么判断"。语音卡设计方法详见 [references/character-voice-card.md](../references/character-voice-card.md)。
+
 ## 核心原则
 
 每个角色都应该有独特的声音，读者仅通过对话和内心独白就能区分角色。
@@ -177,6 +179,6 @@
 
 ## 参考资源
 
-- 角色声音档案模板：`skill/templates/character-voice-profile.md`
+- 角色声音档案模板：`skill/templates/character-voice.md`
 - 一致性检查规则：`skill/rules/consistency-check.md`
 - 反AI表达规则：`skill/rules/anti-ai-expressions.md`

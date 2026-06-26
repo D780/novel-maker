@@ -71,8 +71,9 @@
 | AI味检测 | `python scripts/style_check.py 本章.md --json` | 检测套话密度 |
 | 节奏报告 | `python scripts/pacing_report.py 章节/ --json` | S1-S5分布分析 |
 | 项目统计 | `python scripts/stats_report.py novels/ --json` | 卷/章/字数统计 |
-| 剧情卡片 | `python scripts/plot_card_generator.py` | 剧情卡片生成器 |
-| 风格分析 | `python scripts/style_analysis.py` | 风格分析工具 |
+| 风格锚点 | `python scripts/style_anchor.py 章节/` | 提取句长/对话/高频词 |
+| 节奏可视化 | `python scripts/pacing_visualize.py --volume 卷目录` | emoji标记+热力图 |
+| 智能查询 | `python scripts/query_engine.py '林风什么等级'` | 角色/设定/伏笔查询 |
 
 ## 文风推荐
 
