@@ -298,6 +298,30 @@ python scripts/truth_diff.py ch15.md --truth-dir .novel-maker/truth-files/ --pre
 
 **节省：每章约 35,000-50,000 token**
 
+### planner_context.py — 规划师上下文包
+
+一键生成规划所需的精简上下文，将 10+ 个文件压缩为 ~5000 token 的 JSON。
+
+```bash
+python scripts/planner_context.py --volume 01 --act 2 --json
+```
+
+输出：`volume_progress`（卷进度） / `truth_files`（真相文件摘要） / `outline`（大纲目标） / `active_hooks`（活跃伏笔） / `active_subplots`（活跃支线）
+
+**节省：每次规划约 25,000 token**
+
+### chapter_diff.py — 章节修订对比
+
+比较原稿和修订稿的结构化差异（角色/伏笔/字数/结构/节奏）。
+
+```bash
+python scripts/chapter_diff.py temp/draft.md temp/revised.md --json
+```
+
+输出：`word_count` / `characters` / `locations` / `hook` / `structure` / `pacing` / `summary`
+
+**节省：每次修订约 8,000 token**
+
 ---
 
 ## 验证脚本

@@ -21,8 +21,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from nw_utils import (
     read_truth_section, list_chapters, read_chapter,
     extract_characters, generate_summary, detect_hook,
-    detect_structure, estimate_pacing, parse_outline_headings,
-    clean_markdown, count_chinese
+    parse_outline_headings
 )
 
 NOVEL_MAKER_DIR = '.novel-maker'

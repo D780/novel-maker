@@ -505,7 +505,7 @@ python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
 ├── genre-packs/                # 题材包（11个 + 通用默认）
 ├── arc-templates/              # 篇章弧线模板（6通用 + 42题材特定）
 ├── hooks/                      # Hook 定义（5个）
-└── scripts/                    # 脚本工具（22个）
+└── scripts/                    # 脚本工具（24个）
     ├── README.md               # 使用说明
     ├── nw_utils.py             # 公共工具模块
     ├── validate.py             # 技能完整性验证
@@ -528,7 +528,9 @@ python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
     ├── install.py              # Python 安装脚本
     ├── build_write_context.py  # 写手上下文构建器（Token优化）
     ├── pre_audit.py            # 预审计管线（Token优化）
-    └── truth_diff.py           # 真相文件变更检测（Token优化）
+    ├── truth_diff.py           # 真相文件变更检测（Token优化）
+    ├── planner_context.py      # 规划师上下文包（Token优化）
+    └── chapter_diff.py         # 章节修订对比（Token优化）
 ```
 
 ### 项目运行时数据（用户项目生成）

@@ -20,7 +20,7 @@ import subprocess
 sys.path.insert(0, os.path.dirname(__file__))
 from nw_utils import (
     read_chapter, extract_characters, detect_hook,
-    detect_structure, estimate_pacing, count_chinese,
+    detect_structure, estimate_pacing,
     clean_markdown, generate_summary
 )
 

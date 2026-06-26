@@ -85,7 +85,11 @@
 5. 输出章末创作指导
 
 ```bash
+# 变更检测
 python scripts/truth_diff.py ch15.md --truth-dir .novel-maker/truth-files/ --prev ch14.md --json
+
+# 修订对比（如有修订）
+python scripts/chapter_diff.py temp/draft.md temp/revised.md --json
 ```
 
 ### 阶段复盘流程（每 5 章）

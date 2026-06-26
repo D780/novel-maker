@@ -7,11 +7,15 @@
 - **智能查询系统**：4种查询类型（角色/设定/剧情/伏笔），意图识别 + 自然语言支持
 - **Hook 系统**：5个自动化 Hook（上下文注入/意图检测/章节完成/审查触发/总结触发）
 - **Web UI 增强**：设置页面、项目管理、多项目切换、配置导出/导入
+- **Token 优化脚本**：build_write_context.py（~45k/章）、pre_audit.py（~25k/章）、truth_diff.py（~40k/章）
+- **技能验证脚本**：validate.py（137项检查，8个维度）
 
 ### 改进
 
 - **Web UI 现代化**：采用智汇协同风格，暖色极简设计
 - **快速操作按钮**：复制提示词到剪贴板，一键触发 Trae 对话
+- **项目全面审查**：修复25处问题（版本号/引用/目录树/文档）
+- **全部版本号统一到 v2.2.0**
 
 ---
 
@@ -52,7 +56,7 @@
 ### 文档整理
 
 - **删除过时文件**：OPTIMIZATION-LOG.md（v1.6.0）
-- **合并重复文档**：anti-ai-patterns.md + anti-ai-techniques.md → anti-ai-techniques.md
+- **合并重复文档**：anti-ai-patterns.md + anti-ai-techniques.md → rules/anti-ai-expressions.md
 - **删除冗余文件**：pacing-analysis.md、emotion-curve.md（已整合到 rhythm-system.md）
 - **更新参考文档表**：从 22 个精简为 19 个
 - **创建模板索引**：templates/INDEX.md

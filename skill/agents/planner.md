@@ -35,6 +35,16 @@
 - 现有大纲（novels/outline.md）
 - 已写卷（novels/volume-XX/）
 
+## Token 优化
+
+**推荐方式**：使用 `planner_context.py` 自动生成精简上下文（~5000 token），替代手动读取全部真相文件+大纲（~30,000 token）：
+
+```bash
+python scripts/planner_context.py --volume 01 --act 2 --json
+```
+
+输出：卷进度 / 真相文件摘要 / 大纲目标 / 活跃伏笔 / 活跃支线
+
 ## 输出
 
 ### 1. 大纲

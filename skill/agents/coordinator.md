@@ -104,6 +104,8 @@
 | 写手写作前 | `build_write_context.py` 构建精简上下文 | ~45,000 token/章 |
 | 审计师审查前 | `pre_audit.py` 运行自动化审计 | ~25,000 token/章 |
 | 复盘师复盘前 | `truth_diff.py` 检测变更 | ~40,000 token/章 |
+| 规划师规划前 | `planner_context.py` 构建精简上下文 | ~25,000 token/幕 |
+| 修订师修订后 | `chapter_diff.py` 对比原稿和修订稿 | ~8,000 token/章 |
 
 ## 临时文件约定
 
