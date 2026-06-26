@@ -139,23 +139,63 @@ def import_configuration(filename=None):
         return None
 
 
+# 题材包选项
+GENRE_PACKS = {
+    "xianxia": {"name": "修仙", "desc": "境界体系、宗门设定、秘境模板、渡劫规则"},
+    "urban": {"name": "都市", "desc": "商战模板、复仇套路、崛起路径、感情线"},
+    "infinite-flow": {"name": "无限流", "desc": "副本设计、强化体系、团队配置、BOSS战"},
+    "mystery": {"name": "悬疑", "desc": "案件设计、推理线索、反转技巧、伏笔布局"},
+    "history": {"name": "历史", "desc": "权谋模板、战役描写、改革路线、朝堂设定"},
+    "sci-fi": {"name": "科幻", "desc": "科技体系、星际设定、AI描写、时间线管理"},
+    "game": {"name": "游戏", "desc": "游戏系统、等级体系、装备设计、副本攻略"},
+    "apocalypse": {"name": "末世", "desc": "生存体系、异能设定、势力分布、资源管理"},
+}
+
+
+def select_genre_pack():
+    """选择题材包"""
+    print("\n📋 选择题材包\n")
+    print("可选题材包：\n")
+    
+    for key, value in GENRE_PACKS.items():
+        print(f"  {key}: {value['name']} - {value['desc']}")
+    
+    print()
+    
+    while True:
+        choice = input("请输入题材包名称（如 xianxia）或直接输入自定义题材: ").strip()
+        if choice in GENRE_PACKS:
+            selected = GENRE_PACKS[choice]
+            print(f"\n✅ 已选择题材包：{selected['name']}")
+            return choice, selected['name']
+        elif choice:
+            print(f"\n✅ 使用自定义题材：{choice}")
+            return None, choice
+        else:
+            print("❌ 请输入题材包名称或自定义题材")
+
+
 def custom_configuration():
     """自定义配置流程（带进度指示器）"""
-    total_steps = 6
+    total_steps = 7
     show_progress(1, total_steps, "选择情绪标签")
     emotion_label = select_emotion_label()
-    show_progress(2, total_steps, "填写书籍信息")
+    show_progress(2, total_steps, "选择题材包")
+    genre_pack_key, genre_pack_name = select_genre_pack()
+    show_progress(3, total_steps, "填写书籍信息")
     book_info = input_book_info()
-    show_progress(3, total_steps, "设置主角信息")
+    show_progress(4, total_steps, "设置主角信息")
     protagonist = input_protagonist()
-    show_progress(4, total_steps, "确定核心冲突")
+    show_progress(5, total_steps, "确定核心冲突")
     conflict = input_conflict()
-    show_progress(5, total_steps, "设定章节数")
+    show_progress(6, total_steps, "设定章节数")
     chapters = input_chapters()
-    show_progress(6, total_steps, "选择文风")
+    show_progress(7, total_steps, "选择文风")
     style = select_style(book_info["genre"])
     return {
         "emotion_label": emotion_label,
+        "genre_pack_key": genre_pack_key,
+        "genre_pack_name": genre_pack_name,
         "book_name": book_info["book_name"],
         "genre": book_info["genre"],
         "synopsis": book_info["synopsis"],
