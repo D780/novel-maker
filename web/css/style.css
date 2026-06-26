@@ -452,6 +452,31 @@ a {
 }
 
 /* ============================================
+   Toast 提示
+   ============================================ */
+.toast {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-dark);
+    color: var(--bg);
+    padding: var(--space-3) var(--space-6);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    opacity: 0;
+    transition: opacity 300ms ease, transform 300ms ease;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.toast-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
    响应式
    ============================================ */
 @media (max-width: 768px) {
