@@ -30,13 +30,14 @@
 skill/
 ├── SKILL.md                    # 主技能文件（指令+规则+工作流）
 ├── QUICK-REF.md                # 快速参考卡
-├── references/                 # 17个专业参考文档
+├── references/                 # 22个专业参考文档
 │   ├── rhythm-system.md        # 节奏与情绪控制系统
 │   ├── audit-core.md           # 15维度核心审计
-│   ├── anti-ai-patterns.md     # 反AI味指南
-│   ├── genre-rules.md          # 37种题材写作规则
+│   ├── genre-rules.md          # 题材写作规则
 │   ├── golden-opening.md       # 黄金开篇锻造术
 │   └── ...                     # 情绪曲线/记忆系统/写作方法等
+├── rules/                      # 4个规则文件
+│   ├── anti-ai-expressions.md  # 反AI表达规则（7层检测+去AI味技巧）
 ├── styles/                     # 22位作者文风库（7大流派）
 │   └── authors/
 │       ├── 搞笑幽默流/         # 弈青峰/会说话的肘子/三天两觉/卖报小郎君
@@ -530,7 +531,7 @@ AI生成内容
 - 新增文风：在 `styles/authors/` 下添加Markdown文件即可
 - 新增题材规则：在 `references/genre-rules.md` 中扩展
 - 自定义模板：在 `templates/` 中创建新模板
-- 自定义审查规则：修改 `references/anti-ai-patterns.md`
+- 自定义审查规则：修改 `rules/anti-ai-expressions.md`
 
 ---
 

@@ -425,28 +425,39 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 │   ├── auditor.md              # 审计师
 │   ├── reviser.md              # 修订师
 │   └── reviewer.md             # 复盘师
-├── references/                 # 参考文档
+├── references/                 # 参考文档（22个）
 │   ├── rhythm-system.md        # 节奏与情绪控制系统
 │   ├── audit-core.md           # 15维度核心审计
 │   ├── audit-dimensions.md     # 33维度完整审计
-│   ├── rules/                    # 规则文件（反AI/角色声音/一致性）
 │   ├── platform-rules.md       # 平台适配规则
+│   ├── editorial-perspective.md # 编辑视角审查
+│   ├── sweet-spot-tracking.md  # 爽点密度追踪
+│   ├── character-voice-card.md # 角色语音卡指南
 │   ├── style-imitation.md      # 文风模仿指南
 │   ├── memory-system.md        # 记忆系统说明
 │   ├── writing-methods.md      # 写作方法
 │   ├── usage-guide.md          # 使用指南
 │   ├── creative-constraints.md # 创意约束系统
-│   ├── consistency-checker.md  # 一致性检查器
+│   ├── consistency-checker.md  # 一致性检查器（执行流程）
 │   ├── data-agent.md           # 实体管理代理
 │   ├── golden-opening.md       # 黄金开篇锻造术
 │   ├── content-expansion.md    # 内容扩充技巧
 │   ├── dialogue-writing.md     # 对话写作规范
 │   ├── plot-structures.md      # 情节结构模板
-│   └── act-guidance.md         # 幕引导系统
+│   ├── act-guidance.md         # 幕引导系统
+│   ├── genre-rules.md          # 题材写作规则
+│   ├── pacing-analysis.md      # 节奏分析
+│   ├── emotion-curve.md        # 情绪曲线
+│   └── reader-feedback.md      # 读者反馈模拟
+├── rules/                      # 规则文件（4个）
+│   ├── anti-ai-expressions.md  # 反AI表达规则（7层检测+去AI味技巧）
+│   ├── character-voice.md      # 角色声音检查规则（5维度）
+│   ├── consistency-check.md    # 5维度一致性检查规则
+│   └── smart-query.md          # 智能查询规则
 ├── styles/                     # 文风库
 │   ├── author-styles.md        # 文风汇总
 │   └── authors/                # 22位作者文风（按流派分类）
-├── templates/                  # 模板文件
+├── templates/                  # 模板文件（21个）
 │   ├── chapter.md              # 章节模板
 │   ├── constitution.md         # 创作宪法
 │   ├── outline.md              # 大纲模板（含幕层级）
@@ -459,14 +470,15 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 │   ├── subplot-board.md        # 支线看板模板
 │   ├── timeline.md             # 时间线追踪模板
 │   └── ...
-├── rules/                      # 规则文件
-│   ├── anti-ai-expressions.md  # 反AI表达规则（7层检测，60+模式）
-│   ├── character-voice.md      # 角色声音检查规则（5维度）
-│   └── consistency-check.md    # 5维度一致性检查规则
-└── scripts/                    # 脚本工具
+├── genre-packs/                # 题材包（11个 + 通用默认）
+├── arc-templates/              # 篇章弧线模板（6通用 + 42题材特定）
+├── hooks/                      # Hook 定义（5个）
+└── scripts/                    # 脚本工具（22个）
     ├── README.md               # 使用说明
     ├── nw_utils.py             # 公共工具模块
-    ├── check_wordcount.py      # 字数检查脚本
+    ├── validate.py             # 技能完整性验证
+    ├── analyze.py              # 三合一分析（单章/风格/批量）
+    ├── check_wordcount.py      # 字数检查
     ├── chapter_info.py         # 单章结构化提取
     ├── volume_batch.py         # 卷级批量汇总
     ├── hook_report.py          # 钩子密度报告
@@ -474,9 +486,17 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
     ├── style_check.py          # AI味检测
     ├── stats_report.py         # 项目统计报告
     ├── pacing_report.py        # 卷级节奏报告
+    ├── pacing_visualize.py     # 节奏可视化
     ├── summary_generator.py    # 阶段总结辅助
     ├── outline_extractor.py    # 大纲快速提取
-    └── truth_manager.py        # 真相文件管理器
+    ├── truth_manager.py        # 真相文件管理器
+    ├── query_engine.py         # 智能查询引擎
+    ├── style_anchor.py         # 风格锚点提取
+    ├── init_guide.py           # 初始化引导
+    ├── install.py              # Python 安装脚本
+    ├── build_write_context.py  # 写手上下文构建器（Token优化）
+    ├── pre_audit.py            # 预审计管线（Token优化）
+    └── truth_diff.py           # 真相文件变更检测（Token优化）
 ```
 
 ### 项目运行时数据（用户项目生成）
@@ -598,4 +618,4 @@ novels/                     # 小说正文（用户直接编辑）
 
 ***
 
-*NovelMaker v2.0.0 - 6角色协作架构，用说话的方式写小说*
+*NovelMaker v2.2.0 - 6角色协作架构，用说话的方式写小说*

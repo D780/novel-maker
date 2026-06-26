@@ -259,6 +259,61 @@ python scripts/pacing_visualize.py --chapter novels/volume-01/chapters/ch01.md
 
 ---
 
+## Token 优化脚本
+
+### build_write_context.py — 写手上下文构建器
+
+一键生成写作所需的精简上下文，将 15+ 个文件压缩为 ~3000 token 的 JSON。
+
+```bash
+python scripts/build_write_context.py novels/volume-01/chapters/ch15.md --json
+python scripts/build_write_context.py --chapter 15 --volume 01 --json
+```
+
+输出：`truth_files`（精简真相文件） / `prev_chapters`（前章摘要） / `outline`（大纲目标） / `constitution`（宪法要点）
+
+**节省：每章约 40,000-60,000 token**
+
+### pre_audit.py — 预审计管线
+
+一键运行所有可自动化的审计维度（字数/钩子/节奏/AI味/一致性）。
+
+```bash
+python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
+```
+
+输出：`word_count` / `characters` / `hook` / `pacing` / `ai_style` / `consistency` / `summary`
+
+**节省：每章约 20,000-30,000 token**
+
+### truth_diff.py — 真相文件变更检测
+
+自动检测章节变更并生成更新 diff（新角色/新地点/伏笔/情感）。
+
+```bash
+python scripts/truth_diff.py ch15.md --truth-dir .novel-maker/truth-files/ --prev ch14.md --json
+```
+
+输出：`new_characters` / `new_locations` / `hook_keywords` / `emotions` / `continuing_characters`
+
+**节省：每章约 35,000-50,000 token**
+
+---
+
+## 验证脚本
+
+### validate.py — 技能完整性验证
+
+验证所有技能文件的完整性和正确性（脚本语法/文件引用/角色/题材包/弧线模板/规则/模板/Hook）。
+
+```bash
+python scripts/validate.py
+```
+
+输出：134项检查结果（通过/警告/失败），覆盖8个维度。
+
+---
+
 ## 在 NovelMaker 工作流中的位置
 
 ```

@@ -8,6 +8,35 @@
 
 ---
 
+## [2.2.0] - 2026-06-26
+
+### 新增
+- **智能查询系统**：4种查询类型（角色/设定/剧情/伏笔），query_engine.py
+- **Hook 系统**：5个自动化 Hook（上下文注入/意图检测/章节完成/审查触发/总结触发）
+- **Web UI 增强**：设置页面、项目管理、多项目切换
+- **技能验证脚本**：validate.py（134项检查：脚本语法/文件引用/角色/题材包/弧线模板/规则/模板/Hook）
+- **技能全面审查**：合并3个冗余反AI文件为1个，修复9处断裂引用
+
+### 优化
+- Web UI 采用智汇协同风格（暖色极简设计）
+- 快速操作按钮（复制提示词到剪贴板）
+- 明确一致性检查/角色语音的职责划分（rules=检查规则，references=执行流程）
+
+---
+
+## [2.1.0] - 2026-06-25
+
+### 新增
+- **反AI表达规则**：7层检测体系，60+常见AI-slop模式（rules/anti-ai-expressions.md）
+- **风格锚点系统**：style_anchor.py（从最近5章提取句长分布、对话比例、高频词）
+- **角色声音检查**：5维度检查（rules/character-voice.md）
+- **5维度一致性检查**：时间线、人物关系、世界观、伏笔回收、能力等级（rules/consistency-check.md）
+- **11个题材包**：修仙/都市/无限流/悬疑/历史/科幻/游戏/末世/西幻/武侠/言情
+- **篇章弧线模板**：6种通用弧线 + 42种题材特定弧线
+- **节奏可视化**：pacing_visualize.py（emoji标记+热力图+情绪统计）
+
+---
+
 ## [2.0.0] - 2026-06
 
 ### 新增（架构重构）
@@ -15,7 +44,7 @@
 - `skill/agents/` 目录：6 个角色定义文件（coordinator/planner/writer/auditor/reviser/reviewer）
 - **3 个新真相文件**（扩展至 8 个）：emotional-arcs.md、subplot-board.md、timeline.md
 - **3 个新模板**：plot-card.md（剧情卡片）、character-voice.md（角色语音卡）、scene-plan.md（场景规划卡）
-- `references/anti-ai-techniques.md`：去AI味技巧详解（表层+深层）
+- `rules/anti-ai-expressions.md`：反AI表达规则（7层检测+去AI味技巧）
 - `references/platform-rules.md`：平台适配规则（番茄/起点/晋江）
 - `references/editorial-perspective.md`：编辑视角审查指南
 - `references/sweet-spot-tracking.md`：爽点密度追踪系统
