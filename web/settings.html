@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovelMaker - 设置</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .settings-section {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .settings-section h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .model-config {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .model-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+        }
+        
+        .model-card h4 {
+            margin-top: 0;
+        }
+        
+        .temperature-slider {
+            width: 100%;
+        }
+        
+        .project-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .project-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .project-item:last-child {
+            border-bottom: none;
+        }
+        
+        .project-item.active {
+            background: #e3f2fd;
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">NovelMaker</a>
+            <div class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="settings.html" class="active">设置</a>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <div class="settings-container">
+            <h1>设置</h1>
+            
+            <!-- 项目管理 -->
+            <div class="settings-section">
+                <h2>项目管理</h2>
+                <div id="project-list-container">
+                    <ul class="project-list" id="project-list">
+                        <!-- 项目列表将通过 JavaScript 动态生成 -->
+                    </ul>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-primary" onclick="addProject()">添加项目</button>
+                    <button class="btn btn-secondary" onclick="importProject()">导入项目</button>
+                </div>
+            </div>
+            
+            <!-- 模型配置 -->
+            <div class="settings-section">
+                <h2>模型配置</h2>
+                <p>为不同任务配置不同的 AI 模型和参数。</p>
+                
+                <div class="model-config">
+                    <div class="model-card">
+                        <h4>写作任务</h4>
+                        <div class="form-group">
+                            <label>模型</label>
+                            <select id="model-write">
+                                <option value="anthropic/claude-opus-4">Claude Opus 4</option>
+                                <option value="anthropic/claude-sonnet-4">Claude Sonnet 4</option>
+                                <option value="anthropic/claude-haiku-4">Claude Haiku 4</option>
+                                <option value="openai/gpt-4o">GPT-4o</option>
+                                <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>温度：<span id="temp-write-value">0.8</span></label>
+                            <input type="range" id="temp-write" class="temperature-slider" 
+                                   min="0" max="1" step="0.1" value="0.8"
+                                   oninput="updateTempDisplay('write')">
+                        </div>
+                    </div>
+                    
+                    <div class="model-card">
+                        <h4>审查任务</h4>
+                        <div class="form-group">
+                            <label>模型</label>
+                            <select id="model-review">
+                                <option value="anthropic/claude-opus-4">Claude Opus 4</option>
+                                <option value="anthropic/claude-sonnet-4" selected>Claude Sonnet 4</option>
+                                <option value="anthropic/claude-haiku-4">Claude Haiku 4</option>
+                                <option value="openai/gpt-4o">GPT-4o</option>
+                                <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>温度：<span id="temp-review-value">0.2</span></label>
+                            <input type="range" id="temp-review" class="temperature-slider" 
+                                   min="0" max="1" step="0.1" value="0.2"
+                                   oninput="updateTempDisplay('review')">
+                        </div>
+                    </div>
+                    
+                    <div class="model-card">
+                        <h4>查询任务</h4>
+                        <div class="form-group">
+                            <label>模型</label>
+                            <select id="model-query">
+                                <option value="anthropic/claude-opus-4">Claude Opus 4</option>
+                                <option value="anthropic/claude-sonnet-4">Claude Sonnet 4</option>
+                                <option value="anthropic/claude-haiku-4" selected>Claude Haiku 4</option>
+                                <option value="openai/gpt-4o">GPT-4o</option>
+                                <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>温度：<span id="temp-query-value">0.1</span></label>
+                            <input type="range" id="temp-query" class="temperature-slider" 
+                                   min="0" max="1" step="0.1" value="0.1"
+                                   oninput="updateTempDisplay('query')">
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-primary" onclick="saveModelConfig()">保存配置</button>
+                    <button class="btn btn-secondary" onclick="resetModelConfig()">重置默认</button>
+                </div>
+            </div>
+            
+            <!-- Hook 配置 -->
+            <div class="settings-section">
+                <h2>Hook 配置</h2>
+                <p>配置自动执行的 Hook 。</p>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="hook-context" checked> 
+                        上下文注入（写作前自动注入角色状态、世界观等）
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="hook-intent" checked> 
+                        意图检测（自动识别用户意图并路由）
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="hook-chapter" checked> 
+                        章节完成（自动更新大纲、记忆文件、伏笔表）
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="hook-review" checked> 
+                        审查触发（每章完成后自动质量审查）
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="hook-summary" checked> 
+                        总结触发（每10章/50章自动生成总结）
+                    </label>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-primary" onclick="saveHookConfig()">保存配置</button>
+                </div>
+            </div>
+            
+            <!-- 导出/导入 -->
+            <div class="settings-section">
+                <h2>导出/导入</h2>
+                <p>导出或导入项目配置和数据。</p>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="exportConfig()">导出配置</button>
+                    <button class="btn btn-secondary" onclick="importConfig()">导入配置</button>
+                    <button class="btn btn-danger" onclick="resetAll()">重置所有</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>NovelMaker v2.1.0 - 全能网文写作助手</p>
+        </div>
+    </footer>
+    
+    <script src="js/project.js"></script>
+    <script>
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProjectList();
+            loadModelConfig();
+            loadHookConfig();
+        });
+        
+        // 更新温度显示
+        function updateTempDisplay(task) {
+            const slider = document.getElementById(`temp-${task}`);
+            const display = document.getElementById(`temp-${task}-value`);
+            display.textContent = slider.value;
+        }
+        
+        // 保存模型配置
+        function saveModelConfig() {
+            const config = {
+                write: {
+                    model: document.getElementById('model-write').value,
+                    temperature: parseFloat(document.getElementById('temp-write').value)
+                },
+                review: {
+                    model: document.getElementById('model-review').value,
+                    temperature: parseFloat(document.getElementById('temp-review').value)
+                },
+                query: {
+                    model: document.getElementById('model-query').value,
+                    temperature: parseFloat(document.getElementById('temp-query').value)
+                }
+            };
+            
+            localStorage.setItem('novel-maker-model-config', JSON.stringify(config));
+            alert('模型配置已保存');
+        }
+        
+        // 加载模型配置
+        function loadModelConfig() {
+            const config = JSON.parse(localStorage.getItem('novel-maker-model-config') || '{}');
+            
+            if (config.write) {
+                document.getElementById('model-write').value = config.write.model;
+                document.getElementById('temp-write').value = config.write.temperature;
+                document.getElementById('temp-write-value').textContent = config.write.temperature;
+            }
+            
+            if (config.review) {
+                document.getElementById('model-review').value = config.review.model;
+                document.getElementById('temp-review').value = config.review.temperature;
+                document.getElementById('temp-review-value').textContent = config.review.temperature;
+            }
+            
+            if (config.query) {
+                document.getElementById('model-query').value = config.query.model;
+                document.getElementById('temp-query').value = config.query.temperature;
+                document.getElementById('temp-query-value').textContent = config.query.temperature;
+            }
+        }
+        
+        // 重置模型配置
+        function resetModelConfig() {
+            document.getElementById('model-write').value = 'anthropic/claude-opus-4';
+            document.getElementById('temp-write').value = '0.8';
+            document.getElementById('temp-write-value').textContent = '0.8';
+            
+            document.getElementById('model-review').value = 'anthropic/claude-sonnet-4';
+            document.getElementById('temp-review').value = '0.2';
+            document.getElementById('temp-review-value').textContent = '0.2';
+            
+            document.getElementById('model-query').value = 'anthropic/claude-haiku-4';
+            document.getElementById('temp-query').value = '0.1';
+            document.getElementById('temp-query-value').textContent = '0.1';
+            
+            saveModelConfig();
+        }
+        
+        // 保存 Hook 配置
+        function saveHookConfig() {
+            const config = {
+                context: document.getElementById('hook-context').checked,
+                intent: document.getElementById('hook-intent').checked,
+                chapter: document.getElementById('hook-chapter').checked,
+                review: document.getElementById('hook-review').checked,
+                summary: document.getElementById('hook-summary').checked
+            };
+            
+            localStorage.setItem('novel-maker-hook-config', JSON.stringify(config));
+            alert('Hook 配置已保存');
+        }
+        
+        // 加载 Hook 配置
+        function loadHookConfig() {
+            const config = JSON.parse(localStorage.getItem('novel-maker-hook-config') || '{}');
+            
+            document.getElementById('hook-context').checked = config.context !== false;
+            document.getElementById('hook-intent').checked = config.intent !== false;
+            document.getElementById('hook-chapter').checked = config.chapter !== false;
+            document.getElementById('hook-review').checked = config.review !== false;
+            document.getElementById('hook-summary').checked = config.summary !== false;
+        }
+        
+        // 导出配置
+        function exportConfig() {
+            const config = {
+                model: JSON.parse(localStorage.getItem('novel-maker-model-config') || '{}'),
+                hook: JSON.parse(localStorage.getItem('novel-maker-hook-config') || '{}'),
+                projects: JSON.parse(localStorage.getItem('novel-maker-projects') || '[]')
+            };
+            
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'novel-maker-config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 导入配置
+        function importConfig() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const config = JSON.parse(e.target.result);
+                        
+                        if (config.model) {
+                            localStorage.setItem('novel-maker-model-config', JSON.stringify(config.model));
+                        }
+                        
+                        if (config.hook) {
+                            localStorage.setItem('novel-maker-hook-config', JSON.stringify(config.hook));
+                        }
+                        
+                        if (config.projects) {
+                            localStorage.setItem('novel-maker-projects', JSON.stringify(config.projects));
+                        }
+                        
+                        alert('配置导入成功');
+                        location.reload();
+                    } catch (error) {
+                        alert('配置文件格式错误');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // 重置所有
+        function resetAll() {
+            if (confirm('确定要重置所有配置吗？这将清除所有项目和设置。')) {
+                localStorage.removeItem('novel-maker-model-config');
+                localStorage.removeItem('novel-maker-hook-config');
+                localStorage.removeItem('novel-maker-projects');
+                alert('所有配置已重置');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
