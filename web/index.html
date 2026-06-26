@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovelMaker Dashboard</title>
+    <title>NovelMaker - 全能网文写作助手</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- CDN libraries -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="app-layout">
         <!-- 侧边栏 -->
         <aside class="sidebar">
             <div class="logo">
@@ -23,7 +23,7 @@
                     <li data-view="characters">角色档案</li>
                     <li data-view="pacing">节奏可视化</li>
                     <li data-view="editor">编辑器</li>
-                    <li><a href="settings.html" style="color: inherit; text-decoration: none;">设置</a></li>
+                    <li><a href="settings.html">设置</a></li>
                 </ul>
             </nav>
         </aside>
@@ -32,7 +32,7 @@
         <main class="content">
             <!-- 项目概览 -->
             <section id="overview" class="view active">
-                <h2>项目概览</h2>
+                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">项目概览</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>总章节数</h3>
@@ -51,28 +51,30 @@
 
             <!-- 章节列表 -->
             <section id="chapters" class="view">
-                <h2>章节列表</h2>
+                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">章节列表</h2>
                 <div id="chapter-list"></div>
             </section>
 
             <!-- 角色档案 -->
             <section id="characters" class="view">
-                <h2>角色档案</h2>
-                <div id="character-list"></div>
+                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">角色档案</h2>
+                <div id="character-list" class="character-grid"></div>
             </section>
 
             <!-- 节奏可视化 -->
             <section id="pacing" class="view">
-                <h2>节奏可视化</h2>
-                <div id="pacing-chart"></div>
-                <div id="emotion-stats"></div>
+                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">节奏可视化</h2>
+                <div class="pacing-chart">
+                    <div id="pacing-chart-container" class="chart-container"></div>
+                </div>
+                <div id="emotion-stats" class="mt-6"></div>
             </section>
 
             <!-- 编辑器 -->
             <section id="editor" class="view">
-                <h2>编辑器</h2>
+                <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-6);">编辑器</h2>
                 <div class="editor-container">
-                    <textarea id="editor-content"></textarea>
+                    <textarea id="editor-content" class="form-control" placeholder="在这里输入 Markdown 内容..."></textarea>
                     <div id="editor-preview"></div>
                 </div>
             </section>
