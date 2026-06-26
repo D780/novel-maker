@@ -1,44 +1,47 @@
-/* NovelMaker - 现代化设计系统 */
+/* NovelMaker - 智汇协同风格设计系统 */
 
 /* ============================================
    设计令牌 (Design Tokens)
    ============================================ */
 :root {
-    /* 色彩系统 */
+    /* 色彩系统 - 深色主题 */
     --color-primary: #6366f1;
-    --color-primary-hover: #4f46e5;
-    --color-primary-light: #e0e7ff;
+    --color-primary-hover: #818cf8;
+    --color-primary-light: rgba(99, 102, 241, 0.15);
     --color-secondary: #8b5cf6;
-    --color-secondary-hover: #7c3aed;
+    --color-secondary-hover: #a78bfa;
     --color-success: #10b981;
     --color-warning: #f59e0b;
     --color-danger: #ef4444;
-    --color-danger-hover: #dc2626;
+    --color-danger-hover: #f87171;
     
-    /* 中性色 */
-    --color-bg: #f8fafc;
-    --color-bg-alt: #f1f5f9;
-    --color-card: #ffffff;
-    --color-border: #e2e8f0;
-    --color-text: #1e293b;
-    --color-text-secondary: #64748b;
-    --color-text-muted: #94a3b8;
+    /* 深色主题色彩 */
+    --color-bg: #0a0a0a;
+    --color-bg-alt: #111111;
+    --color-card: rgba(255, 255, 255, 0.05);
+    --color-card-hover: rgba(255, 255, 255, 0.08);
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-text: #ffffff;
+    --color-text-secondary: rgba(255, 255, 255, 0.7);
+    --color-text-muted: rgba(255, 255, 255, 0.5);
     
     /* 渐变 */
-    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    --gradient-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+    --gradient-text: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+    --gradient-glow: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
     
     /* 阴影 */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
     
     /* 圆角 */
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
     
     /* 间距 */
     --space-1: 4px;
@@ -50,11 +53,16 @@
     --space-8: 32px;
     --space-10: 40px;
     --space-12: 48px;
+    --space-16: 64px;
     
     /* 过渡 */
     --transition-fast: 150ms ease;
     --transition-normal: 200ms ease;
     --transition-slow: 300ms ease;
+    
+    /* 毛玻璃效果 */
+    --backdrop-blur: blur(20px);
+    --backdrop-saturate: saturate(180%);
 }
 
 /* ============================================
@@ -80,6 +88,20 @@ body {
     color: var(--color-text);
     line-height: 1.6;
     min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* 背景光效 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-glow);
+    pointer-events: none;
+    z-index: -1;
 }
 
 a {
@@ -98,12 +120,14 @@ img {
 }
 
 /* ============================================
-   导航栏
+   导航栏 - 毛玻璃效果
    ============================================ */
 .navbar {
-    background: var(--gradient-primary);
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
     padding: var(--space-4) var(--space-6);
-    box-shadow: var(--shadow-lg);
+    border-bottom: 1px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -122,10 +146,13 @@ img {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.5px;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .navbar .logo:hover {
-    color: white;
     opacity: 0.9;
 }
 
@@ -136,7 +163,7 @@ img {
 }
 
 .nav-links a {
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 500;
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-md);
@@ -146,7 +173,7 @@ img {
 .nav-links a:hover,
 .nav-links a.active {
     color: white;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================
@@ -164,7 +191,7 @@ img {
 }
 
 /* ============================================
-   侧边栏布局（首页专用）
+   侧边栏布局 - 毛玻璃效果
    ============================================ */
 .app-layout {
     display: flex;
@@ -173,7 +200,9 @@ img {
 
 .sidebar {
     width: 260px;
-    background: var(--color-card);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
     border-right: 1px solid var(--color-border);
     padding: var(--space-6);
     display: flex;
@@ -183,10 +212,13 @@ img {
 .sidebar .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-primary);
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: var(--space-8);
     padding-bottom: var(--space-4);
-    border-bottom: 2px solid var(--color-primary-light);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .sidebar nav ul {
@@ -199,7 +231,7 @@ img {
     cursor: pointer;
     border-radius: var(--radius-md);
     margin-bottom: var(--space-2);
-    color: var(--color-text-secondary);
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 500;
     transition: all var(--transition-fast);
     display: flex;
@@ -208,14 +240,14 @@ img {
 }
 
 .sidebar nav li:hover {
-    background: var(--color-primary-light);
-    color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
 }
 
 .sidebar nav li.active {
     background: var(--gradient-primary);
     color: white;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-glow);
 }
 
 .sidebar nav li a {
@@ -235,18 +267,22 @@ img {
 }
 
 /* ============================================
-   卡片组件
+   卡片组件 - 毛玻璃效果
    ============================================ */
 .card {
     background: var(--color-card);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
     padding: var(--space-6);
     transition: all var(--transition-normal);
 }
 
 .card:hover {
-    box-shadow: var(--shadow-lg);
+    background: var(--color-card-hover);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-glow);
     transform: translateY(-2px);
 }
 
@@ -263,7 +299,7 @@ img {
 }
 
 /* ============================================
-   统计卡片
+   统计卡片 - 发光边框
    ============================================ */
 .stats-grid {
     display: grid;
@@ -274,20 +310,35 @@ img {
 
 .stat-card {
     background: var(--color-card);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
     padding: var(--space-6);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
     transition: all var(--transition-normal);
-    border-left: 4px solid var(--color-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
 }
 
 .stat-card:hover {
-    box-shadow: var(--shadow-lg);
+    background: var(--color-card-hover);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-glow);
     transform: translateY(-2px);
 }
 
 .stat-card h3 {
-    color: var(--color-text-secondary);
+    color: var(--color-text-muted);
     font-size: 0.875rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -297,7 +348,10 @@ img {
 .stat-card p {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--color-text);
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-top: var(--space-2);
 }
 
@@ -317,18 +371,18 @@ img {
     display: block;
     margin-bottom: var(--space-2);
     font-weight: 500;
-    color: var(--color-text);
+    color: var(--color-text-secondary);
     font-size: 0.9375rem;
 }
 
 .form-control {
     width: 100%;
     padding: var(--space-3) var(--space-4);
-    border: 2px solid var(--color-border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     font-size: 1rem;
     color: var(--color-text);
-    background: var(--color-card);
+    background: rgba(255, 255, 255, 0.05);
     transition: all var(--transition-fast);
 }
 
@@ -339,7 +393,7 @@ img {
 }
 
 .form-control:hover {
-    border-color: var(--color-text-muted);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 select.form-control {
@@ -376,7 +430,7 @@ textarea.form-control {
     border-radius: 50%;
     background: var(--gradient-primary);
     cursor: pointer;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-glow);
     transition: transform var(--transition-fast);
 }
 
@@ -402,14 +456,16 @@ textarea.form-control {
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-4);
-    background: var(--color-bg-alt);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     margin-bottom: var(--space-3);
     transition: all var(--transition-fast);
 }
 
 .checkbox-group:hover {
-    background: var(--color-primary-light);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(99, 102, 241, 0.3);
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -422,10 +478,11 @@ textarea.form-control {
 .checkbox-group label {
     cursor: pointer;
     flex: 1;
+    color: var(--color-text-secondary);
 }
 
 /* ============================================
-   按钮组件
+   按钮组件 - 渐变发光
    ============================================ */
 .btn {
     display: inline-flex;
@@ -454,19 +511,19 @@ textarea.form-control {
 }
 
 .btn-primary:hover {
-    background: var(--gradient-hover);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-glow);
     transform: translateY(-1px);
 }
 
 .btn-secondary {
-    background: var(--color-bg-alt);
+    background: rgba(255, 255, 255, 0.05);
     color: var(--color-text);
     border: 1px solid var(--color-border);
 }
 
 .btn-secondary:hover {
-    background: var(--color-border);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn-danger {
@@ -476,6 +533,7 @@ textarea.form-control {
 
 .btn-danger:hover {
     background: var(--color-danger-hover);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
 .btn-sm {
@@ -510,7 +568,7 @@ textarea.form-control {
 }
 
 .list-item:hover {
-    background: var(--color-bg-alt);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .list-item.active {
@@ -539,7 +597,7 @@ textarea.form-control {
 }
 
 /* ============================================
-   模型配置卡片
+   模型配置卡片 - 发光边框
    ============================================ */
 .model-grid {
     display: grid;
@@ -549,15 +607,35 @@ textarea.form-control {
 
 .model-card {
     background: var(--color-card);
-    border: 2px solid var(--color-border);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: var(--space-6);
     transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.model-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
 }
 
 .model-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: var(--shadow-md);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-glow);
+}
+
+.model-card:hover::before {
+    opacity: 1;
 }
 
 .model-card h4 {
@@ -566,7 +644,7 @@ textarea.form-control {
     color: var(--color-text);
     margin-bottom: var(--space-5);
     padding-bottom: var(--space-3);
-    border-bottom: 2px solid var(--color-primary-light);
+    border-bottom: 1px solid var(--color-border);
 }
 
 /* ============================================
@@ -574,8 +652,10 @@ textarea.form-control {
    ============================================ */
 .section {
     background: var(--color-card);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
     padding: var(--space-8);
     margin-bottom: var(--space-6);
 }
@@ -583,7 +663,7 @@ textarea.form-control {
 .section-header {
     margin-bottom: var(--space-6);
     padding-bottom: var(--space-4);
-    border-bottom: 2px solid var(--color-primary-light);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .section-header h2 {
@@ -593,7 +673,7 @@ textarea.form-control {
 }
 
 .section-header p {
-    color: var(--color-text-secondary);
+    color: var(--color-text-muted);
     margin-top: var(--space-2);
 }
 
@@ -614,9 +694,9 @@ textarea.form-control {
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
     font-size: 0.9375rem;
     line-height: 1.8;
-    border: 2px solid var(--color-border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: var(--color-card);
+    background: rgba(255, 255, 255, 0.03);
     color: var(--color-text);
     resize: vertical;
     transition: border-color var(--transition-fast);
@@ -631,7 +711,7 @@ textarea.form-control {
 #editor-preview {
     padding: var(--space-6);
     background: var(--color-card);
-    border: 2px solid var(--color-border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     overflow-y: auto;
     line-height: 1.8;
@@ -649,14 +729,17 @@ textarea.form-control {
 
 .character-card {
     background: var(--color-card);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
     overflow: hidden;
     transition: all var(--transition-normal);
 }
 
 .character-card:hover {
-    box-shadow: var(--shadow-lg);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-glow);
     transform: translateY(-4px);
 }
 
@@ -690,7 +773,7 @@ textarea.form-control {
 }
 
 .character-info p {
-    color: var(--color-text);
+    color: var(--color-text-secondary);
 }
 
 /* ============================================
@@ -698,8 +781,10 @@ textarea.form-control {
    ============================================ */
 .pacing-chart {
     background: var(--color-card);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
     padding: var(--space-6);
     margin-top: var(--space-6);
 }
@@ -713,11 +798,13 @@ textarea.form-control {
    页脚
    ============================================ */
 .footer {
-    background: var(--color-card);
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
     border-top: 1px solid var(--color-border);
     padding: var(--space-6) 0;
     text-align: center;
-    color: var(--color-text-secondary);
+    color: var(--color-text-muted);
     font-size: 0.875rem;
 }
 
@@ -752,6 +839,19 @@ textarea.form-control {
     to {
         opacity: 0;
         transform: translateY(-10px);
+    }
+}
+
+/* 发光动画 */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.2);
     }
 }
 
@@ -795,6 +895,14 @@ textarea.form-control {
 .gap-4 { gap: var(--space-4); }
 .gap-6 { gap: var(--space-6); }
 
+/* 渐变文字 */
+.gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 /* ============================================
    空状态
    ============================================ */
@@ -828,24 +936,26 @@ textarea.form-control {
     border-radius: var(--radius-md);
     margin-bottom: var(--space-4);
     font-size: 0.9375rem;
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
 }
 
 .alert-success {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .alert-warning {
-    background: #fffbeb;
-    color: #92400e;
-    border: 1px solid #fcd34d;
+    background: rgba(245, 158, 11, 0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .alert-danger {
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 /* ============================================
