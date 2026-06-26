@@ -105,8 +105,15 @@ tags: [writing, novel, chinese, web-novel, ai-assistant]
 - **AI味检测**: 识别套话、情感空洞、描写模式化
 - **一致性检查**: 角色OOC、设定冲突、时间线验证
 - **追读力分析**: Hook质量、爽点、弃读风险评估
+- **反AI表达规则**: 7层检测体系，60+常见AI-slop模式识别
+- **风格锚点系统**: 从最近5章提取句长分布、对话比例、高频词
+- **角色声音检查**: 5维度检查（语言习惯、情感表达、知识边界、行为逻辑、关系互动）
+- **5维度一致性检查**: 时间线、人物关系、世界观、伏笔回收、能力等级
 
 > 详见 [audit-core.md](references/audit-core.md)
+> 反AI表达规则详见 [rules/anti-ai-expressions.md](rules/anti-ai-expressions.md)
+> 角色声音检查详见 [rules/character-voice.md](rules/character-voice.md)
+> 一致性检查详见 [rules/consistency-check.md](rules/consistency-check.md)
 
 ### 5. 记忆与实体（RAG 检索增强）
 
@@ -430,6 +437,10 @@ AI在写作时自动检索并构建以下上下文，无需用户手动指定：
 │   ├── subplot-board.md        # 支线看板模板
 │   ├── timeline.md             # 时间线追踪模板
 │   └── ...
+├── rules/                      # 规则文件
+│   ├── anti-ai-expressions.md  # 反AI表达规则（7层检测，60+模式）
+│   ├── character-voice.md      # 角色声音检查规则（5维度）
+│   └── consistency-check.md    # 5维度一致性检查规则
 └── scripts/                    # 脚本工具
     ├── README.md               # 使用说明
     ├── nw_utils.py             # 公共工具模块
@@ -517,6 +528,7 @@ novels/                     # 小说正文（用户直接编辑）
 | [outline_extractor.py](scripts/outline_extractor.py) | 大纲提取，供 `/novel-maker memory outline` 使用 |
 | [truth_manager.py](scripts/truth_manager.py) | 真相文件管理，供 `/novel-maker memory entity` 使用 |
 | [nw_utils.py](scripts/nw_utils.py)           | 公共模块：所有脚本共用的工具函数 |
+| [style_anchor.py](scripts/style_anchor.py)   | 风格锚点提取：从最近5章提取句长分布、对话比例、高频词 |
 
 > 使用脚本预处理可节省约 **90% token 消耗**。详见 [scripts/README.md](scripts/README.md)
 
@@ -559,6 +571,7 @@ novels/                     # 小说正文（用户直接编辑）
 | 1.5.0 | 2026-05 | 幕系统 + 脚本 - 引入"幕"概念（卷内剧情弧），`/novel-maker act`展示现状+6条剧情走向；Python预处理脚本12个+公共模块1个，节省约90% token消耗 |
 | 1.6.0 | 2026-05 | 文档优化 - 新增QUICK-REF快速参考卡、合并节奏与情绪文档、精简审计为15核心维度、SKILL.md去重 |
 | 2.0.0 | 2026-06 | **架构重构** - 6角色协作架构（协调者/规划师/写手/审计师/修订师/复盘师）、真相文件扩展至8个、新增去AI味技巧/平台适配规则/剧情卡片/角色语音卡/场景规划卡等模板 |
+| 2.1.0 | 2026-06 | **质量增强** - 反AI表达规则（7层检测60+模式）、风格锚点脚本、角色声音检查（5维度）、5维度一致性检查、11个题材包、6种通用弧线+42种题材特定弧线、节奏可视化、Web UI |
 
 ***
 
