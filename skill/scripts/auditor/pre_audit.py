@@ -7,8 +7,8 @@
 输出结构化 JSON，审计师只需读取结果做 AI 判断，无需读取全文。
 
 用法:
-    python scripts/pre_audit.py novels/volume-01/chapters/ch15.md
-    python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
+    python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md
+    python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
 """
 
 import argparse
@@ -17,8 +17,8 @@ import os
 import sys
 import subprocess
 
-sys.path.insert(0, os.path.dirname(__file__))
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     read_chapter, extract_characters, detect_hook,
     detect_structure, estimate_pacing,
     clean_markdown, generate_summary

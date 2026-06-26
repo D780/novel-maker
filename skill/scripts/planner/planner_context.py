@@ -7,8 +7,8 @@
 替代手动读取全部真相文件+大纲（~30,000 token）。
 
 用法:
-    python scripts/planner_context.py --volume 01 --json
-    python scripts/planner_context.py --volume 01 --act 2 --json
+    python scripts/planner/planner_context.py --volume 01 --json
+    python scripts/planner/planner_context.py --volume 01 --act 2 --json
 """
 
 import argparse
@@ -16,8 +16,8 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(__file__))
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     read_truth_section, list_chapters, read_chapter,
     extract_characters, generate_summary, parse_outline_headings,
     chapter_sort_key

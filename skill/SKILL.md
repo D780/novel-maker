@@ -200,7 +200,7 @@ NovelMaker v2.0 采用 6角色协作架构，每个角色专注特定职责：
 - **情绪统计**: 多维度情绪点统计分析
 - **问题检测**: 自动检测连续平淡/高潮等节奏问题
 
-> 使用方式：`python scripts/pacing_visualize.py --volume novels/volume-01/`
+> 使用方式：`python scripts/auditor/pacing_report.py novels/volume-01/chapters/ --visualize`
 
 ### 13. 智能查询系统
 
@@ -209,7 +209,7 @@ NovelMaker v2.0 采用 6角色协作架构，每个角色专注特定职责：
 - **自然语言支持**: 支持自然语言查询，如"林风是什么等级？"
 - **结果格式化**: 查询结果格式化展示，包含来源信息
 
-> 使用方式：`python skill/scripts/query_engine.py '林风是什么等级？'`
+> 使用方式：`python scripts/planner/query_engine.py '林风是什么等级？'`
 
 ### 14. Hook 系统
 
@@ -312,7 +312,7 @@ AI自动完成：
 AI在写作前自动运行 `build_write_context.py` 构建精简上下文（~3000 token），替代手动读取 15+ 个文件（~45,000 token）：
 
 ```bash
-python scripts/build_write_context.py novels/volume-01/chapters/ch15.md --json
+python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md --json
 ```
 
 输出结构化 JSON，包含：
@@ -330,7 +330,7 @@ python scripts/build_write_context.py novels/volume-01/chapters/ch15.md --json
 每章写完后自动运行 `pre_audit.py`，一键执行所有可自动化的审计维度：
 
 ```bash
-python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
+python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
 ```
 
 输出：字数检查 / 角色提取 / 章末钩子 / 节奏评估 / AI味检测 / 一致性扫描
@@ -505,32 +505,46 @@ python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
 ├── genre-packs/                # 题材包（11个 + 通用默认）
 ├── arc-templates/              # 篇章弧线模板（6通用 + 42题材特定）
 ├── hooks/                      # Hook 定义（5个）
-└── scripts/                    # 脚本工具（24个）
+└── scripts/                    # 脚本工具（28个，按角色分类）
     ├── README.md               # 使用说明
-    ├── nw_utils.py             # 公共工具模块
-    ├── validate.py             # 技能完整性验证
-    ├── analyze.py              # 三合一分析（单章/风格/批量）
-    ├── check_wordcount.py      # 字数检查
-    ├── chapter_info.py         # 单章结构化提取
-    ├── volume_batch.py         # 卷级批量汇总
-    ├── hook_report.py          # 钩子密度报告
-    ├── consistency_scan.py     # 一致性扫描
-    ├── style_check.py          # AI味检测
-    ├── stats_report.py         # 项目统计报告
-    ├── pacing_report.py        # 卷级节奏报告
-    ├── pacing_visualize.py     # 节奏可视化
-    ├── summary_generator.py    # 阶段总结辅助
-    ├── outline_extractor.py    # 大纲快速提取
-    ├── truth_manager.py        # 真相文件管理器
-    ├── query_engine.py         # 智能查询引擎
-    ├── style_anchor.py         # 风格锚点提取
-    ├── init_guide.py           # 初始化引导
-    ├── install.py              # Python 安装脚本
-    ├── build_write_context.py  # 写手上下文构建器（Token优化）
-    ├── pre_audit.py            # 预审计管线（Token优化）
-    ├── truth_diff.py           # 真相文件变更检测（Token优化）
-    ├── planner_context.py      # 规划师上下文包（Token优化）
-    └── chapter_diff.py         # 章节修订对比（Token优化）
+    ├── common/                 # 公共脚本（5个）
+    │   ├── nm_utils.py         # 公共工具模块
+    │   ├── validate.py         # 技能完整性验证
+    │   ├── analyze.py          # 三合一分析（单章/风格/批量）
+    │   ├── init_guide.py       # 初始化引导
+    │   └── install.py          # Python 安装脚本
+    ├── writer/                 # 写手脚本（5个）
+    │   ├── build_write_context.py  # 写手上下文构建器（Token优化）
+    │   ├── chapter_info.py     # 单章结构化提取
+    │   ├── check_wordcount.py  # 字数检查
+    │   ├── style_anchor.py     # 风格锚点提取
+    │   └── scene_builder.py    # 场景构建辅助
+    ├── auditor/                # 审计师脚本（8个）
+    │   ├── pre_audit.py        # 预审计管线（Token优化）
+    │   ├── consistency_scan.py # 一致性扫描
+    │   ├── hook_report.py      # 钩子密度报告
+    │   ├── pacing_report.py    # 卷级节奏报告（含可视化）
+    │   ├── pacing_optimizer.py # 节奏优化建议
+    │   ├── style_check.py      # AI味检测
+    │   ├── dialogue_checker.py # 对话质量检查
+    │   ├── worldbuilding_checker.py # 世界观一致性检查
+    │   └── chapter_transition.py # 章节衔接检查
+    ├── reviewer/               # 复盘师脚本（8个）
+    │   ├── truth_diff.py       # 真相文件变更检测（Token优化）
+    │   ├── truth_manager.py    # 真相文件管理器
+    │   ├── summary_generator.py # 阶段总结辅助
+    │   ├── chapter_diff.py     # 章节修订对比（Token优化）
+    │   ├── character_arc_tracker.py # 角色弧线追踪
+    │   ├── subplot_tracker.py  # 支线追踪器
+    │   ├── emotion_curve.py    # 情绪曲线分析
+    │   └── foreshadowing_tracker.py # 伏笔追踪器
+    ├── planner/                # 规划师脚本（3个）
+    │   ├── planner_context.py  # 规划师上下文包（Token优化）
+    │   ├── outline_extractor.py # 大纲快速提取
+    │   └── query_engine.py     # 智能查询引擎
+    └── coordinator/            # 协调者脚本（2个）
+        ├── volume_batch.py     # 卷级批量汇总
+        └── stats_report.py     # 项目统计报告
 ```
 
 ### 项目运行时数据（用户项目生成）
@@ -590,21 +604,67 @@ novels/                     # 小说正文（用户直接编辑）
 
 ## 脚本工具
 
+### 公共脚本（common/）
+
 | 脚本 | 说明 |
 |------|------|
-| [check_wordcount.py](scripts/check_wordcount.py) | 字数检查 |
-| [chapter_info.py](scripts/chapter_info.py)   | 单章结构化提取，AI可代替读全文 |
-| [volume_batch.py](scripts/volume_batch.py)   | 卷级批量汇总，供 `/novel-maker act` 使用 |
-| [hook_report.py](scripts/hook_report.py)     | 钩子密度报告，供 `/novel-maker review pacing` 使用 |
-| [consistency_scan.py](scripts/consistency_scan.py) | 一致性扫描，供 `/novel-maker review consistency` 使用 |
-| [style_check.py](scripts/style_check.py)     | AI味检测，供 `/novel-maker review ai味` 使用 |
-| [stats_report.py](scripts/stats_report.py)   | 项目统计，供 `/novel-maker stats` 使用 |
-| [pacing_report.py](scripts/pacing_report.py) | 节奏报告，供 `/novel-maker review pacing volume` 使用 |
-| [summary_generator.py](scripts/summary_generator.py) | 阶段总结辅助，供 `/novel-maker summary` 使用 |
-| [outline_extractor.py](scripts/outline_extractor.py) | 大纲提取，供 `/novel-maker memory outline` 使用 |
-| [truth_manager.py](scripts/truth_manager.py) | 真相文件管理，供 `/novel-maker memory entity` 使用 |
-| [nw_utils.py](scripts/nw_utils.py)           | 公共模块：所有脚本共用的工具函数 |
-| [style_anchor.py](scripts/style_anchor.py)   | 风格锚点提取：从最近5章提取句长分布、对话比例、高频词 |
+| [nm_utils.py](scripts/common/nm_utils.py) | 公共模块：所有脚本共用的工具函数 |
+| [validate.py](scripts/common/validate.py) | 技能完整性验证（139项检查） |
+| [analyze.py](scripts/common/analyze.py) | 三合一分析（单章/风格/批量） |
+| [init_guide.py](scripts/common/init_guide.py) | 初始化引导 |
+| [install.py](scripts/common/install.py) | Python 安装脚本 |
+
+### 写手脚本（writer/）
+
+| 脚本 | 说明 |
+|------|------|
+| [build_write_context.py](scripts/writer/build_write_context.py) | 写手上下文构建器（Token优化，~45k/章） |
+| [chapter_info.py](scripts/writer/chapter_info.py) | 单章结构化提取 |
+| [check_wordcount.py](scripts/writer/check_wordcount.py) | 字数检查 |
+| [style_anchor.py](scripts/writer/style_anchor.py) | 风格锚点提取 |
+| [scene_builder.py](scripts/writer/scene_builder.py) | 场景构建辅助 |
+
+### 审计师脚本（auditor/）
+
+| 脚本 | 说明 |
+|------|------|
+| [pre_audit.py](scripts/auditor/pre_audit.py) | 预审计管线（Token优化，~25k/章） |
+| [consistency_scan.py](scripts/auditor/consistency_scan.py) | 一致性扫描 |
+| [hook_report.py](scripts/auditor/hook_report.py) | 钩子密度报告 |
+| [pacing_report.py](scripts/auditor/pacing_report.py) | 卷级节奏报告（含可视化） |
+| [pacing_optimizer.py](scripts/auditor/pacing_optimizer.py) | 节奏优化建议 |
+| [style_check.py](scripts/auditor/style_check.py) | AI味检测 |
+| [dialogue_checker.py](scripts/auditor/dialogue_checker.py) | 对话质量检查 |
+| [worldbuilding_checker.py](scripts/auditor/worldbuilding_checker.py) | 世界观一致性检查 |
+| [chapter_transition.py](scripts/auditor/chapter_transition.py) | 章节衔接检查 |
+
+### 复盘师脚本（reviewer/）
+
+| 脚本 | 说明 |
+|------|------|
+| [truth_diff.py](scripts/reviewer/truth_diff.py) | 真相文件变更检测（Token优化，~40k/章） |
+| [truth_manager.py](scripts/reviewer/truth_manager.py) | 真相文件管理器 |
+| [summary_generator.py](scripts/reviewer/summary_generator.py) | 阶段总结辅助 |
+| [chapter_diff.py](scripts/reviewer/chapter_diff.py) | 章节修订对比（Token优化，~8k/章） |
+| [character_arc_tracker.py](scripts/reviewer/character_arc_tracker.py) | 角色弧线追踪 |
+| [subplot_tracker.py](scripts/reviewer/subplot_tracker.py) | 支线追踪器 |
+| [emotion_curve.py](scripts/reviewer/emotion_curve.py) | 情绪曲线分析 |
+| [foreshadowing_tracker.py](scripts/reviewer/foreshadowing_tracker.py) | 伏笔追踪器 |
+
+### 规划师脚本（planner/）
+
+| 脚本 | 说明 |
+|------|------|
+| [planner_context.py](scripts/planner/planner_context.py) | 规划师上下文包（Token优化，~25k/幕） |
+| [outline_extractor.py](scripts/planner/outline_extractor.py) | 大纲快速提取 |
+| [query_engine.py](scripts/planner/query_engine.py) | 智能查询引擎 |
+
+### 协调者脚本（coordinator/）
+
+| 脚本 | 说明 |
+|------|------|
+| [volume_batch.py](scripts/coordinator/volume_batch.py) | 卷级批量汇总 |
+| [stats_report.py](scripts/coordinator/stats_report.py) | 项目统计报告 |
 
 > 使用脚本预处理可节省约 **90% token 消耗**。详见 [scripts/README.md](scripts/README.md)
 

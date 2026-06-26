@@ -9,7 +9,8 @@ import sys
 import json
 import os
 
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     clean_markdown, count_chinese, extract_title, read_chapter,
     extract_characters, extract_locations, detect_structure,
     detect_hook, generate_summary

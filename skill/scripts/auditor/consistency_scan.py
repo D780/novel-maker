@@ -11,7 +11,8 @@ import json
 import re
 from collections import Counter
 
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     list_chapters, read_chapter, extract_characters, extract_locations
 )
 

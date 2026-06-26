@@ -10,7 +10,8 @@ import os
 import sys
 import json
 
-from nw_utils import parse_outline_headings, count_chinese
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import parse_outline_headings, count_chinese
 
 
 def extract_outline(filepath):

@@ -7,8 +7,8 @@
 伏笔变化、情感变化等），输出结构化 diff 供复盘师审核。
 
 用法:
-    python scripts/truth_diff.py ch15.md --truth-dir .novel-maker/truth-files/
-    python scripts/truth_diff.py ch15.md --prev ch14.md --truth-dir .novel-maker/truth-files/ --json
+    python scripts/reviewer/truth_diff.py ch15.md --truth-dir .novel-maker/truth-files/
+    python scripts/reviewer/truth_diff.py ch15.md --prev ch14.md --truth-dir .novel-maker/truth-files/ --json
 """
 
 import argparse
@@ -17,8 +17,8 @@ import os
 import re
 import sys
 
-sys.path.insert(0, os.path.dirname(__file__))
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     read_chapter, extract_characters, extract_locations,
     detect_hook, clean_markdown, read_truth_section
 )

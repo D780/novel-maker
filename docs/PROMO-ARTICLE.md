@@ -46,12 +46,13 @@ skill/
 │       ├── 严谨设定流/         # 爱潜水的乌贼/忘语/言归正传
 │       └── ...                 # 特色领域/多神话热血/悬疑推理
 ├── templates/                  # 14个模板（大纲/章节/角色/场景/伏笔等）
-└── scripts/                    # 13个Python预处理脚本
-    ├── nw_utils.py             # 公共工具模块
-    ├── analyze.py              # 统一分析脚本（三合一）
-    ├── chapter_info.py         # 单章结构化提取
-    ├── consistency_scan.py     # 一致性扫描
-    └── ...                     # 节奏报告/AI味检测/字数检查等
+└── scripts/                    # Python预处理脚本（按角色分组）
+    ├── common/                 # 公共脚本（nm_utils.py/analyze.py/validate.py等）
+    ├── writer/                 # 写作脚本（build_write_context.py/chapter_info.py等）
+    ├── auditor/                # 审计脚本（pre_audit.py/consistency_scan.py等）
+    ├── reviewer/               # 复盘脚本（truth_diff.py/chapter_diff.py等）
+    ├── planner/                # 规划脚本（planner_context.py/outline_extractor.py等）
+    └── coordinator/            # 协调脚本（volume_batch.py/stats_report.py等）
 ```
 
 **技术亮点**：
@@ -423,7 +424,7 @@ AI词密度：1.2/千字（警戒线：3/千字）✅
 
 ```bash
 # 单章分析（代替读全文4000 token）
-python scripts/analyze.py novels/volume-01/chapters/ch01.md --mode single --json
+python scripts/common/analyze.py novels/volume-01/chapters/ch01.md --mode single --json
 
 # 输出约200 token的结构化JSON
 {

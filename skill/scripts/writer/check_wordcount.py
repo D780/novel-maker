@@ -5,10 +5,12 @@
 检查中文字数是否符合项目设定的字数区间（默认2200-2800字，可自定义）
 """
 
+import os
 import sys
 from pathlib import Path
 
-from nw_utils import count_chinese, extract_content_from_chapter
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import count_chinese, extract_content_from_chapter
 
 
 def check_chapter(file_path, min_words=2200, max_words=2800):

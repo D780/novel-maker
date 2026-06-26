@@ -7,9 +7,9 @@
 每章节省约 40,000-60,000 token 的文件读取消耗。
 
 用法:
-    python scripts/build_write_context.py novels/volume-01/chapters/ch15.md
-    python scripts/build_write_context.py --chapter 15 --volume 01
-    python scripts/build_write_context.py --chapter 15 --json
+    python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md
+    python scripts/writer/build_write_context.py --chapter 15 --volume 01
+    python scripts/writer/build_write_context.py --chapter 15 --json
 """
 
 import argparse
@@ -17,8 +17,8 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(__file__))
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     read_truth_section, list_chapters, read_chapter,
     extract_characters, generate_summary, detect_hook,
     parse_outline_headings
@@ -66,7 +66,7 @@ def _get_prev_chapters_info(chapters_dir, current_chapter_num, count=2):
     for ch_path in all_chapters:
         raw, title, clean, wc = read_chapter(ch_path)
         # 判断是否在当前章之前
-        from nw_utils import chapter_sort_key
+        from nm_utils import chapter_sort_key
         ch_num = chapter_sort_key(ch_path)
         if ch_num >= current_chapter_num:
             break
@@ -160,7 +160,7 @@ def build_context(chapter_path=None, chapter_num=None, volume=None,
 
     # 确定章节号和卷号
     if chapter_path and os.path.exists(chapter_path):
-        from nw_utils import chapter_sort_key
+        from nm_utils import chapter_sort_key
         chapter_num = chapter_num or chapter_sort_key(chapter_path)
         chapters_dir = os.path.dirname(chapter_path)
         volume = volume or os.path.basename(os.path.dirname(chapters_dir))

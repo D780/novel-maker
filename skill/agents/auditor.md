@@ -61,7 +61,7 @@
 **推荐方式**：使用 `pre_audit.py` 自动运行所有可审计维度：
 
 ```bash
-python scripts/pre_audit.py novels/volume-01/chapters/ch15.md --json
+python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
 ```
 
 输出：字数检查 / 角色提取 / 章末钩子 / 节奏评估 / AI味检测 / 一致性扫描

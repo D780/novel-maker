@@ -1,22 +1,37 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-卷级节奏报告
-分析卷内所有章节的节奏分布、问题区域、追读力趋势。
+卷级节奏报告（含可视化）
+分析卷内所有章节的节奏分布、问题区域、追读力趋势，支持 emoji 可视化。
 供 `/novel-maker review pacing volume` 使用。
+
+用法:
+    python scripts/auditor/pacing_report.py 章节目录 --json
+    python scripts/auditor/pacing_report.py 章节目录 --visualize
+    python scripts/auditor/pacing_report.py 章节目录 --recent 10
 """
 
 import os
 import sys
 import json
+import re
 from collections import Counter
 
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     list_chapters, read_chapter, estimate_pacing, detect_hook_type_from_patterns
 )
 
 PACING_NAMES = {
     'S5': '极高潮', 'S4': '高潮', 'S3': '上升', 'S2': '平缓', 'S1': '低谷'
+}
+
+PACING_MARKERS = {
+    'S5': '🔴', 'S4': '', 'S3': '', 'S2': '🟢', 'S1': '⚪'
+}
+
+EMOTION_MARKERS = {
+    '爽': '💥', '感动': '❤️', '虐': '😢', '惊': '😱', '笑': '😂'
 }
 
 # 节奏规则
@@ -144,12 +159,51 @@ def analyze_pacing_volume(chapters_dir, recent_n=None):
     }
 
 
+def generate_heatmap(chapters_dir, recent_n=None):
+    """生成节奏热力图（从 pacing_visualize.py 合并）"""
+    chapter_files = list_chapters(chapters_dir, recent_n)
+    if not chapter_files:
+        return "未找到章节文件"
+
+    lines = [f"章: " + " ".join(f"{i:02d}" for i in range(1, len(chapter_files) + 1))]
+    markers = []
+    for cf in chapter_files:
+        raw, _, _, _ = read_chapter(cf)
+        pacing_label, _ = estimate_pacing(raw)
+        markers.append(PACING_MARKERS.get(pacing_label, ''))
+    lines.append("    " + " ".join(markers))
+    return "\n".join(lines)
+
+
+def generate_emotion_stats(chapters_dir, recent_n=None):
+    """生成多维度情绪统计（从 pacing_visualize.py 合并）"""
+    chapter_files = list_chapters(chapters_dir, recent_n)
+    if not chapter_files:
+        return "未找到章节文件"
+
+    total_emotions = {}
+    for cf in chapter_files:
+        raw, _, _, _ = read_chapter(cf)
+        for emotion in EMOTION_MARKERS:
+            count = raw.count(emotion)
+            if count > 0:
+                total_emotions[emotion] = total_emotions.get(emotion, 0) + count
+
+    lines = []
+    chapter_count = len(chapter_files)
+    for emotion, count in sorted(total_emotions.items(), key=lambda x: -x[1]):
+        avg = chapter_count / count if count > 0 else 0
+        lines.append(f"- {EMOTION_MARKERS[emotion]} {emotion}：{count}次（平均{avg:.1f}章/次）")
+    return "\n".join(lines) if lines else "未检测到情绪关键词"
+
+
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Volume pacing report")
+    parser = argparse.ArgumentParser(description="Volume pacing report with visualization")
     parser.add_argument("chapters_dir", help="Chapters directory")
     parser.add_argument("--recent", type=int, help="Only analyze last N chapters")
     parser.add_argument("--json", action="store_true", help="Output as JSON")
+    parser.add_argument("--visualize", action="store_true", help="Show heatmap and emotion stats")
     args = parser.parse_args()
 
     if not os.path.isdir(args.chapters_dir):
@@ -159,6 +213,10 @@ def main():
     result = analyze_pacing_volume(args.chapters_dir, recent_n=args.recent)
 
     if args.json:
+        # Add visualization data to JSON output
+        if args.visualize:
+            result['heatmap'] = generate_heatmap(args.chapters_dir, args.recent)
+            result['emotion_stats'] = generate_emotion_stats(args.chapters_dir, args.recent)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return
 
@@ -203,6 +261,14 @@ def main():
     print(f"\n章节节奏明细:")
     for ch in result['chapters']:
         print(f"  第{ch['num']}章: {ch['title']} ({ch['pacing']}, {ch['words']}字)")
+
+    if args.visualize:
+        print(f"\n{'=' * 60}")
+        print(f"🎨 节奏可视化")
+        print(f"{'=' * 60}\n")
+        print(generate_heatmap(args.chapters_dir, args.recent))
+        print(f"\n情绪统计:")
+        print(generate_emotion_stats(args.chapters_dir, args.recent))
 
 
 if __name__ == "__main__":

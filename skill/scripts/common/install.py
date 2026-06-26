@@ -5,7 +5,7 @@ NovelMaker 安装脚本（Python 版）
 当 npx 不可用时的备选安装方案。
 
 使用方式：
-    python scripts/install.py [--ide trae|claude|cursor|...] [--uninstall]
+    python scripts/common/install.py [--ide trae|claude|cursor|...] [--uninstall]
 """
 
 import sys

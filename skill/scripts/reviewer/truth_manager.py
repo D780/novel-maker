@@ -11,7 +11,8 @@ import sys
 import json
 import re
 
-from nw_utils import read_truth_section, count_chinese
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import read_truth_section, count_chinese
 
 
 TRUTH_FILES = {

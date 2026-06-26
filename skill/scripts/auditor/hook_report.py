@@ -10,7 +10,8 @@ import sys
 import json
 from collections import Counter
 
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     list_chapters, read_chapter, detect_hook, detect_hook_type_from_patterns
 )
 
@@ -38,7 +39,7 @@ def analyze_volume(chapters_dir, recent_n=None):
         import re
         for m in re.finditer(r'[^。！？\n]{5,50}[。！？]', raw):
             sentence = m.group(0)
-            from nw_utils import _HOOK_PATTERN_MAP
+            from nm_utils import _HOOK_PATTERN_MAP
             if any(pattern.search(sentence) for pattern in _HOOK_PATTERN_MAP.values()):
                 hook_sentences.append(sentence.strip())
 

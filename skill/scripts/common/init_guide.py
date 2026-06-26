@@ -3,7 +3,7 @@
 NovelMaker 交互式引导脚本
 
 使用方式：
-    python scripts/init_guide.py [--ide trae|claude] [--auto] [--verify]
+    python scripts/common/init_guide.py [--ide trae|claude] [--auto] [--verify]
 
 参数说明：
     --ide: 指定IDE类型（trae 或 claude）

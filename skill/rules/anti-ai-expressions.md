@@ -196,7 +196,7 @@
 
 - **写作时：** `根据 anti-ai-expressions.md 的规则，避免使用广告词和情感标签`
 - **审查时：** `/novel-maker review 检查第5章的AI味`
-- **脚本辅助：** `python scripts/style_check.py 本章.md --json`（自动检测AI高频词密度）
+- **脚本辅助：** `python scripts/auditor/style_check.py 本章.md --json`（自动检测AI高频词密度）
 
 ## 参考资源
 

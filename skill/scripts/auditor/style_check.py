@@ -11,7 +11,8 @@ import json
 import re
 from collections import Counter
 
-from nw_utils import list_chapters, extract_title, count_chinese
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import list_chapters, extract_title, count_chinese
 
 
 AI_FREQ_WORDS = [

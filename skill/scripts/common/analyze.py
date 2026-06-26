@@ -15,6 +15,9 @@ import json
 import os
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'writer'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'auditor'))
+
 from chapter_info import analyze_chapter
 from style_check import analyze_chapter_style
 from hook_report import analyze_volume

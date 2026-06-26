@@ -15,7 +15,7 @@ import re
 import sys
 from pathlib import Path
 
-SKILL_DIR = Path(__file__).resolve().parent.parent
+SKILL_DIR = Path(__file__).resolve().parent.parent.parent
 PROJECT_DIR = SKILL_DIR.parent
 
 
@@ -23,7 +23,7 @@ def check_python_syntax():
     """检查所有 Python 脚本的语法"""
     results = []
     scripts_dir = SKILL_DIR / "scripts"
-    for py_file in sorted(scripts_dir.glob("*.py")):
+    for py_file in sorted(scripts_dir.rglob("*.py")):
         try:
             with open(py_file, encoding="utf-8") as f:
                 ast.parse(f.read())

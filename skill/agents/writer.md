@@ -175,7 +175,7 @@
 **推荐方式**：使用 `build_write_context.py` 自动生成精简上下文（~3000 token），替代手动读取 15+ 个文件：
 
 ```bash
-python scripts/build_write_context.py novels/volume-01/chapters/ch15.md --json
+python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md --json
 ```
 
 输出结构化 JSON，包含：真相文件摘要 / 前2章摘要 / 大纲目标 / 创作宪法要点

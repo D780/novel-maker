@@ -5,11 +5,14 @@
 """
 
 import os
+import sys
 import re
 import json
 import argparse
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
 
 # 查询意图关键词
 INTENT_KEYWORDS = {

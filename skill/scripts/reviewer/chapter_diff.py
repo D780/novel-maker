@@ -6,7 +6,7 @@
 输出角色/伏笔/字数/结构的变化，供复盘师快速了解修订内容。
 
 用法:
-    python scripts/chapter_diff.py temp/draft.md temp/revised.md --json
+    python scripts/reviewer/chapter_diff.py temp/draft.md temp/revised.md --json
 """
 
 import argparse
@@ -14,8 +14,8 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(__file__))
-from nw_utils import (
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
+from nm_utils import (
     read_chapter, extract_characters, extract_locations,
     detect_hook, detect_structure, estimate_pacing,
     clean_markdown, count_chinese
