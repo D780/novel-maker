@@ -167,12 +167,108 @@ def build_emotion_curve(chapters_dir, recent_n=None):
     }
 
 
+def generate_ascii_curve(emotions_sequence, width=60):
+    """Generate ASCII art visualization of emotion curve."""
+    if not emotions_sequence:
+        return ""
+
+    # Map emotions to numeric values for visualization
+    emotion_values = {
+        '积极': 3,
+        '紧张': 2,
+        '中性': 1,
+        '消极': 0
+    }
+
+    # Convert to numeric sequence
+    values = [emotion_values.get(e, 1) for e in emotions_sequence]
+
+    # Generate ASCII curve
+    lines = []
+
+    # Header
+    lines.append("情绪曲线可视化:")
+    lines.append("")
+
+    # Y-axis labels
+    y_labels = ['积极', '紧张', '中性', '消极']
+
+    # Draw the curve
+    max_val = 3
+    for level in range(max_val, -1, -1):
+        label = y_labels[level] if level < len(y_labels) else ''
+        line = f"{label:4s} │"
+
+        for val in values:
+            if val == level:
+                line += "●"
+            elif val > level:
+                line += "│"
+            else:
+                line += " "
+            line += " "
+
+        lines.append(line)
+
+    # X-axis
+    lines.append("     └" + "─" * (len(values) * 2))
+
+    # Chapter numbers
+    x_axis = "      "
+    for i in range(len(values)):
+        if i % 5 == 0 or i == len(values) - 1:
+            x_axis += f"{i+1:2d}"
+        else:
+            x_axis += "  "
+    lines.append(x_axis)
+
+    return "\n".join(lines)
+
+
+def generate_emotion_heatmap(curve_data):
+    """Generate emotion heatmap visualization."""
+    if not curve_data:
+        return ""
+
+    lines = []
+    lines.append("情绪热力图:")
+    lines.append("")
+
+    # Header
+    lines.append("章节  " + " ".join(f"{i+1:2d}" for i in range(min(len(curve_data), 20))))
+
+    # Emotion rows
+    for emotion_key in ['positive', 'negative', 'neutral', 'tense']:
+        emotion_name = EMOTION_CATEGORIES[emotion_key]['name']
+        row = f"{emotion_name:4s} "
+
+        for ch_data in curve_data[:20]:
+            scores = ch_data['emotion_scores']
+            score = scores.get(emotion_key, 0)
+
+            if score == 0:
+                row += "· "
+            elif score <= 2:
+                row += "▁ "
+            elif score <= 5:
+                row += "▃ "
+            elif score <= 10:
+                row += "▅ "
+            else:
+                row += "█ "
+
+        lines.append(row)
+
+    return "\n".join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(description='情绪曲线分析脚本')
     parser.add_argument('path', help='章节文件或章节目录路径')
     parser.add_argument('--volume', '-v', action='store_true', help='分析整卷（目录模式）')
     parser.add_argument('--recent', type=int, help='仅分析最近N章')
     parser.add_argument('--json', action='store_true', help='JSON输出')
+    parser.add_argument('--visualize', action='store_true', help='显示可视化图表')
     args = parser.parse_args()
 
     if not os.path.exists(args.path):
@@ -201,7 +297,7 @@ def main():
             if result['monotony_issues']:
                 print(f"\n单调性问题:")
                 for issue in result['monotony_issues']:
-                    print(f"  ⚠ {issue['chapters']}: 连续{issue['length']}章{issue['emotion']}")
+                    print(f"   {issue['chapters']}: 连续{issue['length']}章{issue['emotion']}")
             else:
                 print(f"\n✓ 情绪变化丰富，无明显单调问题")
 
@@ -214,6 +310,13 @@ def main():
                 print(f"  {emo}: {bar} ({count}章)")
 
             print(f"\n最常见情绪: {result['summary']['most_common']}")
+
+            # Show visualizations if requested
+            if args.visualize:
+                print(f"\n{'='*60}")
+                print(generate_ascii_curve(result['emotions_sequence']))
+                print(f"\n{'='*60}")
+                print(generate_emotion_heatmap(result['curve']))
         else:
             # Single chapter mode
             print(f"\n=== 情绪分析: {result['chapter']} ===\n")

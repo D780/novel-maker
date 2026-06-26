@@ -86,7 +86,8 @@
 | **衔接检查** | `python scripts/auditor/chapter_transition.py 章节/ --json` | 检查章节衔接问题 |
 | **情绪曲线** | `python scripts/reviewer/emotion_curve.py 章节/ --volume --json` | 分析情绪变化曲线 |
 | **伏笔追踪** | `python scripts/reviewer/foreshadowing_tracker.py 章节/ --json` | 追踪伏笔设置与回收 |
-| **世界观检查** | `python scripts/auditor/worldbuilding_checker.py 章节/ --truth 真相/ --json` | 检测世界观矛盾 |
+| **世界观检查** | `python scripts/auditor/worldbuilding_checker.py 章节/ --truth 真相/ --fix` | 检测世界观矛盾 |
+| **世界观自动修复** | `python scripts/auditor/worldbuilding_checker.py 章节/ --truth 真相/ --apply` | 自动修复世界观矛盾 |
 | **节奏优化** | `python scripts/auditor/pacing_optimizer.py 章节/ --json` | 生成节奏优化建议 |
 
 ## 文风推荐

@@ -146,6 +146,9 @@ def track_foreshadowing_across_chapters(chapters_dir, recent_n=None):
                 'unresolved': unresolved
             }
 
+    # Generate auto-recovery suggestions
+    suggestions = generate_recovery_suggestions(unresolved_by_type, all_setups, len(chapter_files))
+
     return {
         'total_chapters': len(chapter_files),
         'total_setups': total_setups,
@@ -156,8 +159,70 @@ def track_foreshadowing_across_chapters(chapters_dir, recent_n=None):
         'unresolved_by_type': unresolved_by_type,
         'recent_setups': all_setups[-10:],
         'recent_resolutions': all_resolutions[-10:],
-        'chapter_data': chapter_data[-5:]  # Last 5 chapters
+        'chapter_data': chapter_data[-5:],  # Last 5 chapters
+        'suggestions': suggestions
     }
+
+
+def generate_recovery_suggestions(unresolved_by_type, all_setups, total_chapters):
+    """Generate automatic recovery suggestions for unresolved foreshadowing."""
+    suggestions = []
+
+    # Recovery templates for each foreshadowing type
+    recovery_templates = {
+        '悬念型': {
+            'suggestion': '在后续章节中安排真相揭露场景',
+            'example': '可以安排一个关键角色揭示秘密，或者主角通过调查发现真相',
+            'timing': '建议在5-10章内回收'
+        },
+        '预言型': {
+            'suggestion': '让预言在关键时刻应验',
+            'example': '可以在高潮章节让预言成真，增强戏剧性',
+            'timing': '建议在卷末或重要转折点回收'
+        },
+        '物品型': {
+            'suggestion': '让物品在关键时刻发挥作用',
+            'example': '可以在危机时刻激活宝物/神器，扭转局势',
+            'timing': '建议在3-8章内回收'
+        },
+        '人物型': {
+            'suggestion': '揭示神秘人物的真实身份',
+            'example': '可以安排身份揭露场景，制造意外转折',
+            'timing': '建议在5-15章内回收'
+        },
+        '危机型': {
+            'suggestion': '让预感的危机真正降临',
+            'example': '可以在平静章节后突然爆发危机，制造紧张感',
+            'timing': '建议在3-10章内回收'
+        }
+    }
+
+    for foreshadowing_type, data in unresolved_by_type.items():
+        if foreshadowing_type in recovery_templates:
+            template = recovery_templates[foreshadowing_type]
+
+            # Find the earliest setup for this type
+            earliest_setup = None
+            for setup in all_setups:
+                if setup['type'] == foreshadowing_type:
+                    earliest_setup = setup
+                    break
+
+            suggestion = {
+                'type': foreshadowing_type,
+                'unresolved_count': data['unresolved'],
+                'suggestion': template['suggestion'],
+                'example': template['example'],
+                'timing': template['timing']
+            }
+
+            if earliest_setup:
+                suggestion['first_setup_chapter'] = earliest_setup.get('chapter_num', '未知')
+                suggestion['context_preview'] = earliest_setup.get('context', '')[:50]
+
+            suggestions.append(suggestion)
+
+    return suggestions
 
 
 def main():
@@ -207,6 +272,14 @@ def main():
         print(f"\n最近伏笔回收:")
         for resolution in result['recent_resolutions'][-5:]:
             print(f"  第{resolution['chapter_num']}章 [{resolution['type']}]: {resolution['context'][:60]}...")
+
+        # 输出回收建议
+        if result.get('suggestions'):
+            print(f"\n回收建议:")
+            for suggestion in result['suggestions']:
+                print(f"  [{suggestion['type']}] {suggestion['suggestion']}")
+                print(f"    示例: {suggestion['example']}")
+                print(f"    时机: {suggestion['timing']}")
 
 
 if __name__ == '__main__':

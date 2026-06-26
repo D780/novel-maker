@@ -177,12 +177,333 @@ def check_worldbuilding_consistency(chapters_dir, truth_dir=None, recent_n=None)
     }
 
 
+def generate_fix_suggestions(issues, truth_facts=None):
+    """Generate automatic fix suggestions for worldbuilding issues."""
+    suggestions = []
+
+    # Fix templates for each issue type
+    fix_templates = {
+        '设定冲突': {
+            'action': '更新真相文件或修正章节内容',
+            'steps': [
+                '确认该设定是否为有意的新增设定',
+                '如果是新设定，将其添加到对应的真相文件中',
+                '如果是笔误，修正章节中的描述使其与真相文件一致'
+            ]
+        },
+        '内部矛盾': {
+            'action': '统一实体描述，消除前后矛盾',
+            'steps': [
+                '确定以哪个章节的描述为准（通常以首次出现为准）',
+                '修正后续章节中不一致的描述',
+                '将统一后的描述更新到真相文件中'
+            ]
+        }
+    }
+
+    for issue in issues:
+        issue_type = issue['type']
+        if issue_type not in fix_templates:
+            continue
+
+        template = fix_templates[issue_type]
+        suggestion = {
+            'type': issue_type,
+            'dimension': issue.get('dimension', '未知'),
+            'message': issue['message'],
+            'action': template['action'],
+            'steps': template['steps'],
+            'severity': issue['severity']
+        }
+
+        if issue_type == '设定冲突':
+            suggestion['missing_term'] = issue.get('fact', '')
+            suggestion['chapter'] = issue.get('chapter', '未知')
+            suggestion['fix_options'] = [
+                f"将「{issue.get('fact', '')}」添加到真相文件对应维度中",
+                f"修正第{issue.get('chapter', '?')}章中的描述使其与真相文件一致"
+            ]
+
+        elif issue_type == '内部矛盾':
+            entity = issue.get('entity', '')
+            descriptions = issue.get('descriptions', [])
+            suggestion['entity'] = entity
+            suggestion['conflict_count'] = len(descriptions)
+
+            # Build specific fix based on descriptions
+            if descriptions:
+                first_desc = descriptions[0]
+                suggestion['recommended_fix'] = (
+                    f"以第{first_desc['chapter']}章的描述「{first_desc['description']}」为准，"
+                    f"统一其他{len(descriptions)-1}处描述"
+                )
+                suggestion['conflict_details'] = [
+                    {
+                        'chapter': d['chapter'],
+                        'description': d['description']
+                    }
+                    for d in descriptions
+                ]
+
+        suggestions.append(suggestion)
+
+    return suggestions
+
+
+def auto_fix_truth_files(issues, truth_dir, dry_run=True):
+    """Auto-fix truth files by adding missing terms from chapters.
+    
+    Args:
+        issues: List of detected issues
+        truth_dir: Path to truth files directory
+        dry_run: If True, only report what would be fixed; if False, actually modify files
+    
+    Returns:
+        List of fix actions performed
+    """
+    fix_actions = []
+    
+    if not truth_dir or not os.path.isdir(truth_dir):
+        return fix_actions
+    
+    # Group issues by dimension
+    missing_by_dimension = defaultdict(set)
+    for issue in issues:
+        if issue['type'] == '设定冲突' and 'dimension' in issue:
+            # Extract dimension key from display name
+            dim_key = None
+            for k, v in WORLDBUILDING_DIMENSIONS.items():
+                if v['name'] == issue['dimension']:
+                    dim_key = k
+                    break
+            
+            if dim_key and 'fact' in issue:
+                # Extract the missing term from the fact
+                fact_text = issue['fact']
+                # Try to extract key terms from the fact
+                for group in re.findall(r'[\u4e00-\u9fa5]+', fact_text):
+                    if len(group) >= 2:  # Only terms with 2+ chars
+                        missing_by_dimension[dim_key].add(group)
+    
+    # Add missing terms to truth files
+    for dim_key, terms in missing_by_dimension.items():
+        truth_file = os.path.join(truth_dir, f'{dim_key}.md')
+        
+        if os.path.exists(truth_file):
+            with open(truth_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Check which terms are actually missing
+            new_terms = [t for t in terms if t not in content]
+            
+            if new_terms:
+                if not dry_run:
+                    # Check if auto-fix section already exists
+                    auto_fix_header = '## 自动补充设定'
+                    if auto_fix_header in content:
+                        # Append to existing section
+                        with open(truth_file, 'a', encoding='utf-8') as f:
+                            for term in sorted(new_terms):
+                                f.write(f'- {term}\n')
+                    else:
+                        # Create new section
+                        with open(truth_file, 'a', encoding='utf-8') as f:
+                            f.write('\n\n## 自动补充设定\n')
+                            for term in sorted(new_terms):
+                                f.write(f'- {term}\n')
+                
+                fix_actions.append({
+                    'action': '补全真相文件',
+                    'dimension': WORLDBUILDING_DIMENSIONS[dim_key]['name'],
+                    'file': truth_file,
+                    'added_terms': sorted(new_terms),
+                    'count': len(new_terms),
+                    'status': '待修复（dry-run）' if dry_run else '已修复'
+                })
+    
+    return fix_actions
+
+
+def auto_fix_chapter_contradictions(issues, chapters_dir, dry_run=True):
+    """Auto-fix contradictions in chapter files by standardizing entity descriptions.
+    
+    Args:
+        issues: List of detected issues
+        chapters_dir: Path to chapters directory
+        dry_run: If True, only report what would be fixed; if False, actually modify files
+    
+    Returns:
+        List of fix actions performed or proposed
+    """
+    fix_actions = []
+    
+    # Get chapter files
+    chapter_files = list_chapters(chapters_dir)
+    if not chapter_files:
+        return fix_actions
+    
+    # Process internal contradictions
+    for issue in issues:
+        if issue['type'] != '内部矛盾':
+            continue
+        
+        entity = issue.get('entity', '')
+        descriptions = issue.get('descriptions', [])
+        
+        if not entity or len(descriptions) < 2:
+            continue
+        
+        # Use first description as the canonical one
+        canonical = descriptions[0]
+        canonical_desc = canonical['description']
+        
+        # Skip if description is too short (risk of false positives)
+        if len(canonical_desc) < 4:
+            continue
+        
+        # Find chapters that need fixing
+        chapters_to_fix = []
+        for desc in descriptions[1:]:
+            if desc['description'] != canonical_desc:
+                chapters_to_fix.append({
+                    'chapter': desc['chapter'],
+                    'wrong_desc': desc['description'],
+                    'right_desc': canonical_desc
+                })
+        
+        if chapters_to_fix:
+            fix_action = {
+                'action': '修正章节矛盾',
+                'entity': entity,
+                'canonical_description': canonical_desc,
+                'canonical_chapter': canonical['chapter'],
+                'fixes': []
+            }
+            
+            for fix_info in chapters_to_fix:
+                ch_idx = fix_info['chapter'] - 1
+                if 0 <= ch_idx < len(chapter_files):
+                    ch_file = chapter_files[ch_idx]
+                    
+                    if not dry_run:
+                        # Read and fix the chapter
+                        with open(ch_file, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                        
+                        # Use word boundary matching to avoid false replacements
+                        # Only replace if the wrong description appears as a distinct phrase
+                        wrong = fix_info['wrong_desc']
+                        right = fix_info['right_desc']
+                        
+                        # Count occurrences to detect scope
+                        count = content.count(wrong)
+                        if count > 0 and count <= 3:  # Only fix if 1-3 occurrences
+                            fixed_content = content.replace(wrong, right)
+                            
+                            if fixed_content != content:
+                                with open(ch_file, 'w', encoding='utf-8') as f:
+                                    f.write(fixed_content)
+                                
+                                fix_action['fixes'].append({
+                                    'chapter': fix_info['chapter'],
+                                    'file': ch_file,
+                                    'replaced': wrong,
+                                    'with': right,
+                                    'occurrences': count,
+                                    'status': '已修复'
+                                })
+                        else:
+                            fix_action['fixes'].append({
+                                'chapter': fix_info['chapter'],
+                                'file': ch_file,
+                                'replaced': wrong,
+                                'with': right,
+                                'occurrences': count,
+                                'status': '跳过（出现次数过多，需人工确认）'
+                            })
+                    else:
+                        fix_action['fixes'].append({
+                            'chapter': fix_info['chapter'],
+                            'file': ch_file,
+                            'replaced': fix_info['wrong_desc'],
+                            'with': fix_info['right_desc'],
+                            'status': '待修复（dry-run）'
+                        })
+            
+            if fix_action['fixes']:
+                fix_actions.append(fix_action)
+    
+    return fix_actions
+
+
+def generate_fix_report(truth_fixes, chapter_fixes, issues):
+    """Generate a structured fix report for reviewer.
+    
+    Args:
+        truth_fixes: List of truth file fix actions
+        chapter_fixes: List of chapter fix actions
+        issues: Original list of issues
+    
+    Returns:
+        Dict containing structured fix report
+    """
+    report = {
+        'summary': {
+            'total_issues': len(issues),
+            'truth_files_fixed': len(truth_fixes),
+            'chapters_fixed': len(chapter_fixes),
+            'remaining_issues': 0
+        },
+        'truth_file_fixes': truth_fixes,
+        'chapter_fixes': chapter_fixes,
+        'unfixed_issues': []
+    }
+    
+    # Track which issues were actually fixed
+    fixed_issue_indices = set()
+    
+    # Check truth file fixes
+    for fix in truth_fixes:
+        dim_name = fix.get('dimension')
+        added_terms = fix.get('added_terms', [])
+        for idx, issue in enumerate(issues):
+            if issue['type'] == '设定冲突' and issue.get('dimension') == dim_name:
+                fact_text = issue.get('fact', '')
+                for term in re.findall(r'[\u4e00-\u9fa5]+', fact_text):
+                    if term in added_terms:
+                        fixed_issue_indices.add(idx)
+                        break
+    
+    # Check chapter fixes
+    fixed_entities = set()
+    for fix in chapter_fixes:
+        if 'entity' in fix:
+            fixed_entities.add(fix['entity'])
+    
+    for idx, issue in enumerate(issues):
+        if issue['type'] == '内部矛盾' and issue.get('entity') in fixed_entities:
+            fixed_issue_indices.add(idx)
+    
+    # Calculate remaining issues
+    report['summary']['remaining_issues'] = len(issues) - len(fixed_issue_indices)
+    
+    # Collect unfixed issues
+    for idx, issue in enumerate(issues):
+        if idx not in fixed_issue_indices:
+            report['unfixed_issues'].append(issue)
+    
+    return report
+
+
 def main():
     parser = argparse.ArgumentParser(description='世界观一致性检查脚本')
     parser.add_argument('chapters_dir', help='章节目录路径')
     parser.add_argument('--truth', '-t', help='真相文件目录路径')
     parser.add_argument('--recent', type=int, help='仅检查最近N章')
     parser.add_argument('--json', action='store_true', help='JSON输出')
+    parser.add_argument('--fix', action='store_true', help='显示自动修复建议')
+    parser.add_argument('--apply', action='store_true', help='应用自动修复（需配合--truth）')
+    parser.add_argument('--dry-run', action='store_true', help='仅预览修复内容，不实际修改文件')
     args = parser.parse_args()
 
     if not os.path.isdir(args.chapters_dir):
@@ -190,6 +511,37 @@ def main():
         sys.exit(1)
 
     result = check_worldbuilding_consistency(args.chapters_dir, args.truth, args.recent)
+
+    # Generate fix suggestions if requested
+    if args.fix and result.get('issues'):
+        result['fix_suggestions'] = generate_fix_suggestions(result['issues'])
+
+    # Apply auto-fix if requested
+    if args.apply and result.get('issues'):
+        if not args.truth:
+            print("错误: --apply 需要配合 --truth 参数使用", file=sys.stderr)
+            sys.exit(1)
+        
+        # Load truth facts for reference
+        truth_facts = {}
+        if os.path.isdir(args.truth):
+            for dimension in WORLDBUILDING_DIMENSIONS.keys():
+                truth_file = os.path.join(args.truth, f'{dimension}.md')
+                if os.path.exists(truth_file):
+                    with open(truth_file, 'r', encoding='utf-8') as f:
+                        truth_facts[dimension] = f.read()
+        
+        # Auto-fix truth files
+        dry_run = args.dry_run
+        truth_fixes = auto_fix_truth_files(result['issues'], args.truth, dry_run=dry_run)
+        
+        # Auto-fix chapter contradictions
+        chapter_fixes = auto_fix_chapter_contradictions(result['issues'], args.chapters_dir, dry_run=dry_run)
+        
+        # Generate fix report
+        fix_report = generate_fix_report(truth_fixes, chapter_fixes, result['issues'])
+        
+        result['fix_report'] = fix_report
 
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
@@ -219,6 +571,64 @@ def main():
                     print(f"     章节: 第{issue['chapter']}章 {issue.get('chapter_title', '')}")
                 if 'fact' in issue:
                     print(f"     原文: {issue['fact'][:60]}...")
+
+            # Show fix suggestions if requested
+            if args.fix and result.get('fix_suggestions'):
+                print(f"\n{'='*60}")
+                print(f"自动修复建议:")
+                print(f"{'='*60}")
+                for i, suggestion in enumerate(result['fix_suggestions'], 1):
+                    print(f"\n  [{i}] {suggestion['type']} - {suggestion['dimension']}")
+                    print(f"     问题: {suggestion['message']}")
+                    print(f"     操作: {suggestion['action']}")
+                    for j, step in enumerate(suggestion['steps'], 1):
+                        print(f"       {j}. {step}")
+
+                    if 'fix_options' in suggestion:
+                        print(f"     修复选项:")
+                        for opt in suggestion['fix_options']:
+                            print(f"       - {opt}")
+
+                    if 'recommended_fix' in suggestion:
+                        print(f"     推荐修复: {suggestion['recommended_fix']}")
+                        if 'conflict_details' in suggestion:
+                            print(f"     冲突详情:")
+                            for detail in suggestion['conflict_details']:
+                                print(f"       第{detail['chapter']}章: {detail['description']}")
+            
+            # Show fix report if applied
+            if args.apply and result.get('fix_report'):
+                report = result['fix_report']
+                print(f"\n{'='*60}")
+                print(f"自动修复报告:")
+                print(f"{'='*60}")
+                print(f"\n修复统计:")
+                print(f"  总问题数: {report['summary']['total_issues']}")
+                print(f"  真相文件修复: {report['summary']['truth_files_fixed']}")
+                print(f"  章节修复: {report['summary']['chapters_fixed']}")
+                print(f"  剩余问题: {report['summary']['remaining_issues']}")
+                
+                if report['truth_file_fixes']:
+                    print(f"\n真相文件修复详情:")
+                    for fix in report['truth_file_fixes']:
+                        status = fix.get('status', '已修复')
+                        status_icon = '✓' if '已修复' in status else '○'
+                        print(f"  {status_icon} [{fix['dimension']}] 补全 {fix['count']} 个设定")
+                        for term in fix['added_terms']:
+                            print(f"      - {term}")
+                
+                if report['chapter_fixes']:
+                    print(f"\n章节修复详情:")
+                    for fix in report['chapter_fixes']:
+                        print(f"  [{fix['entity']}] 以第{fix['canonical_chapter']}章为准")
+                        for ch_fix in fix['fixes']:
+                            status_icon = '✓' if '已修复' in ch_fix['status'] else '○'
+                            print(f"    {status_icon} 第{ch_fix['chapter']}章: {ch_fix['replaced']} → {ch_fix['with']}")
+                
+                if report['unfixed_issues']:
+                    print(f"\n未修复问题（需人工处理）:")
+                    for issue in report['unfixed_issues'][:10]:
+                        print(f"  - [{issue['type']}] {issue['message']}")
         else:
             print(f"\n✓ 未检测到世界观一致性问题")
 

@@ -527,7 +527,7 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
     │   ├── pacing_optimizer.py # 节奏优化建议
     │   ├── style_check.py      # AI味检测
     │   ├── dialogue_checker.py # 对话质量检查
-    │   ├── worldbuilding_checker.py # 世界观一致性检查
+    │   ├── worldbuilding_checker.py # 世界观一致性检查（含自动修复）
     │   └── chapter_transition.py # 章节衔接检查
     ├── reviewer/               # 复盘师脚本（8个）
     │   ├── truth_diff.py       # 真相文件变更检测（Token优化）
@@ -536,8 +536,8 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
     │   ├── chapter_diff.py     # 章节修订对比（Token优化）
     │   ├── character_arc_tracker.py # 角色弧线追踪
     │   ├── subplot_tracker.py  # 支线追踪器
-    │   ├── emotion_curve.py    # 情绪曲线分析
-    │   └── foreshadowing_tracker.py # 伏笔追踪器
+    │   ├── emotion_curve.py    # 情绪曲线分析（含可视化输出）
+    │   └── foreshadowing_tracker.py # 伏笔追踪器（含自动回收建议）
     ├── planner/                # 规划师脚本（3个）
     │   ├── planner_context.py  # 规划师上下文包（Token优化）
     │   ├── outline_extractor.py # 大纲快速提取
@@ -635,7 +635,7 @@ novels/                     # 小说正文（用户直接编辑）
 | [pacing_optimizer.py](scripts/auditor/pacing_optimizer.py) | 节奏优化建议 |
 | [style_check.py](scripts/auditor/style_check.py) | AI味检测 |
 | [dialogue_checker.py](scripts/auditor/dialogue_checker.py) | 对话质量检查 |
-| [worldbuilding_checker.py](scripts/auditor/worldbuilding_checker.py) | 世界观一致性检查 |
+| [worldbuilding_checker.py](scripts/auditor/worldbuilding_checker.py) | 世界观一致性检查（含自动修复） |
 | [chapter_transition.py](scripts/auditor/chapter_transition.py) | 章节衔接检查 |
 
 ### 复盘师脚本（reviewer/）
