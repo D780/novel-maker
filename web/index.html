@@ -32,27 +32,9 @@
 
         <!-- 项目概览 -->
         <section id="overview" class="view active">
-            <div class="hero">
-                <div class="hero-left">
-                    <div class="hero-label">// 2026 · Open Source</div>
-                    <h1>Just<br><em>write</em> it.</h1>
-                    <div class="hero-sub">6 Agent · 智能协作 · 群聊式创作</div>
-                </div>
-                <div class="hero-right">
-                    <p class="hero-desc">说出你的故事，<br>智能体团队即时接手，实时参与协作过程。</p>
-                    <div class="btn-group">
-                        <button class="btn btn-dark">
-                            开始写作
-                            <span class="badge badge-new">NEW</span>
-                        </button>
-                        <button class="btn">
-                            导入项目
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <div class="section-label">PROJECT OVERVIEW</div>
+            <h2 class="section-title">项目概览</h2>
 
-            <div class="section-label">项目数据</div>
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>总章节数</h3>
@@ -66,6 +48,45 @@
                     <h3>当前进度</h3>
                     <p id="progress">0%</p>
                 </div>
+                <div class="stat-card">
+                    <h3>角色数量</h3>
+                    <p id="total-characters">0</p>
+                </div>
+            </div>
+
+            <div class="section-label" style="margin-top: 48px;">FEATURES</div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>6 Agent 协作</h3>
+                    <p>协调者 · 规划师 · 写手 · 审计师 · 修订师 · 复盘师</p>
+                </div>
+                <div class="feature-card">
+                    <h3>11 题材包</h3>
+                    <p>玄幻 · 都市 · 科幻 · 武侠 · 言情 · 悬疑 · 历史 · 游戏 · 末世 · 西幻 · 仙侠</p>
+                </div>
+                <div class="feature-card">
+                    <h3>48 弧线模板</h3>
+                    <p>6 种通用弧线 + 42 种题材特定弧线</p>
+                </div>
+                <div class="feature-card">
+                    <h3>质量保障</h3>
+                    <p>反AI表达 · 风格锚点 · 角色声音 · 5维一致性检查</p>
+                </div>
+                <div class="feature-card">
+                    <h3>节奏可视化</h3>
+                    <p>章节级 emoji 标记 · 卷级热力图 · 多维度情绪统计</p>
+                </div>
+                <div class="feature-card">
+                    <h3>智能查询</h3>
+                    <p>角色查询 · 设定查询 · 剧情查询 · 伏笔查询</p>
+                </div>
+            </div>
+
+            <div class="section-label" style="margin-top: 48px;">QUICK ACTIONS</div>
+            <div class="btn-group">
+                <button class="btn btn-dark" id="btn-new-chapter">新建章节</button>
+                <button class="btn" id="btn-import">导入项目</button>
+                <button class="btn" id="btn-export">导出数据</button>
             </div>
         </section>
 

@@ -130,52 +130,36 @@ a {
 }
 
 /* ============================================
-   大标题区域
+   功能网格
    ============================================ */
-.hero {
+.feature-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-16);
-    margin-bottom: var(--space-20);
-    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
 }
 
-.hero-left .hero-label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: var(--space-6);
+.feature-card {
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    transition: border-color 150ms ease;
 }
 
-.hero-left h1 {
-    font-family: var(--font-serif);
-    font-size: 5rem;
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -2px;
+.feature-card:hover {
+    border-color: var(--text);
+}
+
+.feature-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-3);
     color: var(--text);
 }
 
-.hero-left h1 em {
-    font-style: italic;
-    color: var(--accent);
-}
-
-.hero-left .hero-sub {
-    margin-top: var(--space-6);
+.feature-card p {
     font-size: 0.875rem;
     color: var(--text-secondary);
-    letter-spacing: 1px;
-}
-
-.hero-right .hero-desc {
-    font-family: var(--font-serif);
-    font-size: 1.5rem;
-    font-style: italic;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-8);
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* ============================================
@@ -471,15 +455,6 @@ a {
    响应式
    ============================================ */
 @media (max-width: 768px) {
-    .hero {
-        grid-template-columns: 1fr;
-        gap: var(--space-8);
-    }
-
-    .hero-left h1 {
-        font-size: 3rem;
-    }
-
     .navbar {
         padding: var(--space-3) var(--space-4);
         flex-wrap: wrap;
@@ -501,6 +476,10 @@ a {
     }
 
     .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .feature-grid {
         grid-template-columns: 1fr;
     }
 }
