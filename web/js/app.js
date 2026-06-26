@@ -11,10 +11,11 @@ class NovelMakerApp {
     }
 
     bindEvents() {
-        // 导航切换
-        document.querySelectorAll('.sidebar nav li').forEach(item => {
-            item.addEventListener('click', () => {
-                const view = item.dataset.view;
+        // 导航切换 - 顶部导航栏
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const view = link.dataset.view;
                 this.switchView(view);
             });
         });
@@ -22,8 +23,8 @@ class NovelMakerApp {
 
     switchView(viewName) {
         // 更新导航状态
-        document.querySelectorAll('.sidebar nav li').forEach(item => {
-            item.classList.toggle('active', item.dataset.view === viewName);
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.classList.toggle('active', link.dataset.view === viewName);
         });
 
         // 更新视图显示
@@ -35,11 +36,8 @@ class NovelMakerApp {
     }
 
     async loadProject() {
-        // 加载项目数据
-        // 实际实现需要通过 File API 读取本地文件
         console.log('Loading project...');
     }
 }
 
-// 初始化应用
 const app = new NovelMakerApp();

@@ -5,111 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NovelMaker - 全能网文写作助手</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- CDN libraries -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="app-layout">
-        <!-- 侧边栏 -->
-        <aside class="sidebar">
-            <div class="logo">
-                <h1>NovelMaker</h1>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="logo">NovelMaker</span>
+            <span class="logo-sub">Novel · Maker</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active" data-view="overview">概览</a>
+            <a href="#" data-view="chapters">章节</a>
+            <a href="#" data-view="characters">角色</a>
+            <a href="#" data-view="pacing">节奏</a>
+            <a href="#" data-view="editor">编辑器</a>
+        </div>
+        <div class="nav-right">
+            <span class="nav-badge">v2.2</span>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+
+        <!-- 项目概览 -->
+        <section id="overview" class="view active">
+            <div class="hero">
+                <div class="hero-left">
+                    <div class="hero-label">// 2026 · Open Source</div>
+                    <h1>Just<br><em>write</em> it.</h1>
+                    <div class="hero-sub">6 Agent · 智能协作 · 群聊式创作</div>
+                </div>
+                <div class="hero-right">
+                    <p class="hero-desc">说出你的故事，<br>智能体团队即时接手，实时参与协作过程。</p>
+                    <div class="btn-group">
+                        <button class="btn btn-dark">
+                            开始写作
+                            <span class="badge badge-new">NEW</span>
+                        </button>
+                        <button class="btn">
+                            导入项目
+                        </button>
+                    </div>
+                </div>
             </div>
-            <nav>
-                <ul>
-                    <li class="active" data-view="overview">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="14" width="7" height="7"></rect>
-                            <rect x="3" y="14" width="7" height="7"></rect>
-                        </svg>
-                        项目概览
-                    </li>
-                    <li data-view="chapters">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                        </svg>
-                        章节列表
-                    </li>
-                    <li data-view="characters">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        角色档案
-                    </li>
-                    <li data-view="pacing">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                        </svg>
-                        节奏可视化
-                    </li>
-                    <li data-view="editor">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                        编辑器
-                    </li>
-                </ul>
-            </nav>
-        </aside>
 
-        <!-- 主内容区 -->
-        <main class="content">
-            <!-- 项目概览 -->
-            <section id="overview" class="view active">
-                <h2>项目概览</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>总章节数</h3>
-                        <p id="total-chapters">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>总字数</h3>
-                        <p id="total-words">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>当前进度</h3>
-                        <p id="progress">0%</p>
-                    </div>
+            <div class="section-label">项目数据</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>总章节数</h3>
+                    <p id="total-chapters">0</p>
                 </div>
-            </section>
-
-            <!-- 章节列表 -->
-            <section id="chapters" class="view">
-                <h2>章节列表</h2>
-                <div id="chapter-list"></div>
-            </section>
-
-            <!-- 角色档案 -->
-            <section id="characters" class="view">
-                <h2>角色档案</h2>
-                <div id="character-list" class="character-grid"></div>
-            </section>
-
-            <!-- 节奏可视化 -->
-            <section id="pacing" class="view">
-                <h2>节奏可视化</h2>
-                <div class="pacing-chart">
-                    <div id="pacing-chart-container" class="chart-container"></div>
+                <div class="stat-card">
+                    <h3>总字数</h3>
+                    <p id="total-words">0</p>
                 </div>
-                <div id="emotion-stats" class="mt-6"></div>
-            </section>
-
-            <!-- 编辑器 -->
-            <section id="editor" class="view">
-                <h2>编辑器</h2>
-                <div class="editor-container">
-                    <textarea id="editor-content" class="form-control" placeholder="在这里输入 Markdown 内容..."></textarea>
-                    <div id="editor-preview"></div>
+                <div class="stat-card">
+                    <h3>当前进度</h3>
+                    <p id="progress">0%</p>
                 </div>
-            </section>
-        </main>
-    </div>
+            </div>
+        </section>
+
+        <!-- 章节列表 -->
+        <section id="chapters" class="view">
+            <div class="section-label">FILE 01</div>
+            <h2 class="section-title">章节列表</h2>
+            <ul class="chapter-list" id="chapter-list"></ul>
+        </section>
+
+        <!-- 角色档案 -->
+        <section id="characters" class="view">
+            <div class="section-label">SQUAD</div>
+            <h2 class="section-title">角色档案</h2>
+            <div id="character-list" class="character-grid"></div>
+        </section>
+
+        <!-- 节奏可视化 -->
+        <section id="pacing" class="view">
+            <div class="section-label">LIVE PREVIEW</div>
+            <h2 class="section-title">节奏可视化</h2>
+            <div class="pacing-chart">
+                <div id="pacing-chart-container" class="chart-container"></div>
+            </div>
+            <div id="emotion-stats" style="margin-top: 24px;"></div>
+        </section>
+
+        <!-- 编辑器 -->
+        <section id="editor" class="view">
+            <div class="section-label">EDITOR</div>
+            <h2 class="section-title">编辑器</h2>
+            <div class="editor-container">
+                <textarea id="editor-content" placeholder="在这里输入 Markdown 内容..."></textarea>
+                <div id="editor-preview"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        // 2026 · NovelMaker · 全能网文写作助手
+    </footer>
 
     <script src="js/reader.js"></script>
     <script src="js/markdown.js"></script>
