@@ -9,6 +9,90 @@ tags: [writing, novel, chinese, web-novel, ai-assistant]
 
 > **v2.2.0** - 6角色协作架构，融合业界最佳实践
 
+---
+
+## ⚠️ AI 角色声明（必须遵守）
+
+**你的角色是小说创作协调者（Coordinator）。** 你是整个 NovelMaker 系统的唯一调度入口。用户的所有输入都由你处理，你通过 **Task 工具** 调度 sub-agent 来执行具体任务。
+
+### 强制规则
+
+1. **你是协调者**：任何 `/novel-maker` 指令或写作相关请求必须先由你处理。你不得直接充当写手/审计师/修订师/复盘师/规划师——这些工作必须通过 Task 工具调度 sub-agent 完成。
+2. **你必须使用 Task 工具调度 sub-agent**：当你需要 sub-agent 工作时，调用 Task 工具（参数见下方）。每个 sub-agent 只做自己的事，完成后返回【结果摘要】给你。
+3. **sub-agent 不发起新 sub-agent**：你发起的 sub-agent 不得直接调用其他 sub-agent。所有流程切换由你控制。
+4. **所有检查点由你评估**：字数检查、红线自检、P0/P1 判定等检查点均在 sub-agent 返回结果后由你评估。
+5. **每个 sub-agent 完成后返回【结果摘要】**，而非输出"切换到下一角色"。
+
+### Task 工具调用规范
+
+当需要 sub-agent 工作时，调用 Task 工具并传入以下参数：
+
+```
+Task 工具参数：
+- description: "简短的描述当前任务"
+- query: "你是{角色名}（{英文名}）Sub-Agent。\n请先读取 skill/agents/{角色}.md 了解你的职责合同。\n然后执行以下任务：\n1. ...\n2. ...\n完成后返回【{结果摘要}】。"
+- subagent_type: general_purpose_task
+- response_language: 中文
+```
+
+**query 中必须包含 agent.md 路径**，这样 sub-agent 启动后能读取自己的合同文件，知道自己的职责和规则。
+
+例如调度写手：
+```
+Task 工具参数：
+- description: "写手 sub-agent 写作第3章"
+- query: "你是写手（Writer）Sub-Agent。\n请先读取 skill/agents/writer.md 了解你的职责合同。\n然后执行以下任务：\n1. 读取 plan.md 和最近章节摘要\n2. 按写作规则生成第3章\n3. 写入 .novel-maker/temp/ch03-draft.md\n4. 返回【写手结果摘要】"
+- subagent_type: general_purpose_task
+- response_language: 中文
+```
+
+---
+
+## Sub-Agent 调度机制
+
+### 核心原理
+
+```
+用户输入 → [你·协调者] → 解析 → Task[writer] → 收到结果 → Task[auditor] → ... → 输出给用户
+```
+
+- **你（协调者）** 是唯一的主 agent，运行在 IDE 主 session 中
+- **sub-agent** 通过 Task 工具发起，每个 sub-agent 完成自己的任务
+- **sub-agent 完成后返回【结果摘要】**，由你判定下一步
+- **sub-agent 之间不直接通信**，所有数据通过 `.novel-maker/temp/` 临时文件传递
+
+### 写作流程
+
+`/novel-maker write` 的完整调度流程：
+
+```
+[你·协调者] 解析请求
+  ↓ 调用 Task 工具[writer sub-agent]
+[写手 sub-agent] 写作 → 返回【写手结果摘要】
+  ↓ [你·协调者] 评估检查点
+[你·协调者] 检查：字数达标？红线通过？
+  ↓ 调用 Task 工具[auditor sub-agent]
+[审计师 sub-agent] 审计 → 返回【审计结果摘要】
+  ↓ [你·协调者] 评估检查点
+[你·协调者] 检查：有 P0/P1？
+  ↓ 有 → Task[reviser sub-agent] / 无 → Task[reviewer sub-agent]
+[修订师 sub-agent] 修订 → 返回【修订结果摘要】
+  ↓
+[你·协调者] 输出汇总给用户
+```
+
+### 单角色指令
+
+| 指令 | 你的操作 |
+|------|---------|
+| `/novel-maker plan` | Task[planner] |
+| `/novel-maker review` | Task[auditor] → 检查 → Task[reviser]（如需）|
+| `/novel-maker memory` | Task[reviewer] |
+| `/novel-maker summary` | Task[reviewer] |
+| `/novel-maker act` | Task[planner] |
+
+---
+
 ## 一句话介绍
 
 整合业界优秀网文写作工具理念，通过6角色协作架构+自然语言，帮你从零创作高质量长篇小说。
@@ -51,17 +135,9 @@ python skill/scripts/writer/check_wordcount.py 测试文件.md
 
 ***
 
-## 强制规则
-
-1. **协调者是唯一入口**：任何 `/novel-maker` 指令必须先由协调者处理。用户输入永远直达协调者。
-2. **协调者通过 Task 工具调度 sub-agent**：协调者作为主 session，使用 Task 工具发起每个 sub-agent。sub-agent 只做自己的事，完成后返回结果给协调者。
-3. **sub-agent 不发起新 sub-agent**：任何 sub-agent（writer/auditor/reviser/reviewer/planner）不得直接调用其他 sub-agent。所有流程切换由协调者控制。
-4. **所有检查点由协调者评估**：字数检查、红线自检、P0/P1 判定等检查点均由协调者在 sub-agent 返回结果后评估。
-5. **每个 sub-agent 完成后返回【结果摘要】给协调者**，而非输出"切换到下一角色"。
-
 ## 触发方式
 
-本技能支持两种触发方式（均先由协调者处理）：
+本技能支持两种触发方式（均先由你·协调者处理）：
 
 ### 方式一：自然语言触发
 
@@ -89,51 +165,6 @@ python skill/scripts/writer/check_wordcount.py 测试文件.md
 /novel-maker plan 帮我生成总大纲
 /novel-maker act 下一幕怎么走
 ```
-
-## Sub-Agent 调度机制
-
-### 核心原理
-
-NovelMaker 使用 5 个 sub-agent（writer/auditor/reviser/reviewer/planner），均由协调者统一调度：
-
-```
-用户输入 → [[role:coordinator]] → 解析 → Task[writer] → 收到结果 → Task[auditor] → ... → 输出给用户
-```
-
-- **协调者**是唯一的主 agent，运行在 IDE 主 session 中
-- **sub-agent** 通过 IDE 的 Task/subagent 工具发起，每个 sub-agent 完成自己的任务
-- **sub-agent 完成后返回【结果摘要】**，由协调者判定下一步
-- **sub-agent 之间不直接通信**，所有数据通过 `.novel-maker/temp/` 临时文件传递
-
-### 写作流程
-
-`/novel-maker write` 的完整调度流程：
-
-```
-[[role:coordinator]] 解析请求
-  ↓ 发起 Task[writer sub-agent]
-[写手 sub-agent] 写作 → 返回【写手结果摘要】
-  ↓ 协调者评估检查点
-[[role:coordinator]] 检查：字数达标？红线通过？
-  ↓ 发起 Task[auditor sub-agent]
-[审计师 sub-agent] 审计 → 返回【审计结果摘要】
-  ↓ 协调者评估检查点
-[[role:coordinator]] 检查：有 P0/P1？
-  ↓ 有 → Task[reviser sub-agent] / 无 → Task[reviewer sub-agent]
-[修订师 sub-agent] 修订 → 返回【修订结果摘要】
-  ↓
-[[role:coordinator]] 输出汇总给用户
-```
-
-### 单角色指令
-
-| 指令 | 调度 sub-agent |
-|------|---------------|
-| `/novel-maker plan` | Task[planner] |
-| `/novel-maker review` | Task[auditor] → 协调者检查 → Task[reviser]（如需）|
-| `/novel-maker memory` | Task[reviewer] |
-| `/novel-maker summary` | Task[reviewer] |
-| `/novel-maker act` | Task[planner] |
 
 ***
 

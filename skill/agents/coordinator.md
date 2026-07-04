@@ -21,16 +21,26 @@
 
 ### 核心流程
 
-协调者作为主 agent，通过 Task 工具调度 sub-agent。每个 sub-agent 独立执行任务，完成后返回结果给协调者：
+协调者作为主 agent，通过 Task 工具调度 sub-agent：
 
 ```
 [协调者主 session]
 1. 解析用户输入
-2. 发起 Task[writer sub-agent] → 等待【写手结果摘要】
-3. 评估检查点 → 通过则发起 Task[auditor sub-agent]
+2. 调用 Task 工具→ 调度 writer sub-agent → 等待【写手结果摘要】
+3. 评估检查点 → 通过则调用 Task 工具 → 调度 auditor sub-agent
 4. 收到【审计结果摘要】 → 评估 P0/P1
-5. 有 P0/P1 → Task[reviser sub-agent] / 无 → Task[reviewer sub-agent]
-6. 收到结果 → 汇总输出给用户
+5. 有 P0/P1 → 调用 Task 工具 → 调度 reviser sub-agent
+6. 无 P0/P1 → 调用 Task 工具 → 调度 reviewer sub-agent
+7. 汇总输出给用户
+```
+
+每次调用的 Task 工具参数格式如下：
+```
+Task 工具参数：
+- description: "描述调度任务"
+- query: "你是{角色名}（{英文名}）Sub-Agent。\n请先读取 skill/agents/{角色}.md 了解你的职责合同。\n然后执行以下任务：\n1. ...\n完成后返回【{结果摘要}】。"
+- subagent_type: general_purpose_task
+- response_language: 中文
 ```
 
 ### 调度规则
@@ -99,65 +109,68 @@
 ### /novel-maker write 完整流程
 
 ```
-[[role:coordinator]] 解析用户请求
-→ 写第{current_chapter}章，当前第{current_act}幕
+[你·协调者] 解析用户请求 → 写第{current_chapter}章，当前第{current_act}幕
 
-→ 调度写手 sub-agent：
-[Task: writer sub-agent]
-1. 读取 plan.md、最近章节摘要、相关 truth-files
-2. 按 writer.md 规则写作
-3. 写入 .novel-maker/temp/ch{XXX}-draft.md
-4. 返回【写手结果摘要】
+→ 第一步：调用 Task 工具-> writer sub-agent
+   Task 工具参数：
+   - description: "写手 sub-agent 写作第{current_chapter}章"
+   - query: "你是写手（Writer）Sub-Agent。\n请先读取 skill/agents/writer.md 了解你的职责合同。\n然后执行以下任务：\n1. 读取 plan.md、最近章节摘要、相关 truth-files\n2. 按写作规则生成第{current_chapter}章\n3. 写入 .novel-maker/temp/ch{XXX}-draft.md\n4. 返回【写手结果摘要】"
+   - subagent_type: general_purpose_task
+   - response_language: 中文
 
-[[role:coordinator]] 收到写手结果
+→ 等待【写手结果摘要】
 → 评估检查点：
    - 字数 ≥ 2500？[通过/未通过]
    - 字数 4501-6000？→ AskUserQuestion 是否精简
    - 字数 > 6000？→ AskUserQuestion 是否拆章
    - 红线自检全部通过？[通过/未通过]
-→ 检查点通过 → 调度审计师 sub-agent
+→ 检查点通过 → 下一步
 
-→ 调度审计师 sub-agent：
-[Task: auditor sub-agent]
-1. 读取 .novel-maker/temp/ch{XXX}-draft.md
-2. 执行 15 核心维度审计
-3. 写入 .novel-maker/temp/ch{XXX}-audit.json
-4. 返回【审计结果摘要】
+→ 第二步：调用 Task 工具-> auditor sub-agent
+   Task 工具参数：
+   - description: "审计师 sub-agent 审查第{current_chapter}章"
+   - query: "你是审计师（Auditor）Sub-Agent。\n请先读取 skill/agents/auditor.md 了解你的职责合同。\n然后执行以下任务：\n1. 读取 .novel-maker/temp/ch{XXX}-draft.md\n2. 执行 15 核心维度审计\n3. 写入 .novel-maker/temp/ch{XXX}-audit.json\n4. 返回【审计结果摘要】"
+   - subagent_type: general_purpose_task
+   - response_language: 中文
 
-[[role:coordinator]] 收到审计结果
+→ 等待【审计结果摘要】
 → 评估检查点：
    - 有 P0/P1？[有/无]
-→ 有 P0/P1 → 调度修订师 sub-agent
-→ 无 P0/P1 → 调度复盘师 sub-agent
+→ 有 P0/P1 → 第三步；无 P0/P1 → 跳过第三步
 
-→ 调度修订师 sub-agent（条件触发）：
-[Task: reviser sub-agent]
-1. 读取 .novel-maker/temp/ch{XXX}-audit.json + draft.md
-2. 修复所有 P0/P1
-3. 写入 .novel-maker/temp/ch{XXX}-revised.md
-4. 返回【修订结果摘要】
+→ 第三步（条件）：调用 Task 工具-> reviser sub-agent
+   Task 工具参数：
+   - description: "修订师 sub-agent 修复第{current_chapter}章 P0/P1"
+   - query: "你是修订师（Reviser）Sub-Agent。\n请先读取 skill/agents/reviser.md 了解你的职责合同。\n然后执行以下任务：\n1. 读取 .novel-maker/temp/ch{XXX}-audit.json + draft.md\n2. 修复所有 P0/P1 问题\n3. 写入 .novel-maker/temp/ch{XXX}-revised.md\n4. 返回【修订结果摘要】"
+   - subagent_type: general_purpose_task
+   - response_language: 中文
+→ 复审：调用 Task 工具-> auditor sub-agent 复审
 
-[[role:coordinator]] 收到修订结果
-→ 调度审计师 sub-agent 复审
+→ 第四步：调用 Task 工具-> reviewer sub-agent
+   Task 工具参数：
+   - description: "复盘师 sub-agent 归档第{current_chapter}章"
+   - query: "你是复盘师（Reviewer）Sub-Agent。\n请先读取 skill/agents/reviewer.md 了解你的职责合同。\n然后执行以下任务：\n1. 读取最终稿件\n2. 更新 truth-files\n3. 归档章节到 novels/volume-XX/chapters/chXXX.md\n4. 清理临时文件\n5. 返回【复盘结果摘要】"
+   - subagent_type: general_purpose_task
+   - response_language: 中文
 
-→ 调度复盘师 sub-agent：
-[Task: reviewer sub-agent]
-1. 读取最终稿件
-2. 更新 truth-files
-3. 归档章节到 novels/volume-XX/chapters/chXXX.md
-4. 清理临时文件
-5. 返回【复盘结果摘要】
-
-[[role:coordinator]] 汇总结果 → 输出给用户
+→ 汇总结果 → 输出给用户
 ```
 
 ### /novel-maker review 流程
 
 ```
-[[role:coordinator]] 解析请求
-→ 调度审计师 sub-agent：
-[Task: auditor sub-agent] → 返回【审计结果摘要】
-→ 评估：有 P0/P1？有 → Task[reviser] / 无 → 输出给用户
+[你·协调者] 解析请求
+
+→ 调用 Task 工具-> auditor sub-agent
+   Task 工具参数：
+   - description: "审计师 sub-agent 审查章节"
+   - query: "你是审计师（Auditor）Sub-Agent。\n请先读取 skill/agents/auditor.md 了解你的职责合同。\n然后执行审计任务，返回【审计结果摘要】"
+   - subagent_type: general_purpose_task
+   - response_language: 中文
+
+→ 评估：有 P0/P1？
+   有 → 调用 Task 工具-> reviser sub-agent
+   无 → 输出给用户
 ```
 
 ## 协调者评估检查点
