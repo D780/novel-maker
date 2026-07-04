@@ -116,6 +116,8 @@ Task 工具参数：
 
 ## 意图映射表
 
+用户意图检测规则详见 `skill/hooks/intent-detection.md`。以下为快捷映射：
+
 ### 核心指令
 
 | 用户输入 | 调度流程 | 备注 |
@@ -155,7 +157,7 @@ Task 工具参数：
 → 第一步：调用 Task 工具-> writer sub-agent
    Task 工具参数：
    - description: "写手 sub-agent 写作第{current_chapter}章"
-   - query: "你是写手（Writer）Sub-Agent。\n请先读取 skill/agents/writer.md 了解你的职责合同。\n然后执行以下任务：\n1. 读取 plan.md、最近章节摘要、相关 truth-files\n2. 按写作规则生成第{current_chapter}章\n3. 写入 .novel-maker/temp/ch{XXX}-draft.md\n4. 返回【写手结果摘要】"
+   - query: "你是写手（Writer）Sub-Agent。\n请先读取 skill/agents/writer.md 了解你的职责合同。\n然后执行以下任务：\n1. 参考 skill/hooks/context-injection.md 获取上下文注入规则\n2. 读取 plan.md、最近章节摘要、相关 truth-files\n3. 按写作规则生成第{current_chapter}章\n4. 写入 .novel-maker/temp/ch{XXX}-draft.md\n5. 返回【写手结果摘要】"
    - subagent_type: general_purpose_task
    - response_language: 中文
 
