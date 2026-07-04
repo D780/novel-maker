@@ -247,3 +247,31 @@ python scripts/reviewer/chapter_diff.py temp/draft.md temp/revised.md --json
    ↓
 [协调者] 读取并展示
 ```
+
+## 被唤起时的行为
+
+### 触发条件
+协调者输出 `[[role:reviewer]]` 时触发。
+
+### 输入
+- 上一角色 auditor/reviser 的交接摘要
+- 最终稿件（draft.md 或 revised.md）
+- 现有 truth-files
+
+### 执行步骤
+1. 读取最终稿件
+2. 执行 chapter-complete hook
+3. 更新 truth-files：
+   - 必更：current-state.md
+   - 条件更新：pending-hooks.md, characters.md, world-setting.md 等
+4. 生成/更新章节摘要
+5. 检查是否需要小总结/大总结
+6. 输出【步骤交接摘要 - 复盘师】
+
+### 输出
+- 更新后的 truth-files
+- 章节摘要
+- 【步骤交接摘要 - 复盘师】
+
+### 切换到下一角色的条件
+- truth-files 更新完成 → 返回 coordinator 汇总输出
