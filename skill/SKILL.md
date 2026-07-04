@@ -7,7 +7,7 @@ tags: [writing, novel, chinese, web-novel, ai-assistant]
 
 # NovelMaker - 全能网文写作助手
 
-> **v2.2.0** - 6角色协作架构，融合业界最佳实践
+> **v2.3.0** - 6角色协作架构，融合业界最佳实践
 
 ---
 

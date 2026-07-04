@@ -1,5 +1,30 @@
 # 变更日志
 
+## v2.3.0 (2026-07-04)
+
+### 核心架构变更
+
+- **Sub-Agent 调度机制**：agent.md 从工具定义重构为 Sub-Agent 合同，协调者统一通过 Task 工具调度，sub-agent 不切换角色、不发起新 sub-agent
+- **角色声明前置**：SKILL.md 开头声明 AI 角色为协调者，强制规则改为"你是协调者"
+- **Task 工具调用模板**：coordinator.md 伪代码改为实际 Task 工具参数模板（description/query/subagent_type/response_language）
+- **协调者评估检查点**：字数检查、红线自检、P0/P1 判定均由协调者在主 session 评估
+
+### 新增功能
+
+- **TodoWrite 待办管理**：协调者每次流程开始时主动创建结构化待办列表，按步骤生成、完成后标记 completed
+- **自动版本检查**：每日首次/间隔5小时检查 npm 新版本，发现新版时 AskUserQuestion 是否升级
+- **系统/金手指角色支持**：character-profile.md 新增"系统/金手指档案"章节（系统等级/功能/规则/人格/界面元素/成长记录），chapter-complete.md 新增检测和更新规则
+- **Truth-File 迁移机制**：技能升级后自动检测缺失的 truth-file 并从模板创建，含迁移状态记录和回填脚本支持
+- **数据流规则**：写手只写入 temp/、审计师只审查 temp/、复盘师归档到 novel/ 后清理
+
+### 改进
+
+- **Truth-File 更新强化**：chapter-complete.md 加入每个 truth-file 的模板引用和详细更新字段，复盘师按模板结构更新
+- **Hook 引用完善**：coordinator.md 引用 context-injection.md 和 intent-detection.md hooks
+- **一致性检查通过 167 项**：validate.py 覆盖 Python 语法、Markdown 引用、角色定义、题材包、弧线模板、规则文件、模板文件、Hook 文件
+
+---
+
 ## v2.2.0 (2026-06-26)
 
 ### 新增功能
