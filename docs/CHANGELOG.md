@@ -8,6 +8,21 @@
 
 ---
 
+## [2.2.4] - 2026-07-04
+
+### Changed
+- 强化技能执行严格性：每章/每5章/每10章/每幕固定检查清单
+- 整合写作红线到 writer.md、constitution.md、SKILL.md
+- 添加 truth-files 更新清单和规划同步机制
+- 添加步骤交接摘要机制，确保步骤无缝衔接
+
+### Added
+- SKILL.md 增加脚本安装流程说明
+- outline.md 增加"实际执行"列用于规划同步
+- memory-system.md 简化 truth-files 更新规则
+
+---
+
 ## [2.2.2] - 2026-07-04
 
 ### 新增
