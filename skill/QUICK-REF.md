@@ -69,7 +69,7 @@
 | **预审计** | `python scripts/auditor/pre_audit.py ch15.md --json` | **一键运行所有自动化审计** |
 | **真相变更** | `python scripts/reviewer/truth_diff.py ch15.md -t 真相/ --json` | **检测需更新的真相文件** |
 | **规划上下文** | `python scripts/planner/planner_context.py --volume 01 --json` | **规划师精简上下文(~5000 token)** |
-| **修订对比** | `python scripts/reviewer/chapter_diff.py draft.md revised.md --json` | **比较原稿和修订稿差异** |
+| **修订对比** | `python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch017-draft.md .novel-maker/temp/ch017-revised.md --json` | **比较原稿和修订稿差异** |
 | 幕规划 | `python scripts/coordinator/volume_batch.py 卷目录 --recent 5 --json` | 获取最近5章汇总 |
 | 字数检查 | `python scripts/writer/check_wordcount.py 本章.md` | 验证字数达标 |
 | 一致性扫描 | `python scripts/auditor/consistency_scan.py 章节/ 真相/ --json` | 检测设定冲突 |

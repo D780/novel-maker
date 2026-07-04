@@ -324,7 +324,7 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 比较原稿和修订稿的结构化差异（角色/伏笔/字数/结构/节奏）。
 
 ```bash
-python scripts/reviewer/chapter_diff.py temp/draft.md temp/revised.md --json
+python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch017-draft.md .novel-maker/temp/ch017-revised.md --json
 ```
 
 输出：`word_count` / `characters` / `locations` / `hook` / `structure` / `pacing` / `summary`

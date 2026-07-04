@@ -7,7 +7,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/novel-maker.svg)](https://www.npmjs.com/package/novel-maker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/D780/novel-maker.svg)](https://github.com/D780/novel-maker)
-[![Version](https://img.shields.io/badge/version-2.2.2-blue.svg)](skill/SKILL.md)
+[![Version](https://img.shields.io/badge/version-2.3.0-blue.svg)](skill/SKILL.md)
 
 ## 核心能力
 
@@ -114,7 +114,7 @@ AI 会引导你完成：
 
 ## 6角色协作架构
 
-NovelMaker v2.2.0 采用 6角色协作架构，每个角色专注特定职责：
+NovelMaker v2.3.0 采用 6角色协作架构，每个角色专注特定职责：
 
 ```
 用户输入 → [协调者] 意图识别 → [规划师] 大纲/剧情卡片 → [写手] 章节草稿
@@ -187,7 +187,7 @@ NovelMaker v2.2.0 采用 6角色协作架构，每个角色专注特定职责：
 | 1.5.0 | 2026-05 | 幕系统 + 脚本 - 6条分支走向、Python预处理脚本、多IDE兼容 |
 | 2.0.0 | 2026-06 | 6角色协作架构 - 协调者/规划师/写手/审计师/修订师/复盘师，8个真相文件，去AI味技巧，平台适配规则 |
 | 2.1.0 | 2026-06 | 质量增强 - 反AI表达规则、风格锚点、角色声音检查、5维度一致性检查、11个题材包、42种弧线模板、节奏可视化、Web UI |
-| 2.2.0 | 2026-06 | 智能化增强 - 智能查询系统、Hook 系统、Web UI 增强（设置页面、项目管理） |
+| 2.3.0 | 2026-07 | Sub-Agent 调度机制 - 协调者统一调度、TodoWrite 待办管理、系统/金手指角色支持、Truth-File 迁移机制 |
 
 完整更新记录见 [CHANGELOG](docs/CHANGELOG.md)
 
