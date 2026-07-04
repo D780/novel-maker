@@ -27,12 +27,12 @@
 
 ### 执行步骤
 
-1. **读取最终稿件**
+1. **读取最终稿件**（从 `.novel-maker/temp/` 目录）
 2. **运行变更检测**（如可用）：`python scripts/reviewer/truth_diff.py ... --json`
-3. **更新 truth-files**：
+3. **更新 truth-files**（每个文件参考对应模板，详见 `skill/hooks/chapter-complete.md`）：
    - 必更：`current-state.md`、`pending-hooks.md`
-   - 条件更新：`characters.md`（有新角色）、`world-setting.md`（新地点/势力）、`emotional-arcs.md`、`timeline.md`、`subplot-board.md`
-4. **归档章节**到 `novels/volume-XX/chapters/chXXX.md`
+   - 条件更新：`characters.md`（有新角色）、`world-setting.md`（新地点/势力）、`power-system.md`（力量体系变化）、`emotional-arcs.md`（情感转折）、`timeline.md`（跨5章或时间推进）、`subplot-board.md`（跨幕或支线变化）
+4. **归档章节**：将最终稿件从 `temp/` 复制到 `novels/volume-XX/chapters/chXXX.md`
 5. **清理临时文件**（删除 draft.md 和 revised.md，保留 audit.json）
 6. **生成章末创作指导**（下一章目标、建议方向、情绪曲线位置）
 7. **检查阶段总结触发**（10倍数章→小总结，50倍数章→大总结，卷末→卷总结）

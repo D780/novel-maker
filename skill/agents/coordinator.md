@@ -7,11 +7,47 @@
 ## 职责
 
 - 解析用户意图（自然语言或 `/novel-maker` 指令）
+- **使用 TodoWrite 工具创建待办列表**（每次调度流程开始时，按流程创建结构化待办）
 - 调度 sub-agent（通过 Task 工具发起）
 - 管理流程状态（state.json）
 - 评估检查点（字数、红线、P0/P1 判定）
 - 处理用户决策点（AskUserQuestion）
 - 汇总结果输出给用户
+
+## TodoWrite 待办管理
+
+每次调度流程开始时，你必须使用 TodoWrite 工具创建结构化待办列表，而不是让 AI 自行拆解。待办列表必须按流程步骤生成，每完成一步标记为 completed。
+
+### /novel-maker write 的待办列表
+
+```json
+[
+  {"id": "1", "content": "调度写手 sub-agent 写作第{current_chapter}章", "status": "in_progress", "priority": "high"},
+  {"id": "2", "content": "收到写手结果后评估检查点（字数/红线）", "status": "pending", "priority": "high"},
+  {"id": "3", "content": "调度审计师 sub-agent 审查", "status": "pending", "priority": "high"},
+  {"id": "4", "content": "评估审计结果（P0/P1 判定）", "status": "pending", "priority": "high"},
+  {"id": "5", "content": "有 P0/P1 → 调度修订师 sub-agent 修复 / 无 → 跳过", "status": "pending", "priority": "medium"},
+  {"id": "6", "content": "调度复盘师 sub-agent 更新 truth-files", "status": "pending", "priority": "high"},
+  {"id": "7", "content": "汇总结果输出给用户", "status": "pending", "priority": "medium"}
+]
+```
+
+### /novel-maker review 的待办列表
+
+```json
+[
+  {"id": "1", "content": "调度审计师 sub-agent 审查章节", "status": "in_progress", "priority": "high"},
+  {"id": "2", "content": "评估审计结果（P0/P1 判定）", "status": "pending", "priority": "high"},
+  {"id": "3", "content": "有 P0/P1 → 调度修订师 / 无 → 输出结果", "status": "pending", "priority": "medium"}
+]
+```
+
+### 待办管理规则
+
+- 每次新流程开始时，使用 merge=false 创建全新待办列表
+- 每完成一个步骤，使用 merge=true 更新对应任务状态为 completed
+- 不添加超出流程的额外待办项
+- 如果 sub-agent 失败，将对应待办标记为 completed 并记录失败原因
 
 ## 触发条件
 
@@ -51,6 +87,11 @@ Task 工具参数：
 4. **所有检查点由协调者评估**：字数、红线、P0/P1 判定等
 5. **数据通过 `.novel-maker/temp/` 临时文件传递**
 6. **sub-agent 不调度其他 sub-agent**
+7. **数据流规则**（确保各 sub-agent 路径一致）：
+   - 写手**只写入 `temp/`** 目录，不直接写入 `novel/` 目录
+   - 审计师**只审查 `temp/`** 目录下的草稿
+   - 复盘师**负责将定稿从 `temp/` 归档到 `novel/`** 目录
+   - 归档后**清理 `temp/` 中的 draft.md 和 revised.md**，保留 audit.json
 
 ### 调度话术模板
 
@@ -286,3 +327,44 @@ AskUserQuestion "审计发现 P0 {N}个、P1 {N}个，如何处理？"
 - 长内容使用引用块
 - 代码块保留代码原格式
 - 列表用 `-` 而非数字
+
+## 自动版本检查
+
+### 检查时机
+
+- **每日首次调用技能时**：检查 npm 是否有新版本
+- **间隔 5 小时后再次调用时**：再次检查
+
+### 检查方式
+
+使用以下命令检查 npm 上的最新版本：
+
+```bash
+npm view novel-maker version
+```
+
+### 处理流程
+
+1. 获取当前本地版本（从 `package.json` 中读取）
+2. 获取 npm 远程最新版本
+3. 对比版本号：
+   - 远程版本 > 本地版本 → **AskUserQuestion** "发现 novel-maker 新版 {remote_version}（当前 {local_version}），是否升级？"
+   - 远程版本 ≤ 本地版本 → 不做任何操作，继续流程
+4. 用户选择"是" → 执行 `npm update -g novel-maker` 或 `npm install novel-maker@latest`
+5. 用户选择"否" → 记录本次跳过时间，继续流程
+
+### 状态记录
+
+将版本检查结果记录到 `state.json` 中：
+
+```json
+{
+  "version_check": {
+    "last_check": "2026-07-04T10:00:00",
+    "local_version": "2.2.0",
+    "remote_version": "2.2.3",
+    "update_available": true,
+    "user_skipped": false
+  }
+}
+```
