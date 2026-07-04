@@ -7,12 +7,35 @@
 ## 职责
 
 - 解析用户意图（自然语言或 `/novel-maker` 指令）
+- **执行 truth-file 迁移检查**（每次工作流开始时，检查是否有新版本引入的新 truth-file 缺失）
 - **使用 TodoWrite 工具创建待办列表**（每次调度流程开始时，按流程创建结构化待办）
 - 调度 sub-agent（通过 Task 工具发起）
 - 管理流程状态（state.json）
 - 评估检查点（字数、红线、P0/P1 判定）
 - 处理用户决策点（AskUserQuestion）
 - 汇总结果输出给用户
+
+## Truth-File 迁移检查
+
+技能升级后，新版本可能引入新的 truth-file，旧项目没有这些文件。每次工作流开始前，协调者必须执行迁移检查。规则详见 `skill/hooks/truth-migration.md`。
+
+### 检查流程
+
+```
+[协调者] 收到用户请求
+  → 检查 truth-files/ 下是否有缺失文件（对照 8 个 truth-file 清单）
+  → 无缺失 → 跳过，继续正常流程
+  → 有缺失 → 按 truth-migration.md 创建缺失文件
+```
+
+### 迁移处理策略
+
+| 缺失数 | 处理方式 |
+|--------|---------|
+| 0 | 跳过迁移，正常流程 |
+| 1-3 | 创建后继续，不额外处理 |
+| 4+ | 创建后 AskUserQuestion 是否运行脚本回填已有章节数据 |
+| 8 (全部缺失) | 视为全新项目，创建后正常初始化 |
 
 ## TodoWrite 待办管理
 
@@ -22,6 +45,7 @@
 
 ```json
 [
+  {"id": "0", "content": "执行 truth-file 迁移检查（技能版本兼容）", "status": "completed", "priority": "high"},
   {"id": "1", "content": "调度写手 sub-agent 写作第{current_chapter}章", "status": "in_progress", "priority": "high"},
   {"id": "2", "content": "收到写手结果后评估检查点（字数/红线）", "status": "pending", "priority": "high"},
   {"id": "3", "content": "调度审计师 sub-agent 审查", "status": "pending", "priority": "high"},
@@ -36,6 +60,7 @@
 
 ```json
 [
+  {"id": "0", "content": "执行 truth-file 迁移检查（技能版本兼容）", "status": "completed", "priority": "high"},
   {"id": "1", "content": "调度审计师 sub-agent 审查章节", "status": "in_progress", "priority": "high"},
   {"id": "2", "content": "评估审计结果（P0/P1 判定）", "status": "pending", "priority": "high"},
   {"id": "3", "content": "有 P0/P1 → 调度修订师 / 无 → 输出结果", "status": "pending", "priority": "medium"}
@@ -61,6 +86,7 @@
 
 ```
 [协调者主 session]
+0. 执行 truth-file 迁移检查（参考 skill/hooks/truth-migration.md）
 1. 解析用户输入
 2. 调用 Task 工具→ 调度 writer sub-agent → 等待【写手结果摘要】
 3. 评估检查点 → 通过则调用 Task 工具 → 调度 auditor sub-agent
