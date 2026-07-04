@@ -267,10 +267,39 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 [写手] 应用角色模拟（如需要）
    ↓
 [写手] 应用文风
-   ↓
-[写手] 写入 temp/draft.md
+   ↓[写手] 写入 temp/draft.md
    ↓
 [写手] 字数预检
    ↓
 [审计师] 接管
 ```
+
+## 被唤起时的行为
+
+### 触发条件
+协调者输出 `[[role:writer]]` 时触发。
+
+### 输入
+- 上一角色（通常是 planner/coordinator）的交接摘要
+- `state.json` 中的当前章节、幕、情绪标签、文风
+- `plan.md` 中本章规划
+- 最近 1-3 章摘要
+- 相关 truth-files（current-state.md, pending-hooks.md 等）
+
+### 执行步骤
+1. 读取输入并确认本章目标
+2. 按"常规写作流程"写作
+3. 进行红线自检
+4. 输出章节草稿到 `temp/draft.md`
+5. 输出【步骤交接摘要 - 写手】
+
+### 输出
+- `temp/draft.md`
+- 【步骤交接摘要 - 写手】
+
+### 切换到下一角色的条件
+- 字数 2500-4000 字
+- 红线自检全部通过
+- 否则：返回 writer 自身继续修改
+
+## 字数要求
