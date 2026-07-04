@@ -31,7 +31,8 @@
 2. **运行变更检测**（如可用）：`python scripts/reviewer/truth_diff.py ... --json`
 3. **更新 truth-files**（每个文件参考对应模板，详见 `skill/hooks/chapter-complete.md`）：
    - 必更：`current-state.md`、`pending-hooks.md`
-   - 条件更新：`characters.md`（有新角色）、`world-setting.md`（新地点/势力）、`power-system.md`（力量体系变化）、`emotional-arcs.md`（情感转折）、`timeline.md`（跨5章或时间推进）、`subplot-board.md`（跨幕或支线变化）
+   - 条件更新：`characters.md`（有新角色/系统/金手指）、`world-setting.md`（新地点/势力）、`power-system.md`（力量体系变化）、`emotional-arcs.md`（情感转折）、`timeline.md`（跨5章或时间推进）、`subplot-board.md`（跨幕或支线变化）
+   - 系统/金手指检测：检查稿件中是否有系统提示音、面板、金手指激活等信号，若有则在 `characters.md` 中按系统档案模板创建/更新记录
 4. **归档章节**：将最终稿件从 `temp/` 复制到 `novels/volume-XX/chapters/chXXX.md`
 5. **清理临时文件**（删除 draft.md 和 revised.md，保留 audit.json）
 6. **生成章末创作指导**（下一章目标、建议方向、情绪曲线位置）
@@ -69,7 +70,7 @@
 
 | 文件 | 触发条件 |
 |------|---------|
-| `characters.md` | 有新角色/角色状态变化 |
+| `characters.md` | 有新角色/系统/金手指/角色状态变化 |
 | `world-setting.md` | 新地点/势力/规则 |
 | `power-system.md` | 力量体系变化 |
 | `emotional-arcs.md` | 情感转折 |
