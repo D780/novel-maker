@@ -251,7 +251,10 @@ python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch{XXX}-draft.md .nove
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:reviewer]]` 时触发。角色被唤起时，必须先输出 `[[role:reviewer]]` 作为回复开头。
+有两种模式触发本角色：
+
+- **模式 A**：协调者输出 `[[role:reviewer]]` 时触发。角色被唤起时，必须先输出 `[[role:reviewer]]` 作为回复开头。
+- **模式 B**：协调者统一执行流程，自行按本文件规则执行本角色任务。
 
 ### 输入
 - 上一角色 auditor/reviser 的交接摘要
@@ -295,3 +298,6 @@ python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch{XXX}-draft.md .nove
 
 ### 切换到下一角色的条件
 - truth-files 更新完成且临时文件已清理：满足条件时，立即输出切换指令并切换：返回协调者 `[[role:coordinator]]` 汇总输出
+
+### 模式 B 说明
+在协调者统一执行模式下，本规则由协调者读取并执行。协调者输出 `[[role:reviewer]]` 标记后，按上述步骤完成复盘，然后继续输出 `[[role:coordinator]]` 进入下一步。

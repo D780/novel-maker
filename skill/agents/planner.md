@@ -90,7 +90,10 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:planner]]` 时触发。角色被唤起时，必须先输出 `[[role:planner]]` 作为回复开头。
+有两种模式触发本角色：
+
+- **模式 A**：协调者输出 `[[role:planner]]` 时触发。角色被唤起时，必须先输出 `[[role:planner]]` 作为回复开头。
+- **模式 B**：协调者统一执行流程，自行按本文件规则执行本角色任务。
 
 ### 输入
 - 上一角色 coordinator 的交接摘要
@@ -125,6 +128,9 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 ### 切换到下一角色的条件
 - 规划完成且无需用户决策：满足条件时，立即输出切换指令并切换：返回协调者 `[[role:coordinator]]`
 - 需要用户决策：立即输出切换指令并切换：进入协调者 `[[role:coordinator]]`，等待用户输入
+
+### 模式 B 说明
+在协调者统一执行模式下，本规则由协调者读取并执行。协调者输出 `[[role:planner]]` 标记后，按上述步骤完成规划，然后继续输出 `[[role:coordinator]]` 进入下一步。
 
 ## 输出文件位置
 
