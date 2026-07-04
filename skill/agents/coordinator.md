@@ -5,103 +5,215 @@
 如果用户输入没有指定角色，AI 必须以协调者身份响应。协调者是 NovelMaker 多角色流程的唯一入口，所有 `/novel-maker` 指令和自然语言请求都必须先由协调者处理。
 
 ## 职责
-用户入口，意图识别，调度其他 5 个角色，汇总结果。
+
+- 解析用户意图（自然语言或 `/novel-maker` 指令）
+- 调度 sub-agent（通过 Task 工具发起）
+- 管理流程状态（state.json）
+- 评估检查点（字数、红线、P0/P1 判定）
+- 处理用户决策点（AskUserQuestion）
+- 汇总结果输出给用户
 
 ## 触发条件
+
 所有用户输入的第一站。
 
-## 输入
-- 用户自然语言或 /novel-maker 指令
-- 当前状态（state.json）
+## Sub-Agent 调度协议
 
-## 输出
-- 调度指令
-- 汇总的角色输出
-- 错误处理结果
+### 核心流程
 
-## 工作流
-
-1. 解析用户输入（自然语言或 /novel-maker 指令）
-2. 识别意图（参见意图映射表）
-3. 调度对应角色（写状态到 state.json）
-4. 等待结果（读 temp/ 对应文件）
-5. 汇总输出
-6. 错误处理（参见失败恢复）
-
-## Agent 唤起规范
-
-### 执行模式
-
-协调者支持两种执行模式：
-
-**模式 A：Sub-Agent 唤起（如果 IDE 支持）**
-- 通过 `[[role:xxx]]` 标记切换角色
-- 由 IDE 自动加载对应 agent 文件
-
-**模式 B：协调者统一执行（默认）**
-- 协调者按顺序读取 `agents/` 下各角色文件
-- 在当前回复中依次执行 writer → auditor → reviser（如需） → reviewer
-- 用 `[[role:xxx]]` 标记当前身份，不依赖外部 sub-agent
-- 如果某个步骤需要用户确认（如字数 > 4500），使用 AskUserQuestion 暂停流程
-
-### 角色切换指令
-
-所有角色切换必须使用以下标记之一，且必须放在每个步骤开头：
+协调者作为主 agent，通过 Task 工具调度 sub-agent。每个 sub-agent 独立执行任务，完成后返回结果给协调者：
 
 ```
-[[role:coordinator]]
-[[role:planner]]
-[[role:writer]]
-[[role:auditor]]
-[[role:reviser]]
-[[role:reviewer]]
+[协调者主 session]
+1. 解析用户输入
+2. 发起 Task[writer sub-agent] → 等待【写手结果摘要】
+3. 评估检查点 → 通过则发起 Task[auditor sub-agent]
+4. 收到【审计结果摘要】 → 评估 P0/P1
+5. 有 P0/P1 → Task[reviser sub-agent] / 无 → Task[reviewer sub-agent]
+6. 收到结果 → 汇总输出给用户
 ```
 
-### 唤起流程
+### 调度规则
 
-1. 协调者解析用户意图
-2. 在回复开头输出 `[[role:coordinator]]`
-3. 根据意图映射表决定下一角色
-4. 输出角色切换标记 + 当前状态 + 所需输入
-5. 等待该角色完成并返回【步骤交接摘要】
-6. 根据交接摘要决定下一步
+1. **协调者是唯一入口**：所有用户输入先经过协调者
+2. **一次只调度一个 sub-agent**：等当前 sub-agent 完成后才发起下一个
+3. **sub-agent 只返回【结果摘要】**，不输出角色切换指令
+4. **所有检查点由协调者评估**：字数、红线、P0/P1 判定等
+5. **数据通过 `.novel-maker/temp/` 临时文件传递**
+6. **sub-agent 不调度其他 sub-agent**
 
-### 强制规则
+### 调度话术模板
 
-- 未输出【步骤交接摘要】，不得切换角色
-- 关键检查点未通过，不得进入下一步
-- 用户决策点必须等待用户输入，不得擅自决定
+| 场景 | 协调者话术 |
+|------|-----------|
+| 发起写手 | 即将调度写手 sub-agent 进行写作，请稍后... |
+| 收到写手结果 | 写手已完成。现在评估检查点... → 通过，调度审计师 sub-agent |
+| 收到审计结果 | 审计已完成。检查结果：P0 {N}个 / P1 {N}个 → 调度修订师 / 复盘师 |
+| 发起修订师 | 审计存在 P0/P1，调度修订师 sub-agent 修复 |
+| 发起复盘师 | 审计通过，调度复盘师 sub-agent 更新真相文件 |
+
+### 临时文件约定
+
+| 文件 | 由谁写入 | 由谁读取 | 生命周期 |
+|------|---------|---------|---------|
+| `.novel-maker/temp/ch{XXX}-planning.json` | planner sub-agent | coordinator | 规划确认后保留 |
+| `.novel-maker/temp/ch{XXX}-draft.md` | writer sub-agent | coordinator → auditor | 归档后删除 |
+| `.novel-maker/temp/ch{XXX}-audit.json` | auditor sub-agent | coordinator → reviser | 永久保留 |
+| `.novel-maker/temp/ch{XXX}-revised.md` | reviser sub-agent | coordinator → auditor(复审) | 归档后删除 |
+| `.novel-maker/temp/ch{XXX}-char-update.json` | reviewer sub-agent | coordinator | 合并后删除 |
+| `.novel-maker/temp/ch{XXX}-hook-update.json` | reviewer sub-agent | coordinator | 合并后删除 |
 
 ## 意图映射表
 
 ### 核心指令
 
-| 用户输入 | 调度角色 | 备注 |
+| 用户输入 | 调度流程 | 备注 |
 |---------|---------|------|
-| /novel-maker init | 协调者自己 | 6问引导 |
-| /novel-maker write | 写手→审计师→修订师→复盘师 | 完整流程 |
-| /novel-maker review | 审计师→修订师 | 仅审查修订 |
-| /novel-maker plan | 规划师 | 大纲规划 |
-| /novel-maker act | 规划师（幕模式） | 幕规划 |
-| /novel-maker memory | 复盘师 | 查询真相文件 |
-| /novel-maker stats | 协调者调用脚本 | 统计 |
-| /novel-maker help | 协调者 | 帮助 |
-| /novel-maker expand | 写手 | 扩写 |
-| /novel-maker style | 协调者 | 文风设置 |
-| /novel-maker inspire | 规划师 | 灵感 |
-| /novel-maker summary | 复盘师 | 总结 |
+| `/novel-maker init` | 协调者自己执行 | 6问引导 |
+| `/novel-maker write` | Task[writer] → 检查点 → Task[auditor] → 检查点 → Task[reviser]/Task[reviewer] | 完整写作流程 |
+| `/novel-maker review` | Task[auditor] → 检查点 → Task[reviser]（如需） | 仅审查修订 |
+| `/novel-maker plan` | Task[planner] | 大纲规划 |
+| `/novel-maker act` | Task[planner]（幕模式） | 幕规划 |
+| `/novel-maker memory` | Task[reviewer] | 查询真相文件 |
+| `/novel-maker stats` | 协调者调用脚本 | 统计 |
+| `/novel-maker help` | 协调者 | 帮助 |
+| `/novel-maker expand` | Task[writer] | 扩写 |
+| `/novel-maker style` | 协调者 | 文风设置 |
+| `/novel-maker inspire` | Task[planner] | 灵感 |
+| `/novel-maker summary` | Task[reviewer] | 总结 |
 
 ### 自然语言
 
-| 自然语言 | 调度角色 | 备注 |
-|---------|---------|------|
-| "开始写小说" / "我想写一本修仙小说" | 协调者自己 | 同 /init |
-| "继续写" / "帮我写下一章" | 写手→审计师→修订师→复盘师 | 同 /write |
-| "检查一下" / "看看有没有问题" | 审计师→修订师 | 同 /review |
-| "下一幕怎么走" / "给我剧情建议" | 规划师 | 同 /act |
-| "主角什么等级" / "列出所有角色" | 复盘师 | 同 /memory |
-| "重写" / "这段不行" | 写手 | 重写最近章节 |
-| "统计字数" | 协调者调用脚本 | 同 /stats |
+| 自然语言 | 调度流程 |
+|---------|---------|
+| "开始写小说" / "我想写一本修仙小说" | 协调者自己执行（同 /init） |
+| "继续写" / "帮我写下一章" | Task[writer] → 检查点 → Task[auditor] → ...（同 /write） |
+| "检查一下" / "看看有没有问题" | Task[auditor] → 检查点 → Task[reviser]（如需） |
+| "下一幕怎么走" / "给我剧情建议" | Task[planner]（同 /act） |
+| "主角什么等级" / "列出所有角色" | Task[reviewer]（同 /memory） |
+| "重写" / "这段不行" | Task[writer]（重写最近章节） |
+| "统计字数" | 协调者调用脚本（同 /stats） |
+
+## 核心流程模板
+
+### /novel-maker write 完整流程
+
+```
+[[role:coordinator]] 解析用户请求
+→ 写第{current_chapter}章，当前第{current_act}幕
+
+→ 调度写手 sub-agent：
+[Task: writer sub-agent]
+1. 读取 plan.md、最近章节摘要、相关 truth-files
+2. 按 writer.md 规则写作
+3. 写入 .novel-maker/temp/ch{XXX}-draft.md
+4. 返回【写手结果摘要】
+
+[[role:coordinator]] 收到写手结果
+→ 评估检查点：
+   - 字数 ≥ 2500？[通过/未通过]
+   - 字数 4501-6000？→ AskUserQuestion 是否精简
+   - 字数 > 6000？→ AskUserQuestion 是否拆章
+   - 红线自检全部通过？[通过/未通过]
+→ 检查点通过 → 调度审计师 sub-agent
+
+→ 调度审计师 sub-agent：
+[Task: auditor sub-agent]
+1. 读取 .novel-maker/temp/ch{XXX}-draft.md
+2. 执行 15 核心维度审计
+3. 写入 .novel-maker/temp/ch{XXX}-audit.json
+4. 返回【审计结果摘要】
+
+[[role:coordinator]] 收到审计结果
+→ 评估检查点：
+   - 有 P0/P1？[有/无]
+→ 有 P0/P1 → 调度修订师 sub-agent
+→ 无 P0/P1 → 调度复盘师 sub-agent
+
+→ 调度修订师 sub-agent（条件触发）：
+[Task: reviser sub-agent]
+1. 读取 .novel-maker/temp/ch{XXX}-audit.json + draft.md
+2. 修复所有 P0/P1
+3. 写入 .novel-maker/temp/ch{XXX}-revised.md
+4. 返回【修订结果摘要】
+
+[[role:coordinator]] 收到修订结果
+→ 调度审计师 sub-agent 复审
+
+→ 调度复盘师 sub-agent：
+[Task: reviewer sub-agent]
+1. 读取最终稿件
+2. 更新 truth-files
+3. 归档章节到 novels/volume-XX/chapters/chXXX.md
+4. 清理临时文件
+5. 返回【复盘结果摘要】
+
+[[role:coordinator]] 汇总结果 → 输出给用户
+```
+
+### /novel-maker review 流程
+
+```
+[[role:coordinator]] 解析请求
+→ 调度审计师 sub-agent：
+[Task: auditor sub-agent] → 返回【审计结果摘要】
+→ 评估：有 P0/P1？有 → Task[reviser] / 无 → 输出给用户
+```
+
+## 协调者评估检查点
+
+### 写手之后的检查点
+
+```
+→ 协调者评估写手结果：
+1. 字数 ≥ 2500？[通过/未通过]
+   - 字数 4501-6000？→ AskUserQuestion 是否精简
+   - 字数 > 6000？→ AskUserQuestion 是否拆章
+2. 红线自检全部报告通过？[通过/未通过]
+3. 所有通过 → 调度审计师 sub-agent
+```
+
+### 审计之后的检查点
+
+```
+→ 协调者评估审计结果：
+1. 存在 P0/P1？[有/无]
+2. 有 P0/P1 → 调度修订师 sub-agent
+3. 无 P0/P1 → 调度复盘师 sub-agent
+```
+
+### 修订之后的检查点
+
+```
+→ 协调者评估修订结果：
+- 调度审计师 sub-agent 复审（确认 P0/P1 已修复）
+```
+
+## 用户决策点
+
+### 决策点 1：字数超限时
+
+```
+[协调者] 字数 4501-6000 字
+   ↓
+AskUserQuestion "本章写了 XXXX 字，超过目标区间。是否精简到 4000 字以内？"
+   ↓
+[用户] 是 → 调度写手 sub-agent 精简
+        否 → 标记"用户确认超出"后继续
+```
+
+### 决策点 2：审计不通过时
+
+```
+[协调者] 审计报告含 P0/P1
+   ↓
+AskUserQuestion "审计发现 P0 {N}个、P1 {N}个，如何处理？"
+   ├─ 自动修订（调度修订师 sub-agent）
+   ├─ 重写（调度写手 sub-agent）
+   └─ 忽略（继续，记录警告）
+   ↓
+按用户选择调度对应 sub-agent
+```
 
 ## 状态管理
 
@@ -126,13 +238,26 @@
 }
 ```
 
+## Token 优化脚本集成
+
+协调者在调度 sub-agent 时自动运行以下脚本：
+
+| 调度流程 | 脚本 | 节省 |
+|---------|------|------|
+| 写手写作前 | `scripts/writer/build_write_context.py` | ~45,000 token/章 |
+| 审计师审查前 | `scripts/auditor/pre_audit.py` | ~25,000 token/章 |
+| 复盘师复盘前 | `scripts/reviewer/truth_diff.py` | ~40,000 token/章 |
+| 规划师规划前 | `scripts/planner/planner_context.py` | ~25,000 token/幕 |
+| 修订师修订后 | `scripts/reviewer/chapter_diff.py` | ~8,000 token/章 |
+
 ## 异常处理
-- 角色失败：跳过该角色 + 通知用户
+
+- sub-agent 失败：跳过该角色 + 通知用户
 - 用户中断：保存进度到 state.json
 - 状态不一致：重置 state.json 并警告
 - 指令无法识别：请求用户澄清
 
-## 失败恢复策略
+### 失败恢复策略
 
 | 角色 | 重试次数 | 降级策略 | 通知用户 |
 |------|---------|---------|---------|
@@ -142,175 +267,8 @@
 | 复盘师 | 0 次 | 跳过真相文件更新 | ⚠️（仅警告） |
 | 规划师 | 0 次 | 使用现有大纲 | ✅ |
 
-## 数据传递
-- 角色 A 输出 → 写入 `.novel-maker/temp/ch{XXX}-{类型}.{ext}`
-- 角色 B 输入 → 读取 `.novel-maker/temp/ch{XXX}-{类型}.{ext}`
-- 不通过 AI context 传递
-- 归档确认后由 reviewer 清理临时草稿文件
-
-## Token 优化脚本集成
-
-协调者在调度角色时自动运行以下脚本，减少 token 消耗：
-
-| 调度流程 | 脚本 | 节省 |
-|---------|------|------|
-| 写手写作前 | `scripts/writer/build_write_context.py` 构建精简上下文 | ~45,000 token/章 |
-| 审计师审查前 | `scripts/auditor/pre_audit.py` 运行自动化审计 | ~25,000 token/章 |
-| 复盘师复盘前 | `scripts/reviewer/truth_diff.py` 检测变更 | ~40,000 token/章 |
-| 规划师规划前 | `scripts/planner/planner_context.py` 构建精简上下文 | ~25,000 token/幕 |
-| 修订师修订后 | `scripts/reviewer/chapter_diff.py` 对比原稿和修订稿 | ~8,000 token/章 |
-
-## 临时文件约定
-
-| 文件 | 角色 | 内容 | 生命周期 |
-|------|------|------|---------|
-| `.novel-maker/temp/ch{XXX}-planning.json` | 规划师 | 剧情卡片 | 规划确认后保留 |
-| `.novel-maker/temp/ch{XXX}-draft.md` | 写手 | 章节草稿 | 归档后删除 |
-| `.novel-maker/temp/ch{XXX}-audit.json` | 审计师 | 审计报告 | 永久保留 |
-| `.novel-maker/temp/ch{XXX}-revised.md` | 修订师 | 修订稿 | 归档后删除 |
-| `.novel-maker/temp/ch{XXX}-char-update.json` | 复盘师 | 角色状态更新 | 合并后删除 |
-| `.novel-maker/temp/ch{XXX}-hook-update.json` | 复盘师 | 伏笔状态更新 | 合并后删除 |
-
-## 核心流程模板
-
-### /novel-maker write 流程
-
-```
-[[role:coordinator]]
-用户请求：写第{current_chapter}章。当前状态：第{current_act}幕。
-→ 写手完成，现在切换到写手：[[role:writer]]
-
-[[role:writer]]
-1. 读取 plan.md、最近章节摘要、相关 truth-files
-2. 按强制流程写作（目标 2500-4000，4001-4500 可接受，>4500 需确认）
-3. 写入 `.novel-maker/temp/ch{XXX}-draft.md`
-4. 输出【步骤交接摘要 - 写手】
-→ 写手完成，返回协调者检查：[[role:coordinator]]
-
-[checkpoint] 协调者检查
-- 字数 ≥ 2500 字？
-- 红线自检全部通过？
-- 通过 → 继续；未通过 → 返回 writer
-→ 检查点通过，现在切换到审计师：[[role:auditor]]
-
-[[role:auditor]]
-1. 读取 `.novel-maker/temp/ch{XXX}-draft.md`
-2. 执行 15 核心维度审计
-3. 写入 `.novel-maker/temp/ch{XXX}-audit.json`
-4. 输出【步骤交接摘要 - 审计师】
-→ 审计完成，返回协调者检查：[[role:coordinator]]
-
-[checkpoint] 协调者检查
-- 是否存在 P0/P1？
-- 无 → 切换到复盘师：[[role:reviewer]]
-- 有 → 切换到修订师：[[role:reviser]]
-
-[[role:reviser]] （条件触发）
-1. 读取 `.novel-maker/temp/ch{XXX}-audit.json`
-2. 读取 `.novel-maker/temp/ch{XXX}-draft.md`
-3. 修复所有 P0/P1
-4. 写入 `.novel-maker/temp/ch{XXX}-revised.md`
-5. 输出【步骤交接摘要 - 修订师】
-→ 修订完成，返回审计师复审：[[role:auditor]]
-
-[[role:auditor]] （复审）
-1. 读取 `.novel-maker/temp/ch{XXX}-revised.md`
-2. 确认 P0/P1 已修复
-3. 输出【步骤交接摘要 - 审计师】
-→ 复审通过，现在切换到复盘师：[[role:reviewer]]
-
-[[role:reviewer]]
-1. 读取最终稿件（draft 或 revised）
-2. 执行 chapter-complete hook
-3. 更新 truth-files
-4. 归档章节到 `novels/volume-XX/chapters/chXXX.md`
-5. 删除 `.novel-maker/temp/ch{XXX}-draft.md` 和 `.novel-maker/temp/ch{XXX}-revised.md`
-6. 输出【步骤交接摘要 - 复盘师】
-→ 复盘完成，返回协调者汇总：[[role:coordinator]]
-
-[[role:coordinator]]
-汇总结果，输出给用户。
-```
-
-### 模式 B 统一执行说明
-
-在模式 B 中，协调者不按上述模板分多次回复，而是在**一次完整回复中**依次执行：
-
-1. 开头输出 `[[role:coordinator]]` 并解析请求
-2. 输出 `[[role:writer]]` 并按 writer.md 规则写作
-3. 协调者内部检查字数和红线（不输出给用户）
-4. 输出 `[[role:auditor]]` 并按 auditor.md 规则审计
-5. 协调者内部判断是否存在 P0/P1
-6. 如需要，输出 `[[role:reviser]]` 并按 reviser.md 规则修订
-7. 输出 `[[role:reviewer]]` 并按 reviewer.md 规则复盘
-8. 最后输出 `[[role:coordinator]]` 汇总结果
-
-**重要**：模式 B 下不等待外部 sub-agent，协调者自行完成全流程。如果流程中需要用户决策（如字数 4501-6000 问是否精简），使用 AskUserQuestion 暂停，等用户回复后继续。
-
-### /novel-maker review 流程
-
-```
-[[role:coordinator]]
-用户请求审查第{current_chapter}章。
-→ 现在切换到审计师：[[role:auditor]]
-
-[[role:auditor]]
-1. 读取目标章节
-2. 执行 15/33 维度审计
-3. 输出【步骤交接摘要 - 审计师】
-→ 审计完成，返回协调者检查：[[role:coordinator]]
-
-[checkpoint]
-- 有 P0/P1？→ 切换到修订师：[[role:reviser]]
-- 无？→ 输出报告给用户
-
-[[role:reviser]] （条件触发）
-1. 修复 P0/P1
-2. 输出交接摘要
-→ 修订完成，返回协调者汇总：[[role:coordinator]]
-
-[[role:coordinator]]
-汇总审计/修订结果。
-```
-
-## 调度话术
-
-协调者在角色切换时必须使用以下标准切换语句：
-
-| 场景 | 标准切换语句 |
-|------|-------------|
-| 写手完成后 | 写手完成，现在切换到审计师：[[role:auditor]] |
-| 审计完成且无 P0/P1 | 审计完成，未发现 P0/P1，现在切换到复盘师：[[role:reviewer]] |
-| 审计发现 P0/P1 | 审计发现 P0/P1，现在切换到修订师：[[role:reviser]] |
-| 修订完成后 | 修订完成，现在切换到审计师复审：[[role:auditor]] |
-| 复盘完成后 | 复盘完成，现在切换到协调者汇总：[[role:coordinator]] |
-
-## 用户决策点
-
-### 决策点 1：幕规划时
-
-```
-[规划师] 生成 6 条剧情走向
-   ↓
-[用户] 选择 / 调整 / 自定义
-   ↓
-继续
-```
-
-### 决策点 2：审计不通过时
-
-```
-[审计师] 输出审计报告（含 P0/P1）
-   ↓
-[用户] 决策
-   ├─ 自动修订（修订师处理）
-   ├─ 重写（回写手）
-   └─ 忽略（继续，记录警告）
-   ↓
-继续
-```
-
 ## 输出格式
+
 - 默认 Markdown 格式
 - 长内容使用引用块
 - 代码块保留代码原格式

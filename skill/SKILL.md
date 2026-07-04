@@ -53,10 +53,11 @@ python skill/scripts/writer/check_wordcount.py 测试文件.md
 
 ## 强制规则
 
-1. **协调者唯一入口**：任何 `/novel-maker` 指令必须先由协调者处理，协调者是所有用户输入的强制唯一入口。
-2. **角色标记强制前缀**：在多角色流程中，任何回复必须以 `[[role:xxx]]` 开头，其中 `xxx` 为当前角色标识。
-3. **未交接不得切换**：未输出【步骤交接摘要】，不得切换角色。
-4. **切换指令必填**：步骤交接摘要中必须包含 `下一角色: xxx` 和 `切换指令: [[role:xxx]]`。
+1. **协调者是唯一入口**：任何 `/novel-maker` 指令必须先由协调者处理。用户输入永远直达协调者。
+2. **协调者通过 Task 工具调度 sub-agent**：协调者作为主 session，使用 Task 工具发起每个 sub-agent。sub-agent 只做自己的事，完成后返回结果给协调者。
+3. **sub-agent 不发起新 sub-agent**：任何 sub-agent（writer/auditor/reviser/reviewer/planner）不得直接调用其他 sub-agent。所有流程切换由协调者控制。
+4. **所有检查点由协调者评估**：字数检查、红线自检、P0/P1 判定等检查点均由协调者在 sub-agent 返回结果后评估。
+5. **每个 sub-agent 完成后返回【结果摘要】给协调者**，而非输出"切换到下一角色"。
 
 ## 触发方式
 
@@ -89,68 +90,50 @@ python skill/scripts/writer/check_wordcount.py 测试文件.md
 /novel-maker act 下一幕怎么走
 ```
 
-## Agent 唤起机制
+## Sub-Agent 调度机制
 
-### 执行模式
+### 核心原理
 
-NovelMaker 支持两种执行模式，按 IDE 能力自动选择：
-
-**模式 A：Sub-Agent 唤起（如果 IDE 支持）**
-- 每个角色对应 `agents/` 下的一个子 agent
-- 协调者通过 `[[role:xxx]]` 标记切换角色
-- 每个子 agent 独立完成自己的任务
-
-**模式 B：协调者统一执行（默认 fallback）**
-- 大多数 IDE 无法自动切换 sub-agent
-- 协调者作为总控，按顺序读取各角色规则并执行
-- 用 `[[role:xxx]]` 标记当前执行的角色身份，但不需要真正唤起子 agent
-- **默认使用模式 B**
-
-### 角色切换标记
-
-执行多步骤任务时，AI 必须在每个步骤开头输出对应标记：
+NovelMaker 使用 5 个 sub-agent（writer/auditor/reviser/reviewer/planner），均由协调者统一调度：
 
 ```
-[[role:coordinator]]
-[[role:planner]]
-[[role:writer]]
-[[role:auditor]]
-[[role:reviser]]
-[[role:reviewer]]
+用户输入 → [[role:coordinator]] → 解析 → Task[writer] → 收到结果 → Task[auditor] → ... → 输出给用户
 ```
+
+- **协调者**是唯一的主 agent，运行在 IDE 主 session 中
+- **sub-agent** 通过 IDE 的 Task/subagent 工具发起，每个 sub-agent 完成自己的任务
+- **sub-agent 完成后返回【结果摘要】**，由协调者判定下一步
+- **sub-agent 之间不直接通信**，所有数据通过 `.novel-maker/temp/` 临时文件传递
 
 ### 写作流程
 
-`/novel-maker write` 会触发完整 6 角色流程：
+`/novel-maker write` 的完整调度流程：
 
 ```
-协调者 → 写手 → [检查点] → 审计师 → [检查点] → 修订师（如需） → 复盘师 → 协调者
+[[role:coordinator]] 解析请求
+  ↓ 发起 Task[writer sub-agent]
+[写手 sub-agent] 写作 → 返回【写手结果摘要】
+  ↓ 协调者评估检查点
+[[role:coordinator]] 检查：字数达标？红线通过？
+  ↓ 发起 Task[auditor sub-agent]
+[审计师 sub-agent] 审计 → 返回【审计结果摘要】
+  ↓ 协调者评估检查点
+[[role:coordinator]] 检查：有 P0/P1？
+  ↓ 有 → Task[reviser sub-agent] / 无 → Task[reviewer sub-agent]
+[修订师 sub-agent] 修订 → 返回【修订结果摘要】
+  ↓
+[[role:coordinator]] 输出汇总给用户
 ```
-
-每个角色完成后必须输出【步骤交接摘要】，未通过检查点不得进入下一步。步骤交接摘要中必须明确写出：
-
-```markdown
-- 下一角色: xxx
-- 切换指令: [[role:xxx]]
-```
-
-在模式 B 中，协调者按此流程自行执行所有角色，不等待外部 sub-agent 被唤起。
 
 ### 单角色指令
 
-以下指令只触发单个角色（模式 B 中由协调者模拟该角色执行）：
-
-| 指令 | 唤起角色 |
-|------|---------|
-| `/novel-maker plan` | planner |
-| `/novel-maker review` | auditor → reviser（如需）|
-| `/novel-maker memory` | reviewer |
-| `/novel-maker summary` | reviewer |
-| `/novel-maker act` | planner |
-
-### 步骤交接摘要
-
-每个角色完成后必须输出标准化摘要，格式见各角色文件。
+| 指令 | 调度 sub-agent |
+|------|---------------|
+| `/novel-maker plan` | Task[planner] |
+| `/novel-maker review` | Task[auditor] → 协调者检查 → Task[reviser]（如需）|
+| `/novel-maker memory` | Task[reviewer] |
+| `/novel-maker summary` | Task[reviewer] |
+| `/novel-maker act` | Task[planner] |
 
 ***
 
