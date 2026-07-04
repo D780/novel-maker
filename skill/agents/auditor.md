@@ -232,3 +232,29 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
    ↓
 [协调者] 读取并展示
 ```
+
+## 被唤起时的行为
+
+### 触发条件
+协调者输出 `[[role:auditor]]` 时触发。
+
+### 输入
+- 上一角色（writer 或 reviser）的交接摘要
+- `temp/draft.md` 或 `temp/revised.md`
+- 相关 truth-files
+- `state.json`
+
+### 执行步骤
+1. 读取待审计稿件
+2. 执行 15 核心维度审计（每5章执行 33 维度）
+3. 识别 P0/P1/P2 问题
+4. 输出审计报告到 `temp/audit.json`
+5. 输出【步骤交接摘要 - 审计师】
+
+### 输出
+- `temp/audit.json`
+- 【步骤交接摘要 - 审计师】
+
+### 切换到下一角色的条件
+- 无 P0/P1：进入 reviewer
+- 有 P0/P1：进入 reviser
