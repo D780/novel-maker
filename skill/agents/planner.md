@@ -87,6 +87,34 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 5. 偏离检查（如果用户已选剧情）
 6. 更新真相文件（如需要）
 
+## 被唤起时的行为
+
+### 触发条件
+协调者输出 `[[role:planner]]` 时触发。
+
+### 输入
+- 上一角色 coordinator 的交接摘要
+- `plan.md`
+- 最近章节摘要
+- `state.json`
+
+### 执行步骤
+1. 读取当前规划与实际进展
+2. 对比 plan.md 与实际剧情
+3. 若一致：继续规划下一幕/下一卷
+4. 若偏离：标记偏离点，提出 2-3 个调整方案
+5. 输出规划结果到 `temp/planning.json`
+6. 输出【步骤交接摘要 - 规划师】
+
+### 输出
+- `temp/planning.json`
+- 更新后的 `plan.md`（用户确认后）
+- 【步骤交接摘要 - 规划师】
+
+### 切换到下一角色的条件
+- 规划完成且无需用户决策 → 返回 coordinator
+- 需要用户决策 → 进入 coordinator，等待用户输入
+
 ## 输出文件位置
 
 | 输出 | 文件位置 |
