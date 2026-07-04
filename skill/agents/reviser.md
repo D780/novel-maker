@@ -11,11 +11,11 @@
 ## 输入
 
 ### 审计报告
-- temp/audit.json
+- `.novel-maker/temp/ch{XXX}-audit.json`
 - P0/P1 问题清单
 
 ### 待修订内容
-- temp/draft.md
+- `.novel-maker/temp/ch{XXX}-draft.md`
 
 ### 真相文件
 - characters.md（避免角色 OOC）
@@ -24,13 +24,13 @@
 ## 输出
 
 ### 1. 修订稿
-文件位置：`temp/revised.md`
+文件位置：`.novel-maker/temp/ch{XXX}-revised.md`
 - 修复 P0/P1 问题
 - 保持文风一致
 - 不引入新问题
 
 ### 2. 修订报告
-文件位置：`temp/audit.json`（追加）
+文件位置：`.novel-maker/temp/ch{XXX}-audit.json`（追加）
 
 ```json
 {
@@ -63,17 +63,17 @@
 
 ### 输入
 - 上一角色 auditor 的交接摘要
-- `temp/audit.json`
-- `temp/draft.md`
+- `.novel-maker/temp/ch{XXX}-audit.json`
+- `.novel-maker/temp/ch{XXX}-draft.md`
 
 ### 执行步骤
 1. 读取审计报告
 2. 修复所有 P0/P1 问题
-3. 输出修订稿到 `temp/revised.md`
+3. 输出修订稿到 `.novel-maker/temp/ch{XXX}-revised.md`
 4. 输出【步骤交接摘要 - 修订师】
 
 ### 输出
-- `temp/revised.md`
+- `.novel-maker/temp/ch{XXX}-revised.md`
 - 【步骤交接摘要 - 修订师】
 
 ### 切换到下一角色的条件
@@ -152,7 +152,7 @@
    ↓
 [修订师] 应用修订
    ↓
-[修订师] 写入 temp/revised.md
+[修订师] 写入 .novel-maker/temp/ch{XXX}-revised.md
    ↓
 [修订师] 追加修订报告
    ↓

@@ -61,7 +61,7 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 - 情绪曲线标注
 
 ### 3. 剧情卡片
-文件位置：`temp/planning.json`
+文件位置：`.novel-maker/temp/ch{XXX}-planning.json`（按当前章节/幕/卷区分）
 - 6 条剧情走向
 - 每条包含：类型、核心事件、推荐度、章节数、伏笔处理
 
@@ -73,7 +73,7 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 - 角色建议
 
 ### 5. 偏离检查报告
-文件位置：`temp/planning.json`
+文件位置：`.novel-maker/temp/ch{XXX}-planning.json`
 - 偏离等级（🟢/🟡/🟠/🔴）
 - 偏离影响
 - 调整建议
@@ -103,11 +103,11 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 2. 对比 plan.md 与实际剧情
 3. 若一致：继续规划下一幕/下一卷
 4. 若偏离：标记偏离点，提出 2-3 个调整方案
-5. 输出规划结果到 `temp/planning.json`
+5. 输出规划结果到 `.novel-maker/temp/ch{XXX}-planning.json`
 6. 输出【步骤交接摘要 - 规划师】
 
 ### 输出
-- `temp/planning.json`
+- `.novel-maker/temp/ch{XXX}-planning.json`
 - 更新后的 `plan.md`（用户确认后）
 - 【步骤交接摘要 - 规划师】
 
@@ -122,9 +122,9 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 | 总大纲 | `novels/outline.md` |
 | 卷计划 | `novels/volume-XX/plan.md` |
 | 幕计划 | `novels/volume-XX/act-plan.md` |
-| 剧情卡片 | `temp/planning.json` |
+| 剧情卡片 | `.novel-maker/temp/ch{XXX}-planning.json` |
 | 灵感建议 | 直接输出 |
-| 偏离检查 | `temp/planning.json` |
+| 偏离检查 | `.novel-maker/temp/ch{XXX}-planning.json` |
 
 ## 剧情卡片结构
 

@@ -6,7 +6,7 @@
 输出角色/伏笔/字数/结构的变化，供复盘师快速了解修订内容。
 
 用法:
-    python scripts/reviewer/chapter_diff.py temp/draft.md temp/revised.md --json
+    python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch017-draft.md .novel-maker/temp/ch017-revised.md --json
 """
 
 import argparse

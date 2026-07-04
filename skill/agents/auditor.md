@@ -15,7 +15,7 @@
 ## 输入
 
 ### 待审内容
-- 章节正文（temp/draft.md 或 novels/volume-XX/chapters/）
+- 章节正文（`.novel-maker/temp/ch{XXX}-draft.md` 或 `.novel-maker/temp/ch{XXX}-revised.md`）
 - 当前状态（state.json）
 
 ### 对照文件
@@ -26,7 +26,7 @@
 ## 输出
 
 ### 1. 审计报告
-文件位置：`temp/audit.json`
+文件位置：`.novel-maker/temp/ch{XXX}-audit.json`
 
 ```json
 {
@@ -228,7 +228,7 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
    ↓
 [审计师] 爽点密度分析
    ↓
-[审计师] 写入 temp/audit.json
+[审计师] 写入 .novel-maker/temp/ch{XXX}-audit.json
    ↓
 [协调者] 读取并展示
 ```
@@ -240,7 +240,7 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
 
 ### 输入
 - 上一角色（writer 或 reviser）的交接摘要
-- `temp/draft.md` 或 `temp/revised.md`
+- `.novel-maker/temp/ch{XXX}-draft.md` 或 `.novel-maker/temp/ch{XXX}-revised.md`
 - 相关 truth-files
 - `state.json`
 
@@ -248,11 +248,11 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
 1. 读取待审计稿件
 2. 执行 15 核心维度审计（每5章执行 33 维度）
 3. 识别 P0/P1/P2 问题
-4. 输出审计报告到 `temp/audit.json`
+4. 输出审计报告到 `.novel-maker/temp/ch{XXX}-audit.json`
 5. 输出【步骤交接摘要 - 审计师】
 
 ### 输出
-- `temp/audit.json`
+- `.novel-maker/temp/ch{XXX}-audit.json`
 - 【步骤交接摘要 - 审计师】
 
 ### 切换到下一角色的条件

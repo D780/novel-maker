@@ -37,9 +37,9 @@
 ## 输出
 
 ### 1. 章节草稿
-文件位置：`temp/draft.md`
+文件位置：`.novel-maker/temp/ch{XXX}-draft.md`（XXX 为当前章节编号，如 017）
 - 完整章节正文
-- 字数预检（2200-2800）
+- 字数预检（2500-4000）
 
 ### 2. 重写章节
 文件位置：覆盖当前章节文件（novels/volume-XX/chapters/chXX.md）
@@ -60,7 +60,7 @@
 2. **读取上下文**：角色状态 + 世界设定 + 前情摘要 + 本章目标
 3. **应用角色模拟写作**（如果是关键章节）
 4. **应用文风**（从 22 位作者中选择）
-5. **写入章节草稿**到 `temp/draft.md`
+5. **写入章节草稿**到 `.novel-maker/temp/ch{XXX}-draft.md`
 6. **字数预检**（2500-4000字）
 7. **红线自检**：逐项检查写作红线，所有红线项清零
 8. **交付**：把自检报告附在回复中
@@ -88,7 +88,7 @@
 2. 用户选择开篇版本
 3. 基于选定开篇继续写作
 4. 字数预检
-5. 写入 `temp/draft.md`
+5. 写入 `.novel-maker/temp/ch{XXX}-draft.md`
 
 ### 扩写流程
 
@@ -267,7 +267,8 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 [写手] 应用角色模拟（如需要）
    ↓
 [写手] 应用文风
-   ↓[写手] 写入 temp/draft.md
+   ↓
+[写手] 写入 .novel-maker/temp/ch{XXX}-draft.md
    ↓
 [写手] 字数预检
    ↓
@@ -290,11 +291,11 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 1. 读取输入并确认本章目标
 2. 按"常规写作流程"写作
 3. 进行红线自检
-4. 输出章节草稿到 `temp/draft.md`
+4. 输出章节草稿到 `.novel-maker/temp/ch{XXX}-draft.md`
 5. 输出【步骤交接摘要 - 写手】
 
 ### 输出
-- `temp/draft.md`
+- `.novel-maker/temp/ch{XXX}-draft.md`
 - 【步骤交接摘要 - 写手】
 
 ### 切换到下一角色的条件

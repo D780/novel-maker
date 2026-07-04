@@ -125,9 +125,10 @@
 | 规划师 | 0 次 | 使用现有大纲 | ✅ |
 
 ## 数据传递
-- 角色 A 输出 → 写入 `temp/` 对应文件
-- 角色 B 输入 → 读取 `temp/` 对应文件
+- 角色 A 输出 → 写入 `.novel-maker/temp/ch{XXX}-{类型}.{ext}`
+- 角色 B 输入 → 读取 `.novel-maker/temp/ch{XXX}-{类型}.{ext}`
 - 不通过 AI context 传递
+- 归档确认后由 reviewer 清理临时草稿文件
 
 ## Token 优化脚本集成
 
@@ -143,14 +144,14 @@
 
 ## 临时文件约定
 
-| 文件 | 角色 | 内容 |
-|------|------|------|
-| temp/planning.json | 规划师 | 剧情卡片 |
-| temp/draft.md | 写手 | 章节草稿 |
-| temp/audit.json | 审计师 | 审计报告 |
-| temp/revised.md | 修订师 | 修订稿 |
-| temp/char-update.json | 复盘师 | 角色状态更新 |
-| temp/hook-update.json | 复盘师 | 伏笔状态更新 |
+| 文件 | 角色 | 内容 | 生命周期 |
+|------|------|------|---------|
+| `.novel-maker/temp/ch{XXX}-planning.json` | 规划师 | 剧情卡片 | 规划确认后保留 |
+| `.novel-maker/temp/ch{XXX}-draft.md` | 写手 | 章节草稿 | 归档后删除 |
+| `.novel-maker/temp/ch{XXX}-audit.json` | 审计师 | 审计报告 | 永久保留 |
+| `.novel-maker/temp/ch{XXX}-revised.md` | 修订师 | 修订稿 | 归档后删除 |
+| `.novel-maker/temp/ch{XXX}-char-update.json` | 复盘师 | 角色状态更新 | 合并后删除 |
+| `.novel-maker/temp/ch{XXX}-hook-update.json` | 复盘师 | 伏笔状态更新 | 合并后删除 |
 
 ## 核心流程模板
 
@@ -163,7 +164,8 @@
 [[role:writer]]
 1. 读取 plan.md、最近章节摘要、相关 truth-files
 2. 按强制流程写作（字数 2500-4000，红线自检）
-3. 输出【步骤交接摘要 - 写手】
+3. 写入 `.novel-maker/temp/ch{XXX}-draft.md`
+4. 输出【步骤交接摘要 - 写手】
 
 [checkpoint] 协调者检查
 - 字数 ≥ 2500 字？
@@ -171,9 +173,10 @@
 - 通过 → 继续；未通过 → 返回 writer
 
 [[role:auditor]]
-1. 读取 draft.md
+1. 读取 `.novel-maker/temp/ch{XXX}-draft.md`
 2. 执行 15 核心维度审计
-3. 输出【步骤交接摘要 - 审计师】
+3. 写入 `.novel-maker/temp/ch{XXX}-audit.json`
+4. 输出【步骤交接摘要 - 审计师】
 
 [checkpoint] 协调者检查
 - 是否存在 P0/P1？
@@ -181,20 +184,24 @@
 - 有 → 进入 reviser
 
 [[role:reviser]] （条件触发）
-1. 读取 audit.json
-2. 修复所有 P0/P1
-3. 输出【步骤交接摘要 - 修订师】
+1. 读取 `.novel-maker/temp/ch{XXX}-audit.json`
+2. 读取 `.novel-maker/temp/ch{XXX}-draft.md`
+3. 修复所有 P0/P1
+4. 写入 `.novel-maker/temp/ch{XXX}-revised.md`
+5. 输出【步骤交接摘要 - 修订师】
 
 [[role:auditor]] （复审）
-1. 读取 revised.md
+1. 读取 `.novel-maker/temp/ch{XXX}-revised.md`
 2. 确认 P0/P1 已修复
 3. 输出【步骤交接摘要 - 审计师】
 
 [[role:reviewer]]
-1. 读取最终稿件
+1. 读取最终稿件（draft 或 revised）
 2. 执行 chapter-complete hook
 3. 更新 truth-files
-4. 输出【步骤交接摘要 - 复盘师】
+4. 归档章节到 `novels/volume-XX/chapters/chXXX.md`
+5. 删除 `.novel-maker/temp/ch{XXX}-draft.md` 和 `.novel-maker/temp/ch{XXX}-revised.md`
+6. 输出【步骤交接摘要 - 复盘师】
 
 [[role:coordinator]]
 汇总结果，输出给用户。

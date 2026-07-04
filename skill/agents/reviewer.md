@@ -14,7 +14,7 @@
 ## 输入
 
 ### 定稿章节
-- temp/revised.md（或 novels/volume-XX/chapters/chXX.md）
+- `.novel-maker/temp/ch{XXX}-revised.md`（或 `.novel-maker/temp/ch{XXX}-draft.md`，如无需修订）
 
 ### 现有真相文件
 - 8 个真相文件
@@ -89,7 +89,7 @@
 python scripts/reviewer/truth_diff.py ch15.md --truth-dir .novel-maker/truth-files/ --prev ch14.md --json
 
 # 修订对比（如有修订）
-python scripts/reviewer/chapter_diff.py temp/draft.md temp/revised.md --json
+python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch{XXX}-draft.md .novel-maker/temp/ch{XXX}-revised.md --json
 ```
 
 ### 阶段复盘流程（每 5 章）
@@ -255,7 +255,7 @@ python scripts/reviewer/chapter_diff.py temp/draft.md temp/revised.md --json
 
 ### 输入
 - 上一角色 auditor/reviser 的交接摘要
-- 最终稿件（draft.md 或 revised.md）
+- 最终稿件（`.novel-maker/temp/ch{XXX}-draft.md` 或 `.novel-maker/temp/ch{XXX}-revised.md`）
 - 现有 truth-files
 
 ### 执行步骤
@@ -266,12 +266,21 @@ python scripts/reviewer/chapter_diff.py temp/draft.md temp/revised.md --json
    - 条件更新：pending-hooks.md, characters.md, world-setting.md 等
 4. 生成/更新章节摘要
 5. 检查是否需要小总结/大总结
-6. 输出【步骤交接摘要 - 复盘师】
+6. 归档确认后，删除本章临时草稿文件：
+   - `.novel-maker/temp/ch{XXX}-draft.md`
+   - `.novel-maker/temp/ch{XXX}-revised.md`
+   - 保留 `.novel-maker/temp/ch{XXX}-audit.json` 作为审计历史
+7. 输出【步骤交接摘要 - 复盘师】
 
 ### 输出
 - 更新后的 truth-files
 - 章节摘要
 - 【步骤交接摘要 - 复盘师】
 
+### 临时文件清理规则
+- 章节归档到 `novels/volume-XX/chapters/chXXX.md` 后，必须清理对应临时文件
+- 审计报告 `.novel-maker/temp/ch{XXX}-audit.json` 保留，便于追溯
+- 禁止保留已归档章节的 `draft.md` / `revised.md`，避免混淆
+
 ### 切换到下一角色的条件
-- truth-files 更新完成 → 返回 coordinator 汇总输出
+- truth-files 更新完成且临时文件已清理 → 返回 coordinator 汇总输出
