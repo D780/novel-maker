@@ -100,18 +100,14 @@
 
 ### 步骤交接摘要（每章输出）
 
-写手完成章节后，必须输出以下摘要，供审计师/复盘师读取：
+写手完成章节后，必须输出以下摘要，供审计师/复盘师读取。摘要中必须包含 `下一角色` 和 `切换指令`：
 
 ```markdown
 【步骤交接摘要 - 写手】
-- 章节：chXX
-- 字数：XXXX字（通过/未通过）
-- 红线自检：X项通过，X项未通过
-- 更新的 truth-files：current-state.md, pending-hooks.md, ...
-- 新伏笔：无 / [伏笔1, 伏笔2]
-- 回收伏笔：无 / [伏笔1]
-- 情绪节点：[情绪标签]
-- 下章预告：[一句话]
+- 当前状态：章节 chXX 草稿已完成，字数 XXXX 字
+- 完成事项：红线自检 X 项通过，新伏笔 [伏笔1]/回收伏笔 [伏笔1]，情绪节点 [标签]
+- 下一角色：审计师
+- 切换指令：[[role:auditor]]
 ```
 
 ## 字数要求
@@ -278,7 +274,7 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:writer]]` 时触发。
+协调者输出 `[[role:writer]]` 时触发。角色被唤起时，必须先输出 `[[role:writer]]` 作为回复开头。
 
 ### 输入
 - 上一角色（通常是 planner/coordinator）的交接摘要
@@ -288,11 +284,12 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 - 相关 truth-files（current-state.md, pending-hooks.md 等）
 
 ### 执行步骤
-1. 读取输入并确认本章目标
-2. 按"常规写作流程"写作
-3. 进行红线自检
-4. 输出章节草稿到 `.novel-maker/temp/ch{XXX}-draft.md`
-5. 输出【步骤交接摘要 - 写手】
+1. 先输出 `[[role:writer]]`
+2. 读取输入并确认本章目标
+3. 按"常规写作流程"写作
+4. 进行红线自检
+5. 输出章节草稿到 `.novel-maker/temp/ch{XXX}-draft.md`
+6. 输出【步骤交接摘要 - 写手】，摘要中必须包含 `下一角色: xxx` 和 `切换指令: [[role:xxx]]`
 
 ### 输出
 - `.novel-maker/temp/ch{XXX}-draft.md`
@@ -301,6 +298,7 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 ### 切换到下一角色的条件
 - 字数 2500-4000 字
 - 红线自检全部通过
+- 满足条件时，立即输出切换指令并切换：切换到审计师 `[[role:auditor]]`
 - 否则：返回 writer 自身继续修改
 
 ## 字数要求

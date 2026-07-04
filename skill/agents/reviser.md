@@ -59,7 +59,7 @@
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:reviser]]` 时触发。
+协调者输出 `[[role:reviser]]` 时触发。角色被唤起时，必须先输出 `[[role:reviser]]` 作为回复开头。
 
 ### 输入
 - 上一角色 auditor 的交接摘要
@@ -67,18 +67,29 @@
 - `.novel-maker/temp/ch{XXX}-draft.md`
 
 ### 执行步骤
-1. 读取审计报告
-2. 修复所有 P0/P1 问题
-3. 输出修订稿到 `.novel-maker/temp/ch{XXX}-revised.md`
-4. 输出【步骤交接摘要 - 修订师】
+1. 先输出 `[[role:reviser]]`
+2. 读取审计报告
+3. 修复所有 P0/P1 问题
+4. 输出修订稿到 `.novel-maker/temp/ch{XXX}-revised.md`
+5. 输出【步骤交接摘要 - 修订师】，摘要中必须包含 `下一角色: xxx` 和 `切换指令: [[role:xxx]]`
 
 ### 输出
 - `.novel-maker/temp/ch{XXX}-revised.md`
 - 【步骤交接摘要 - 修订师】
 
+### 步骤交接摘要格式
+
+```markdown
+【步骤交接摘要 - 修订师】
+- 当前状态：章节 chXX 修订完成
+- 完成事项：修复 P0 X 个 / P1 X 个，输出修订稿
+- 下一角色：审计师
+- 切换指令：[[role:auditor]]
+```
+
 ### 切换到下一角色的条件
-- 所有 P0/P1 已修复 → 返回 auditor 复审
-- 无法修复 → 在交接摘要中说明，进入 coordinator 请求用户决策
+- 所有 P0/P1 已修复：满足条件时，立即输出切换指令并切换：切换到审计师 `[[role:auditor]]` 复审
+- 无法修复：在交接摘要中说明，进入协调者 `[[role:coordinator]]` 请求用户决策
 
 ## 升级机制
 

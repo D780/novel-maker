@@ -236,7 +236,7 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:auditor]]` 时触发。
+协调者输出 `[[role:auditor]]` 时触发。角色被唤起时，必须先输出 `[[role:auditor]]` 作为回复开头。
 
 ### 输入
 - 上一角色（writer 或 reviser）的交接摘要
@@ -245,16 +245,27 @@ python scripts/auditor/pre_audit.py novels/volume-01/chapters/ch15.md --json
 - `state.json`
 
 ### 执行步骤
-1. 读取待审计稿件
-2. 执行 15 核心维度审计（每5章执行 33 维度）
-3. 识别 P0/P1/P2 问题
-4. 输出审计报告到 `.novel-maker/temp/ch{XXX}-audit.json`
-5. 输出【步骤交接摘要 - 审计师】
+1. 先输出 `[[role:auditor]]`
+2. 读取待审计稿件
+3. 执行 15 核心维度审计（每5章执行 33 维度）
+4. 识别 P0/P1/P2 问题
+5. 输出审计报告到 `.novel-maker/temp/ch{XXX}-audit.json`
+6. 输出【步骤交接摘要 - 审计师】，摘要中必须包含 `下一角色: xxx` 和 `切换指令: [[role:xxx]]`
 
 ### 输出
 - `.novel-maker/temp/ch{XXX}-audit.json`
 - 【步骤交接摘要 - 审计师】
 
+### 步骤交接摘要格式
+
+```markdown
+【步骤交接摘要 - 审计师】
+- 当前状态：章节 chXX 审计完成，得分 X.X，P0 X 个 / P1 X 个
+- 完成事项：输出审计报告，标注问题分级
+- 下一角色：修订师（有 P0/P1 时）/ 复盘师（无 P0/P1 时）
+- 切换指令：[[role:reviser]] 或 [[role:reviewer]]
+```
+
 ### 切换到下一角色的条件
-- 无 P0/P1：进入 reviewer
-- 有 P0/P1：进入 reviser
+- 无 P0/P1：满足条件时，立即输出切换指令并切换：切换到复盘师 `[[role:reviewer]]`
+- 有 P0/P1：满足条件时，立即输出切换指令并切换：切换到修订师 `[[role:reviser]]`

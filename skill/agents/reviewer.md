@@ -251,7 +251,7 @@ python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch{XXX}-draft.md .nove
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:reviewer]]` 时触发。
+协调者输出 `[[role:reviewer]]` 时触发。角色被唤起时，必须先输出 `[[role:reviewer]]` 作为回复开头。
 
 ### 输入
 - 上一角色 auditor/reviser 的交接摘要
@@ -259,23 +259,34 @@ python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch{XXX}-draft.md .nove
 - 现有 truth-files
 
 ### 执行步骤
-1. 读取最终稿件
-2. 执行 chapter-complete hook
-3. 更新 truth-files：
+1. 先输出 `[[role:reviewer]]`
+2. 读取最终稿件
+3. 执行 chapter-complete hook
+4. 更新 truth-files：
    - 必更：current-state.md
    - 条件更新：pending-hooks.md, characters.md, world-setting.md 等
-4. 生成/更新章节摘要
-5. 检查是否需要小总结/大总结
-6. 归档确认后，删除本章临时草稿文件：
+5. 生成/更新章节摘要
+6. 检查是否需要小总结/大总结
+7. 归档确认后，删除本章临时草稿文件：
    - `.novel-maker/temp/ch{XXX}-draft.md`
    - `.novel-maker/temp/ch{XXX}-revised.md`
    - 保留 `.novel-maker/temp/ch{XXX}-audit.json` 作为审计历史
-7. 输出【步骤交接摘要 - 复盘师】
+8. 输出【步骤交接摘要 - 复盘师】，摘要中必须包含 `下一角色: xxx` 和 `切换指令: [[role:xxx]]`
 
 ### 输出
 - 更新后的 truth-files
 - 章节摘要
 - 【步骤交接摘要 - 复盘师】
+
+### 步骤交接摘要格式
+
+```markdown
+【步骤交接摘要 - 复盘师】
+- 当前状态：章节 chXX 已归档，truth-files 已更新
+- 完成事项：更新 current-state.md / pending-hooks.md，生成章节摘要，清理临时文件
+- 下一角色：协调者
+- 切换指令：[[role:coordinator]]
+```
 
 ### 临时文件清理规则
 - 章节归档到 `novels/volume-XX/chapters/chXXX.md` 后，必须清理对应临时文件
@@ -283,4 +294,4 @@ python scripts/reviewer/chapter_diff.py .novel-maker/temp/ch{XXX}-draft.md .nove
 - 禁止保留已归档章节的 `draft.md` / `revised.md`，避免混淆
 
 ### 切换到下一角色的条件
-- truth-files 更新完成且临时文件已清理 → 返回 coordinator 汇总输出
+- truth-files 更新完成且临时文件已清理：满足条件时，立即输出切换指令并切换：返回协调者 `[[role:coordinator]]` 汇总输出

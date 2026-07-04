@@ -90,7 +90,7 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:planner]]` 时触发。
+协调者输出 `[[role:planner]]` 时触发。角色被唤起时，必须先输出 `[[role:planner]]` 作为回复开头。
 
 ### 输入
 - 上一角色 coordinator 的交接摘要
@@ -99,21 +99,32 @@ python scripts/planner/planner_context.py --volume 01 --act 2 --json
 - `state.json`
 
 ### 执行步骤
-1. 读取当前规划与实际进展
-2. 对比 plan.md 与实际剧情
-3. 若一致：继续规划下一幕/下一卷
-4. 若偏离：标记偏离点，提出 2-3 个调整方案
-5. 输出规划结果到 `.novel-maker/temp/ch{XXX}-planning.json`
-6. 输出【步骤交接摘要 - 规划师】
+1. 先输出 `[[role:planner]]`
+2. 读取当前规划与实际进展
+3. 对比 plan.md 与实际剧情
+4. 若一致：继续规划下一幕/下一卷
+5. 若偏离：标记偏离点，提出 2-3 个调整方案
+6. 输出规划结果到 `.novel-maker/temp/ch{XXX}-planning.json`
+7. 输出【步骤交接摘要 - 规划师】，摘要中必须包含 `下一角色: xxx` 和 `切换指令: [[role:xxx]]`
 
 ### 输出
 - `.novel-maker/temp/ch{XXX}-planning.json`
 - 更新后的 `plan.md`（用户确认后）
 - 【步骤交接摘要 - 规划师】
 
+### 步骤交接摘要格式
+
+```markdown
+【步骤交接摘要 - 规划师】
+- 当前状态：第 X 卷第 Y 幕规划完成 / 偏离检查完成
+- 完成事项：输出规划结果 / 提出调整方案
+- 下一角色：协调者
+- 切换指令：[[role:coordinator]]
+```
+
 ### 切换到下一角色的条件
-- 规划完成且无需用户决策 → 返回 coordinator
-- 需要用户决策 → 进入 coordinator，等待用户输入
+- 规划完成且无需用户决策：满足条件时，立即输出切换指令并切换：返回协调者 `[[role:coordinator]]`
+- 需要用户决策：立即输出切换指令并切换：进入协调者 `[[role:coordinator]]`，等待用户输入
 
 ## 输出文件位置
 

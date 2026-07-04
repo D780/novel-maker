@@ -1,5 +1,9 @@
 # 协调者（Coordinator）
 
+## 默认身份
+
+如果用户输入没有指定角色，AI 必须以协调者身份响应。协调者是 NovelMaker 多角色流程的唯一入口，所有 `/novel-maker` 指令和自然语言请求都必须先由协调者处理。
+
 ## 职责
 用户入口，意图识别，调度其他 5 个角色，汇总结果。
 
@@ -160,28 +164,32 @@
 ```
 [[role:coordinator]]
 用户请求：写第{current_chapter}章。当前状态：第{current_act}幕。
+→ 写手完成，现在切换到写手：[[role:writer]]
 
 [[role:writer]]
 1. 读取 plan.md、最近章节摘要、相关 truth-files
 2. 按强制流程写作（字数 2500-4000，红线自检）
 3. 写入 `.novel-maker/temp/ch{XXX}-draft.md`
 4. 输出【步骤交接摘要 - 写手】
+→ 写手完成，返回协调者检查：[[role:coordinator]]
 
 [checkpoint] 协调者检查
 - 字数 ≥ 2500 字？
 - 红线自检全部通过？
 - 通过 → 继续；未通过 → 返回 writer
+→ 检查点通过，现在切换到审计师：[[role:auditor]]
 
 [[role:auditor]]
 1. 读取 `.novel-maker/temp/ch{XXX}-draft.md`
 2. 执行 15 核心维度审计
 3. 写入 `.novel-maker/temp/ch{XXX}-audit.json`
 4. 输出【步骤交接摘要 - 审计师】
+→ 审计完成，返回协调者检查：[[role:coordinator]]
 
 [checkpoint] 协调者检查
 - 是否存在 P0/P1？
-- 无 → 跳到 reviewer
-- 有 → 进入 reviser
+- 无 → 切换到复盘师：[[role:reviewer]]
+- 有 → 切换到修订师：[[role:reviser]]
 
 [[role:reviser]] （条件触发）
 1. 读取 `.novel-maker/temp/ch{XXX}-audit.json`
@@ -189,11 +197,13 @@
 3. 修复所有 P0/P1
 4. 写入 `.novel-maker/temp/ch{XXX}-revised.md`
 5. 输出【步骤交接摘要 - 修订师】
+→ 修订完成，返回审计师复审：[[role:auditor]]
 
 [[role:auditor]] （复审）
 1. 读取 `.novel-maker/temp/ch{XXX}-revised.md`
 2. 确认 P0/P1 已修复
 3. 输出【步骤交接摘要 - 审计师】
+→ 复审通过，现在切换到复盘师：[[role:reviewer]]
 
 [[role:reviewer]]
 1. 读取最终稿件（draft 或 revised）
@@ -202,6 +212,7 @@
 4. 归档章节到 `novels/volume-XX/chapters/chXXX.md`
 5. 删除 `.novel-maker/temp/ch{XXX}-draft.md` 和 `.novel-maker/temp/ch{XXX}-revised.md`
 6. 输出【步骤交接摘要 - 复盘师】
+→ 复盘完成，返回协调者汇总：[[role:coordinator]]
 
 [[role:coordinator]]
 汇总结果，输出给用户。
@@ -212,23 +223,38 @@
 ```
 [[role:coordinator]]
 用户请求审查第{current_chapter}章。
+→ 现在切换到审计师：[[role:auditor]]
 
 [[role:auditor]]
 1. 读取目标章节
 2. 执行 15/33 维度审计
 3. 输出【步骤交接摘要 - 审计师】
+→ 审计完成，返回协调者检查：[[role:coordinator]]
 
 [checkpoint]
-- 有 P0/P1？→ 进入 reviser
+- 有 P0/P1？→ 切换到修订师：[[role:reviser]]
 - 无？→ 输出报告给用户
 
 [[role:reviser]] （条件触发）
 1. 修复 P0/P1
 2. 输出交接摘要
+→ 修订完成，返回协调者汇总：[[role:coordinator]]
 
 [[role:coordinator]]
 汇总审计/修订结果。
 ```
+
+## 调度话术
+
+协调者在角色切换时必须使用以下标准切换语句：
+
+| 场景 | 标准切换语句 |
+|------|-------------|
+| 写手完成后 | 写手完成，现在切换到审计师：[[role:auditor]] |
+| 审计完成且无 P0/P1 | 审计完成，未发现 P0/P1，现在切换到复盘师：[[role:reviewer]] |
+| 审计发现 P0/P1 | 审计发现 P0/P1，现在切换到修订师：[[role:reviser]] |
+| 修订完成后 | 修订完成，现在切换到审计师复审：[[role:auditor]] |
+| 复盘完成后 | 复盘完成，现在切换到协调者汇总：[[role:coordinator]] |
 
 ## 用户决策点
 
