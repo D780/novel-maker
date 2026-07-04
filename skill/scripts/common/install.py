@@ -123,6 +123,44 @@ def uninstall_skill():
     print("\n✅ 卸载完成")
 
 
+def install_dependencies():
+    """安装 Python 依赖"""
+    import subprocess
+    script_dir = Path(__file__).parent
+    req_file = script_dir / "requirements.txt"
+    
+    if not req_file.exists():
+        print("  ℹ️  未找到 requirements.txt，跳过依赖安装")
+        return
+    
+    print(f"  安装依赖: {req_file}")
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", str(req_file)])
+        print("  ✅ 依赖安装成功")
+    except subprocess.CalledProcessError as e:
+        print(f"  ❌ 依赖安装失败: {e}")
+        sys.exit(1)
+
+
+def create_default_dirs():
+    """创建默认项目目录"""
+    cwd = Path.cwd()
+    dirs = [
+        ".novel-maker/memory",
+        ".novel-maker/truth-files",
+        ".novel-maker/reviews",
+        ".novel-maker/summaries",
+        ".novel-maker/temp",
+        ".novel-maker/state",
+        "novels/volume-01/chapters",
+    ]
+    
+    for d in dirs:
+        (cwd / d).mkdir(parents=True, exist_ok=True)
+    
+    print("  ✅ 默认目录已创建")
+
+
 def main():
     parser = argparse.ArgumentParser(description="NovelMaker 安装脚本")
     parser.add_argument("--ide", help="指定 IDE 的类型")
@@ -131,6 +169,11 @@ def main():
     
     print("\n  NovelMaker v2.0.0 - 全能网文写作助手")
     print("  6角色协作架构，用说话的方式写小说\n")
+    
+    # 安装依赖并创建默认目录
+    install_dependencies()
+    create_default_dirs()
+    print()
     
     if args.uninstall:
         uninstall_skill()
