@@ -7,7 +7,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/novel-maker.svg)](https://www.npmjs.com/package/novel-maker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/D780/novel-maker.svg)](https://github.com/D780/novel-maker)
-[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](skill/SKILL.md)
+[![Version](https://img.shields.io/badge/version-2.2.2-blue.svg)](skill/SKILL.md)
 
 ## 核心能力
 
@@ -31,7 +31,7 @@
 - **5维度一致性检查** - 时间线、人物关系、世界观、伏笔回收、能力等级全面检查
 - **智能查询系统** - 4种查询类型（角色/设定/剧情/伏笔），自然语言查询支持
 - **Hook 系统** - 5个自动化 Hook（上下文注入/意图检测/章节完成/审查触发/总结触发）
-- **Web UI 增强** - 设置页面（模型配置/Hook 配置）、项目管理（多项目切换/导入导出）
+- **Web UI 增强** - 项目管理（多项目切换/导入导出）
 
 ## 快速开始
 

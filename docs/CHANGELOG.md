@@ -8,6 +8,33 @@
 
 ---
 
+## [2.2.2] - 2026-07-04
+
+### 新增
+- **辅助脚本增强**：emotion_curve.py 可视化输出（ASCII曲线+热力图）、foreshadowing_tracker.py 自动回收建议、worldbuilding_checker.py 自动修复功能
+- **世界观自动修复**：`--fix` 显示修复建议、`--apply` 执行修复、`--dry-run` 预览模式
+- **伏笔回收建议**：5种伏笔类型模板，自动输出回收建议
+
+### 修复
+- worldbuilding_checker.py: `--dry-run` 参数无效、`replace()` 误替换、`chapter_facts` 未使用参数、`remaining_issues` 计算不准、重复追加段落、truth file 不支持 dry-run
+- emotion_curve.py: 热力图中间层级不可见
+- foreshadowing_tracker.py: suggestions 文本模式未输出
+
+### 优化
+- 完善 package.json 元数据（author/repository/homepage/bugs）
+- README.md 添加 npm/downloads/stars 徽章
+- `.npmignore` 修复 `__pycache__` 排除规则
+
+---
+
+## [2.2.1] - 2026-07-04
+
+### 优化
+- 完善项目元数据：GitHub 仓库链接、npm 徽章、author 信息
+- `.npmignore` 更新 `__pycache__` 排除规则
+
+---
+
 ## [2.2.0] - 2026-06-26
 
 ### 新增
