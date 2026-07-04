@@ -30,9 +30,23 @@
 
 ## Agent 唤起规范
 
+### 执行模式
+
+协调者支持两种执行模式：
+
+**模式 A：Sub-Agent 唤起（如果 IDE 支持）**
+- 通过 `[[role:xxx]]` 标记切换角色
+- 由 IDE 自动加载对应 agent 文件
+
+**模式 B：协调者统一执行（默认）**
+- 协调者按顺序读取 `agents/` 下各角色文件
+- 在当前回复中依次执行 writer → auditor → reviser（如需） → reviewer
+- 用 `[[role:xxx]]` 标记当前身份，不依赖外部 sub-agent
+- 如果某个步骤需要用户确认（如字数 > 4500），使用 AskUserQuestion 暂停流程
+
 ### 角色切换指令
 
-所有角色切换必须使用以下标记之一，且必须放在回复开头：
+所有角色切换必须使用以下标记之一，且必须放在每个步骤开头：
 
 ```
 [[role:coordinator]]
@@ -217,6 +231,21 @@
 [[role:coordinator]]
 汇总结果，输出给用户。
 ```
+
+### 模式 B 统一执行说明
+
+在模式 B 中，协调者不按上述模板分多次回复，而是在**一次完整回复中**依次执行：
+
+1. 开头输出 `[[role:coordinator]]` 并解析请求
+2. 输出 `[[role:writer]]` 并按 writer.md 规则写作
+3. 协调者内部检查字数和红线（不输出给用户）
+4. 输出 `[[role:auditor]]` 并按 auditor.md 规则审计
+5. 协调者内部判断是否存在 P0/P1
+6. 如需要，输出 `[[role:reviser]]` 并按 reviser.md 规则修订
+7. 输出 `[[role:reviewer]]` 并按 reviewer.md 规则复盘
+8. 最后输出 `[[role:coordinator]]` 汇总结果
+
+**重要**：模式 B 下不等待外部 sub-agent，协调者自行完成全流程。如果流程中需要用户决策（如字数 4501-6000 问是否精简），使用 AskUserQuestion 暂停，等用户回复后继续。
 
 ### /novel-maker review 流程
 

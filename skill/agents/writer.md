@@ -279,7 +279,8 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 ## 被唤起时的行为
 
 ### 触发条件
-协调者输出 `[[role:writer]]` 时触发。角色被唤起时，必须先输出 `[[role:writer]]` 作为回复开头。
+- 模式 A：协调者输出 `[[role:writer]]` 时触发。角色被唤起时，必须先输出 `[[role:writer]]` 作为回复开头。
+- 模式 B：协调者统一执行流程，自行按本文件规则执行写手任务。
 
 ### 输入
 - 上一角色（通常是 planner/coordinator）的交接摘要
@@ -304,7 +305,10 @@ python scripts/writer/build_write_context.py novels/volume-01/chapters/ch15.md -
 - 字数 ≥ 2500 字
 - 字数 ≤ 4500 字（轻微超出可接受，标记后继续）
 - 红线自检全部通过
-- 满足条件时，立即输出切换指令并切换：切换到审计师 `[[role:auditor]]`
+- 满足条件时，立即输出切换指令：切换到审计师 `[[role:auditor]]`
 - 字数 4501-6000：暂停流程，AskUserQuestion 询问是否精简
 - 字数 > 6000：暂停流程，AskUserQuestion 询问是否拆成两章
 - 字数 < 2500：返回 writer 自身继续扩写
+
+### 模式 B 说明
+在协调者统一执行模式下，本规则由协调者读取并执行。协调者输出 `[[role:writer]]` 标记后，按上述步骤完成写作，然后继续输出 `[[role:auditor]]` 进入审计步骤。
