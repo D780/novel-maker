@@ -24,6 +24,36 @@
 5. 汇总输出
 6. 错误处理（参见失败恢复）
 
+## Agent 唤起规范
+
+### 角色切换指令
+
+所有角色切换必须使用以下标记之一，且必须放在回复开头：
+
+```
+[[role:coordinator]]
+[[role:planner]]
+[[role:writer]]
+[[role:auditor]]
+[[role:reviser]]
+[[role:reviewer]]
+```
+
+### 唤起流程
+
+1. 协调者解析用户意图
+2. 在回复开头输出 `[[role:coordinator]]`
+3. 根据意图映射表决定下一角色
+4. 输出角色切换标记 + 当前状态 + 所需输入
+5. 等待该角色完成并返回【步骤交接摘要】
+6. 根据交接摘要决定下一步
+
+### 强制规则
+
+- 未输出【步骤交接摘要】，不得切换角色
+- 关键检查点未通过，不得进入下一步
+- 用户决策点必须等待用户输入，不得擅自决定
+
 ## 意图映射表
 
 ### 核心指令
@@ -70,7 +100,11 @@
   "style": "天蚕土豆",
   "last_audit_chapter": 10,
   "last_summary_chapter": 10,
-  "current_volume_chapters": 30
+  "current_volume_chapters": 30,
+  "current_agent": "coordinator",
+  "last_completed_agent": null,
+  "pending_decision": null,
+  "step_summary": {}
 }
 ```
 
@@ -117,6 +151,77 @@
 | temp/revised.md | 修订师 | 修订稿 |
 | temp/char-update.json | 复盘师 | 角色状态更新 |
 | temp/hook-update.json | 复盘师 | 伏笔状态更新 |
+
+## 核心流程模板
+
+### /novel-maker write 流程
+
+```
+[[role:coordinator]]
+用户请求：写第{current_chapter}章。当前状态：第{current_act}幕。
+
+[[role:writer]]
+1. 读取 plan.md、最近章节摘要、相关 truth-files
+2. 按强制流程写作（字数 2500-4000，红线自检）
+3. 输出【步骤交接摘要 - 写手】
+
+[checkpoint] 协调者检查
+- 字数 ≥ 2500 字？
+- 红线自检全部通过？
+- 通过 → 继续；未通过 → 返回 writer
+
+[[role:auditor]]
+1. 读取 draft.md
+2. 执行 15 核心维度审计
+3. 输出【步骤交接摘要 - 审计师】
+
+[checkpoint] 协调者检查
+- 是否存在 P0/P1？
+- 无 → 跳到 reviewer
+- 有 → 进入 reviser
+
+[[role:reviser]] （条件触发）
+1. 读取 audit.json
+2. 修复所有 P0/P1
+3. 输出【步骤交接摘要 - 修订师】
+
+[[role:auditor]] （复审）
+1. 读取 revised.md
+2. 确认 P0/P1 已修复
+3. 输出【步骤交接摘要 - 审计师】
+
+[[role:reviewer]]
+1. 读取最终稿件
+2. 执行 chapter-complete hook
+3. 更新 truth-files
+4. 输出【步骤交接摘要 - 复盘师】
+
+[[role:coordinator]]
+汇总结果，输出给用户。
+```
+
+### /novel-maker review 流程
+
+```
+[[role:coordinator]]
+用户请求审查第{current_chapter}章。
+
+[[role:auditor]]
+1. 读取目标章节
+2. 执行 15/33 维度审计
+3. 输出【步骤交接摘要 - 审计师】
+
+[checkpoint]
+- 有 P0/P1？→ 进入 reviser
+- 无？→ 输出报告给用户
+
+[[role:reviser]] （条件触发）
+1. 修复 P0/P1
+2. 输出交接摘要
+
+[[role:coordinator]]
+汇总审计/修订结果。
+```
 
 ## 用户决策点
 
