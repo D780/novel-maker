@@ -82,6 +82,47 @@ python skill/scripts/writer/check_wordcount.py 测试文件.md
 /novel-maker act 下一幕怎么走
 ```
 
+## Agent 唤起机制
+
+### 角色切换标记
+
+NovelMaker 使用 6 角色协作架构。执行多步骤任务时，AI 必须显式切换角色，并在回复开头输出对应标记：
+
+```
+[[role:coordinator]]
+[[role:planner]]
+[[role:writer]]
+[[role:auditor]]
+[[role:reviser]]
+[[role:reviewer]]
+```
+
+### 写作流程
+
+`/novel-maker write` 会触发完整 6 角色流程：
+
+```
+协调者 → 写手 → [检查点] → 审计师 → [检查点] → 修订师（如需） → 复盘师 → 协调者
+```
+
+每个角色完成后必须输出【步骤交接摘要】，未通过检查点不得进入下一步。
+
+### 单角色指令
+
+以下指令只触发单个角色：
+
+| 指令 | 唤起角色 |
+|------|---------|
+| `/novel-maker plan` | planner |
+| `/novel-maker review` | auditor → reviser（如需）|
+| `/novel-maker memory` | reviewer |
+| `/novel-maker summary` | reviewer |
+| `/novel-maker act` | planner |
+
+### 步骤交接摘要
+
+每个角色完成后必须输出标准化摘要，格式见各角色文件。
+
 ***
 
 ## 核心能力
